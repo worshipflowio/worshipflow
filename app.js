@@ -6,7 +6,7 @@
   const DISPLAY_FONTS = ['Bricolage Grotesque', 'Archivo', 'Sora', 'Unbounded', 'Fraunces', 'DM Serif Display', 'Anton'];
   const BODY_FONTS = ['Instrument Sans', 'Figtree', 'DM Sans', 'IBM Plex Sans', 'Source Serif 4'];
   let C, published, edit = false, hasDraft = false, undo = [], redo = [], pre = null, pausedUntil = 0;
-  const ui = { billing: 0, filter: 'All', live: 0, prod: null };
+  const ui = { billing: 0, filter: 'All', live: 0, prod: null, page: 'home' };
 
   const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
   const clone = o => JSON.parse(JSON.stringify(o));
@@ -36,7 +36,7 @@
     return `<div class="img ${cls}" data-pic="${p}">${src ? `<img src="${esc(src)}" alt="${esc(fallback)}" loading="lazy">` : `<div class="art" style="--k:${k}">${esc(fallback)}</div>`}</div>`;
   };
   const head = p => `<div class="sec-head">${T(p + '.title', 'h2')}${T(p + '.body', 'p', 'lede', true)}</div>`;
-  const slist = (p, cls) => `<ul class="${cls}" data-slist="${p}">${(get(p) || []).map((_, i) => T(`${p}.${i}`, 'li')).join('')}</ul>`;
+  const slist = (p, cls) => `<ul class="${cls}" data-slist="${p}">${(get(p) || []).map((_, i) => (edit ? `<li>${T(`${p}.${i}`)}<button class="ed-x" data-act="s-del" data-p="${p}" data-i="${i}" aria-label="Remove this line">✕</button></li>` : T(`${p}.${i}`, 'li'))).join('')}</ul>`;
   const list = (p, cls, fn, extra = '') => `<div class="${cls}" data-list="${p}"${extra}>${(get(p) || []).map((it, i) => fn(it, `${p}.${i}`, i)).join('')}</div>`;
 
   const R = {
@@ -55,13 +55,14 @@
       return `<span class="client" data-item="${i}">${src ? `<img src="${esc(src)}" alt="${esc(it.name)}">` : ''}${!src || edit ? T(ip + '.name') : ''}${edit ? `<button class="ed-s" data-img="${ip}.logo">Logo</button>` : ''}</span>`;
     }).replace('>', '>' + T(p + '.title', 'span', 'clients-title'))}</div>`,
     services: (s, p) => `<div class="wrap">${head(p)}${list(p + '.items', 'bento', (it, ip, i) => `<article class="card" data-item="${i}">${T(ip + '.title', 'h3')}${T(ip + '.body', 'p', '', true)}${slist(ip + '.tags', 'tags')}</article>`)}</div>`,
-    store: (s, p) => {
-      const cats = ['All', ...new Set((s.items || []).map(x => x.category).filter(Boolean))];
+    store: (s, p, full, homeId) => {
+      const lim = full ? Infinity : (+s.limit || 6), live = (s.items || []).filter(x => edit || !x.draft), total = live.length; let shown = 0;
+      const cats = ['All', ...new Set(live.map(x => x.category).filter(Boolean))];
       if (edit || !cats.includes(ui.filter)) ui.filter = 'All';
-      return `<div class="wrap">${head(p)}<div class="chips" role="group" aria-label="Filter by type">${cats.map(c => `<button class="chip" data-act="filter" data-v="${esc(c)}" aria-pressed="${c === ui.filter}">${esc(c)}</button>`).join('')}</div>
-      ${list(p + '.items', 'grid3', (it, ip, i) => `<article class="product" data-item="${i}"${ui.filter !== 'All' && it.category !== ui.filter ? ' hidden' : ''}>${I(ip + '.image', 'img-169', it.title, i % 4)}
+      return `<div class="wrap">${full ? `<a class="textlink back" href="#${homeId}">Back to the home page</a>` : ''}${head(p)}<div class="chips" role="group" aria-label="Filter by type">${cats.map(c => `<button class="chip" data-act="filter" data-v="${esc(c)}" aria-pressed="${c === ui.filter}">${esc(c)}</button>`).join('')}</div>
+      ${list(p + '.items', 'grid3', (it, ip, i) => `<article class="product ${it.draft ? 'is-draft' : ''}" data-item="${i}"${(!edit && it.draft) || (ui.filter !== 'All' && it.category !== ui.filter) || ++shown > lim ? ' hidden' : ''}>${it.draft ? '<span class="draft-tag">Draft, hidden from visitors</span>' : ''}${I(ip + '.image', 'img-169', it.title, i % 4)}
         <div class="product-body"><div class="product-meta">${T(ip + '.category')}${T(ip + '.badge', 'span', 'badge')}</div>${T(ip + '.title', 'h3')}${T(ip + '.desc', 'p', 'product-desc', true)}</div>
-        <div class="product-foot">${T(ip + '.price', 'span', 'price')}<a class="textlink" href="#p-${slug(it.title)}">Details</a>${L(ip + '.buy', 'btn btn-primary btn-small')}</div></article>`)}</div>`;
+        <div class="product-foot">${T(ip + '.price', 'span', 'price')}<a class="textlink" href="#p-${slug(it.title)}">Details</a>${L(ip + '.buy', 'btn btn-primary btn-small')}</div></article>`)}${!full && total > lim ? `<div class="after"><a class="btn" href="#shop">See all ${total} products</a></div>` : ''}</div>`;
     },
     process: (s, p) => `<div class="wrap">${head(p)}${list(p + '.items', 'week', (it, ip, i) => `<div class="day" data-item="${i}">${T(ip + '.when', 'span', 'day-when')}${T(ip + '.title', 'h3')}${T(ip + '.body', 'p', '', true)}</div>`)}</div>`,
     pricing: (s, p) => {
@@ -81,32 +82,40 @@
   const findProduct = () => {
     const h = location.hash.slice(1); if (!h.startsWith('p-')) { ui.prod = null; return null; }
     let hit = null;
-    C.sections.forEach((s, si) => s.type === 'store' && (s.items || []).forEach((it, i) => { if (!hit && 'p-' + slug(it.title) === h) hit = { si, i }; }));
-    if (!hit && ui.prod && C.sections[ui.prod.si]?.items?.[ui.prod.i]) { hit = ui.prod; history.replaceState(null, '', '#p-' + slug(C.sections[hit.si].items[hit.i].title)); }
+    C.sections.forEach((s, si) => s.type === 'store' && (s.items || []).forEach((it, i) => { if (!hit && (edit || !it.draft) && 'p-' + slug(it.title) === h) hit = { si, i }; }));
+    if (!hit && edit && ui.prod && C.sections[ui.prod.si]?.items?.[ui.prod.i]) { hit = ui.prod; history.replaceState(null, '', '#p-' + slug(C.sections[hit.si].items[hit.i].title)); }
     return (ui.prod = hit);
   };
   const productPage = ({ si, i }, ids) => {
     const p = `sections.${si}.items.${i}`, it = get(p);
-    if (!Array.isArray(it.includes)) it.includes = []; if (it.details == null) it.details = '';
-    const show = edit || it.details || it.includes.length;
-    return `<section class="sec product-page"><div class="wrap"><a class="textlink back" href="#${ids[si]}">Back to the media store</a>
+    if (!Array.isArray(it.includes)) it.includes = []; if (!Array.isArray(it.gallery)) it.gallery = []; if (it.details == null) it.details = '';
+    const yt = (String(it.preview?.href || '').match(/(?:v=|youtu\.be\/|embed\/|shorts\/)([\w-]{11})/) || [])[1];
+    const st = C.sections[si], lp = `sections.${si}.labels`; st.labels = Object.assign({ about: 'About this product', includes: "What's included", video: 'Preview', gallery: 'Inside this pack' }, st.labels);
+    const hd = (k, hint) => `<div class="pp-hd">${T(`${lp}.${k}`, 'h3')}${edit ? `<button class="ed-b" data-act="pp-clear" data-p="${p}" data-k="${k}">Remove from this product</button><span class="ed-hint">${hint}</span>` : ''}</div>`;
+    const empty = 'Visitors only see this block when it has content.';
+    return `<section class="sec product-page"><div class="wrap"><a class="textlink back" href="#shop">Back to all products</a>
+      ${edit ? `<div class="ed-note"><span>${it.draft ? 'This product is a draft. Visitors cannot see it.' : 'This product is live once you publish.'}</span><button class="ed-b" data-act="item-draft" data-p="sections.${si}.items" data-i="${i}">${it.draft ? 'Make it live' : 'Back to draft'}</button></div>` : ''}
       <div class="pp">${I(p + '.image', 'img-169 pp-img', it.title, i % 4)}
         <div class="pp-info"><div class="product-meta">${T(p + '.category')}${T(p + '.badge', 'span', 'badge')}</div>${T(p + '.title', 'h1', 'pp-title')}${T(p + '.price', 'span', 'price')}${T(p + '.desc', 'p', 'lede', true)}
         <div class="btns">${L(p + '.buy', 'btn btn-primary')}${L(p + '.preview', 'btn')}</div></div></div>
-      ${show ? `<div class="pp-more"><div class="stack"><h3>About this product</h3>${T(p + '.details', 'p', 'lede', true)}</div><div class="stack"><h3>What's included</h3>${slist(p + '.includes', 'checks')}</div></div>` : ''}
+      ${edit || it.details ? `${hd('about', empty)}${T(p + '.details', 'p', 'lede', true)}` : ''}
+      ${edit || it.includes.length ? `${hd('includes', empty)}${slist(p + '.includes', 'checks')}` : ''}
+      ${edit || yt ? `${hd('video', 'Paste a YouTube link into the Preview button above to show a video here.')}${yt ? `<iframe class="pp-video" src="https://www.youtube-nocookie.com/embed/${yt}" title="Preview video" loading="lazy" allowfullscreen></iframe>` : ''}` : ''}
+      ${edit || it.gallery.length ? `${hd('gallery', empty)}${list(p + '.gallery', 'grid3', (g, gp, k) => `<div class="shot" data-item="${k}">${I(gp + '.image', 'img-169', g.caption, k % 4)}<div class="shot-cap">${T(gp + '.caption')}</div></div>`)}` : ''}
     </div></section>`;
   };
   const secIds = () => { const seen = {}; return C.sections.map(s => { let id = slug(s.anchor) || slug(s.nav) || s.type; if (seen[id]) id += '-' + (++seen[id]); else seen[id] = 1; return id; }); };
 
   function render() {
-    const ids = secIds(), prod = findProduct();
+    const ids = secIds(), prod = findProduct(), shopI = !prod && location.hash === '#shop' ? C.sections.findIndex(x => x.type === 'store') : -1;
+    ui.page = prod ? 'product' : shopI >= 0 ? 'shop' : 'home';
     const brand = safeImg(C.brand.logo) ? `<img src="${esc(C.brand.logo)}" alt="${esc(C.brand.name)}">` : `<i class="brand-mark"></i>${T('brand.name')}`;
     const links = C.sections.map((s, i) => (s.nav && !s.hidden ? `<a href="#${ids[i]}">${esc(s.nav)}</a>` : '')).join('');
     $('#app').innerHTML = `
       <header class="nav"><div class="wrap nav-in"><a class="brand" href="#top">${brand}</a>
         <nav class="nav-links" id="nav-links" aria-label="Main">${links}${L('nav.cta', 'btn btn-primary')}</nav>
         ${L('nav.cta', 'btn btn-primary btn-small nav-cta')}<button class="nav-toggle" data-act="menu" aria-controls="nav-links" aria-label="Menu">Menu</button></div></header>
-      <main id="top">${prod ? productPage(prod, ids) : C.sections.map((s, i) => (R[s.type] ? `<section class="sec ${s.type} ${s.bg === 'tint' ? 'sec-tint' : ''} ${s.hidden ? 'is-hidden' : ''}" id="${ids[i]}" data-sec="${i}">${R[s.type](s, 'sections.' + i)}</section>` : '')).join('')}</main>
+      <main id="top">${prod ? productPage(prod, ids) : shopI >= 0 ? `<section class="sec store">${R.store(C.sections[shopI], 'sections.' + shopI, true, ids[shopI])}</section>` : C.sections.map((s, i) => (R[s.type] ? `<section class="sec ${s.type} ${s.bg === 'tint' ? 'sec-tint' : ''} ${s.hidden ? 'is-hidden' : ''}" id="${ids[i]}" data-sec="${i}">${R[s.type](s, 'sections.' + i)}</section>` : '')).join('')}</main>
       <footer class="foot"><div class="wrap foot-in"><span class="brand"><i class="brand-mark"></i>${esc(C.brand.name)}</span>
         ${list('footer.socials', 'socials', (it, ip, i) => `<span data-item="${i}">${L(ip)}</span>`)}
         <span>© ${new Date().getFullYear()} ${T('footer.owner')}</span>${T('footer.note')}<a href="#edit" data-act="edit-on">Edit site</a></div></footer>`;
@@ -166,8 +175,8 @@
     $$('#app [data-list]').forEach(el => {
       const p = el.dataset.list, compact = el.hasAttribute('data-compact');
       $$(':scope > [data-item]', el).forEach(it => {
-        const i = it.dataset.item, a = `data-p="${p}" data-i="${i}"`, star = get(`${p}.${i}`) && 'featured' in get(`${p}.${i}`);
-        it.insertAdjacentHTML('beforeend', `<div class="ed-ic">${compact ? '' : `<button class="ed-s" data-act="item-up" ${a} aria-label="Move earlier">‹</button><button class="ed-s" data-act="item-down" ${a} aria-label="Move later">›</button>${star ? `<button class="ed-s" data-act="item-star" ${a} aria-label="Highlight">★</button>` : ''}<button class="ed-s" data-act="item-copy" ${a} aria-label="Duplicate">⧉</button>`}<button class="ed-s" data-act="item-del" ${a} aria-label="Delete">✕</button></div>`);
+        const i = it.dataset.item, a = `data-p="${p}" data-i="${i}"`, star = get(`${p}.${i}`) && 'featured' in get(`${p}.${i}`), isProd = /^sections\.\d+\.items$/.test(p) && C.sections[p.split('.')[1]].type === 'store';
+        it.insertAdjacentHTML('beforeend', `<div class="ed-ic">${compact ? '' : `<button class="ed-s" data-act="item-up" ${a} aria-label="Move earlier">‹</button><button class="ed-s" data-act="item-down" ${a} aria-label="Move later">›</button>${star ? `<button class="ed-s" data-act="item-star" ${a} aria-label="Highlight">★</button>` : ''}${isProd ? `<button class="ed-s" data-act="item-draft" ${a}>${get(`${p}.${i}`).draft ? 'Make live' : 'Draft'}</button>` : ''}<button class="ed-s" data-act="item-copy" ${a} aria-label="Duplicate">⧉</button>`}<button class="ed-s" data-act="item-del" ${a} aria-label="Delete">✕</button></div>`);
       });
       el.insertAdjacentHTML('beforeend', `<button class="ed-add" data-act="item-add" data-p="${p}">+ Add</button>`);
     });
@@ -226,8 +235,9 @@
     const s = C.sections[i]; begin();
     const el = panel(LABELS[s.type] + ' settings', `<label>Name in the top menu (empty keeps it out of the menu)<input id="ed-s-nav" value="${esc(s.nav)}"></label>
       <label>Background<select id="ed-s-bg"><option value="">Page background</option><option value="tint" ${s.bg === 'tint' ? 'selected' : ''}>Raised panel</option></select></label>
+      ${s.type === 'store' ? `<label>Products shown on the home page (newest first)<input id="ed-s-lim" type="number" min="1" max="60" value="${+s.limit || 6}"></label><p>The rest appear on the full store page, behind the "See all products" button. Drag order is newest first: new products are added at the front.</p>` : ''}
       ${s.periods ? `<label>Billing options, separated by commas<input id="ed-s-per" value="${esc(s.periods.join(', '))}"></label><p>Each plan keeps one price per option. Switch the toggle on the page, then click the price to change it.</p>` : ''}`);
-    bind(el, () => { s.nav = $('#ed-s-nav').value; s.bg = $('#ed-s-bg').value; if (s.periods) { s.periods = $('#ed-s-per').value.split(',').map(x => x.trim()).filter(Boolean); s.items.forEach(it => { while (it.prices.length < s.periods.length) it.prices.push(it.prices.at(-1) || '$0'); }); } });
+    bind(el, () => { s.nav = $('#ed-s-nav').value; s.bg = $('#ed-s-bg').value; if (s.type === 'store') s.limit = Math.max(1, +$('#ed-s-lim').value || 6); if (s.periods) { s.periods = $('#ed-s-per').value.split(',').map(x => x.trim()).filter(Boolean); s.items.forEach(it => { while (it.prices.length < s.periods.length) it.prices.push(it.prices.at(-1) || '$0'); }); } });
   }
   function themeForm() {
     const t = C.theme; begin();
@@ -289,7 +299,8 @@
 
   const arr = d => get(d.p), idx = d => +d.i;
   const move = (a, i, j) => { if (j < 0 || j >= a.length) return; a.splice(j, 0, a.splice(i, 1)[0]); };
-  const blankItem = p => { const a = get(p); if (a.length) return clone(a.at(-1)); const [, si, key] = p.split('.'); const t = C.sections[si]?.type; const src = [...DEFAULT.sections, ...Object.values(BLANKS)].find(s => s.type === t); return clone(src?.[key]?.[0] ?? { label: 'Link', href: '' }); };
+  const NEWPRODUCT = { title: 'New product', category: 'Graphics', desc: 'Describe it in one or two lines.', price: '$0', badge: 'New', draft: true, image: '', buy: { label: 'Buy and download', href: '' }, preview: { label: 'Preview', href: '' }, details: '', includes: [], gallery: [] };
+  const blankItem = p => { const a = get(p); if (p.endsWith('.gallery')) return { image: '', caption: 'Add a caption' }; if (a.length) return clone(a.at(-1)); const [, si, key] = p.split('.'); const t = C.sections[si]?.type; const src = [...DEFAULT.sections, ...Object.values(BLANKS)].find(s => s.type === t); return clone(src?.[key]?.[0] ?? { label: 'Link', href: '' }); };
   const acts = {
     menu: () => $('#nav-links').classList.toggle('open'),
     filter: d => { ui.filter = d.v; render(); },
@@ -311,8 +322,11 @@
     'item-down': d => mutate(() => move(arr(d), idx(d), idx(d) + 1)),
     'item-copy': d => mutate(() => arr(d).splice(idx(d) + 1, 0, clone(arr(d)[idx(d)]))),
     'item-del': d => mutate(() => arr(d).splice(idx(d), 1)),
+    'item-draft': d => mutate(() => (arr(d)[idx(d)].draft = !arr(d)[idx(d)].draft)),
+    's-del': d => mutate(() => arr(d).splice(idx(d), 1)),
+    'pp-clear': d => mutate(() => { const it = get(d.p); if (d.k === 'about') it.details = ''; if (d.k === 'includes') it.includes = []; if (d.k === 'gallery') it.gallery = []; if (d.k === 'video') it.preview.href = ''; }),
     'item-star': d => mutate(() => (arr(d)[idx(d)].featured = !arr(d)[idx(d)].featured)),
-    'item-add': d => mutate(() => arr(d).push(blankItem(d.p))),
+    'item-add': d => { const m = d.p.match(/^sections\.(\d+)\.items$/); if (m && C.sections[m[1]].type === 'store') { mutate(() => arr(d).unshift(clone(NEWPRODUCT))); toast('New product added at the front. Click Details to build its page.'); } else mutate(() => arr(d).push(blankItem(d.p))); },
     's-add': d => { mutate(() => arr(d).push('')); focusPath(`${d.p}.${arr(d).length - 1}`); },
     'img-clear': d => { mutate(() => set(d.p, '')); closePanel(); },
     discard: () => { lsSet(KEY, null); hasDraft = false; C = clone(published); undo = []; redo = []; closePanel(); render(); toast('Draft discarded.'); },
@@ -320,7 +334,7 @@
     copy: async () => { try { await navigator.clipboard.writeText(backupText()); toast('Backup copied.'); } catch { toast('Copy was blocked by the browser.'); } }
   };
   const focusPath = p => { const el = $(`#app [data-t="${p}"]`); if (el) { el.focus(); getSelection().selectAllChildren(el); getSelection().collapseToEnd(); } };
-  function enter() { edit = true; try { sessionStorage.setItem('wf-edit', '1'); } catch { } closePanel(); render(); if (!location.hash.startsWith('#p-') && location.hash !== '#edit') history.replaceState(null, '', '#edit'); }
+  function enter() { edit = true; try { sessionStorage.setItem('wf-edit', '1'); } catch { } closePanel(); render(); if (ui.page === 'home' && location.hash !== '#edit') history.replaceState(null, '', '#edit'); }
   function leave() { edit = false; try { sessionStorage.removeItem('wf-edit'); } catch { } closePanel(); render(); if (location.hash === '#edit') history.replaceState(null, '', location.pathname + location.search); }
 
   document.addEventListener('click', e => {
@@ -339,7 +353,7 @@
     const el = e.target.closest?.('#app [data-t]');
     if (!edit) { if (e.key === 'Enter' && e.target.matches?.('[data-live]')) setLive(+e.target.dataset.live, true); return; }
     if (!el) return;
-    const sl = el.parentElement.dataset.slist;
+    const sl = el.closest('[data-slist]')?.dataset.slist;
     if (e.key === 'Enter' && sl) { e.preventDefault(); const i = +el.dataset.t.split('.').pop(); mutate(() => get(sl).splice(i + 1, 0, '')); focusPath(`${sl}.${i + 1}`); }
     else if (e.key === 'Enter' && !el.hasAttribute('data-ml')) { e.preventDefault(); el.blur(); }
     else if (e.key === 'Backspace' && sl && !el.textContent) { e.preventDefault(); const i = +el.dataset.t.split('.').pop(); mutate(() => get(sl).splice(i, 1)); focusPath(`${sl}.${Math.max(0, i - 1)}`); }
@@ -350,8 +364,8 @@
   document.addEventListener('paste', e => { if (!edit || !e.target.closest?.('#app [data-t]')) return; e.preventDefault(); document.execCommand('insertText', false, (e.clipboardData || window.clipboardData).getData('text/plain')); });
   addEventListener('hashchange', () => {
     if (location.hash === '#edit') { if (!edit) enter(); return; }
-    const was = !!ui.prod; render();
-    if (ui.prod) scrollTo(0, 0); else if (was) { const el = document.getElementById(location.hash.slice(1)); el ? el.scrollIntoView() : scrollTo(0, 0); }
+    const was = ui.page; render();
+    if (ui.page !== 'home') scrollTo(0, 0); else if (was !== 'home') { const el = document.getElementById(location.hash.slice(1)); el ? el.scrollIntoView() : scrollTo(0, 0); }
   });
 
   (async () => {
