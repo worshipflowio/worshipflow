@@ -258,3 +258,4 @@ body.editing .sec.is-hidden{display:block}
 [hidden]{display:none!important}
 body.editing .clients{padding-top:64px}
 @media (max-width:900px){.ed-bar strong{display:none}body.editing .sec{padding-top:72px}.ed-sbar{left:12px;right:auto;max-width:calc(100% - 24px);overflow-x:auto}}
+body.editing .ed-ic{top:0;right:8px;transform:translateY(-62%);opacity:0;pointer-events:none}body.editing [data-item]:hover>.ed-ic,body.editing [data-item]:focus-within>.ed-ic{opacity:1;pointer-events:auto}body.editing .product{overflow:visible}body.editing .quotes{padding-top:26px}body.editing .slides .ed-ic{right:-6px}@media (hover:none){body.editing .ed-ic{opacity:1;pointer-events:auto}}
