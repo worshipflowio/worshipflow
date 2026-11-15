@@ -46,10 +46,12 @@
 
   async function dashboard(el, api, u, days) {
     el.innerHTML = `<div class="ad-top"><div><h1 class="ad-h">Site admin</h1><p class="ad-muted">Signed in as ${esc(u.email)}</p></div>
-      <div class="btns"><button class="btn btn-primary" id="ad-edit">Open the editor</button><button class="btn" id="ad-out">Sign out</button></div></div>
+      <div class="btns"><button class="btn btn-primary" id="ad-edit">Open the editor</button><button class="btn" id="ad-pub">See the public site</button><button class="btn" id="ad-out">Sign out</button></div></div>
+      <p class="ad-muted ad-note">${api.hasDraft() ? 'You have unpublished changes on this device. "See the public site" shows the site without them, exactly as visitors see it now.' : '"See the public site" shows the site exactly as visitors see it now.'}</p>
       <div class="ad-filter" role="group" aria-label="Time range">${[7, 30, 90].map(d => `<button class="chip" data-days="${d}" aria-pressed="${d === days}">Last ${d} days</button>`).join('')}</div>
       <div id="ad-body"><p class="ad-muted">Loading statistics…</p></div>`;
     el.querySelector('#ad-edit').onclick = () => api.edit();
+    el.querySelector('#ad-pub').onclick = () => api.publicView();
     el.querySelector('#ad-out').onclick = async () => { await (await init()).auth().signOut(); flag(false); mount(el, api); };
     el.querySelectorAll('[data-days]').forEach(b => (b.onclick = () => dashboard(el, api, u, +b.dataset.days)));
     const body = el.querySelector('#ad-body');

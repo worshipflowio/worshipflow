@@ -309,3 +309,4 @@ body.editing .ed-ic{top:0;right:8px;transform:translateY(-62%);opacity:0;pointer
 .ad-table th{font-weight:400;color:var(--muted);text-align:left;padding:0 0 8px}
 .ad-table td{padding:8px 0;border-top:1px solid var(--line);overflow-wrap:anywhere}
 .ad-table th:not(:first-child),.ad-table td:not(:first-child){text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap;padding-left:14px}
+.ad-note{margin:-8px 0 20px}

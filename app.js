@@ -2,7 +2,7 @@
 (() => {
   const DEFAULT = window.WF_DEFAULT, BLANKS = window.WF_BLANKS;
   const KEY = 'wf-draft', GHKEY = 'wf-github';
-  const BUILD = 8;
+  const BUILD = 9;
   const FB = window.WF_FIREBASE && window.WF_FIREBASE.projectId ? window.WF_FIREBASE : null;
   let adminP; const loadAdmin = () => (adminP = adminP || new Promise((res, rej) => { const sc = document.createElement('script'); sc.src = 'admin.js?v=' + BUILD; sc.onload = () => res(window.WF_ADMIN); sc.onerror = rej; document.head.append(sc); }));
   /* Anonymous visit and click counts for the admin page. No cookies, nothing personal. */
@@ -128,6 +128,7 @@
   function render() {
     const ids = secIds(), prod = findProduct(), shopI = !prod && location.hash === '#shop' ? C.sections.findIndex(x => x.type === 'store') : -1;
     const adminOn = FB && location.hash === '#admin';
+    if (adminOn && pubView) { if (work) C = work; work = null; pubView = false; try { sessionStorage.removeItem('wf-pub'); } catch { } }
     ui.page = adminOn ? 'admin' : prod ? 'product' : shopI >= 0 ? 'shop' : 'home';
     const brand = safeImg(C.brand.logo) ? `<img src="${esc(C.brand.logo)}" alt="${esc(C.brand.name)}">` : `<i class="brand-mark"></i>${T('brand.name')}`;
     const links = C.sections.map((s, i) => (s.nav && !gone(s) ? `<a href="#${ids[i]}">${esc(s.nav)}</a>` : '')).join('');
@@ -139,7 +140,7 @@
       <footer class="foot"><div class="wrap foot-in"><span class="brand"><i class="brand-mark"></i>${esc(C.brand.name)}</span>
         ${list('footer.socials', 'socials', (it, ip, i) => `<span data-item="${i}">${L(ip)}</span>`)}
         <span>© ${new Date().getFullYear()} ${T('footer.owner')}</span>${T('footer.note')}${FB ? '<a href="#admin">Admin</a>' : '<a href="#edit" data-act="edit-on">Edit site</a>'}</div></footer>`;
-    if (adminOn) loadAdmin().then(A => A.mount($('#admin-root'), { edit: tryEnter })).catch(() => ($('#admin-root').textContent = 'The admin tools could not load. Reload to try again.'));
+    if (adminOn) loadAdmin().then(A => A.mount($('#admin-root'), { edit: tryEnter, publicView: () => publicView(true), hasDraft: () => hasDraft })).catch(() => ($('#admin-root').textContent = 'The admin tools could not load. Reload to try again.'));
     applyTheme();
     document.body.classList.toggle('editing', edit);
     if (edit && !adminOn) decorate();
@@ -178,7 +179,20 @@
   }, 2800);
 
   /* ---------- editor ---------- */
-  const save = () => { hasDraft = true; if (!lsSet(KEY, C)) toast('This draft is too large to autosave in the browser. Publish, or download a backup.'); };
+  /* Public view: the published site exactly as visitors see it, with no unpublished changes. */
+  let pubView = false, work = null;
+  async function publicView(on) {
+    if (on) {
+      try { const r = await fetch('content.json', { cache: 'no-store' }); if (r.ok) { const j = await r.json(); if (Array.isArray(j.sections)) published = j; } } catch { }
+      if (!pubView) work = C; C = clone(published); pubView = true; edit = false; closePanel();
+      try { sessionStorage.setItem('wf-pub', '1'); sessionStorage.removeItem('wf-edit'); } catch { }
+      history.replaceState(null, '', location.pathname + location.search); render(); scrollTo(0, 0);
+    } else {
+      if (work) C = work; work = null; pubView = false; try { sessionStorage.removeItem('wf-pub'); } catch { }
+      if (FB && location.hash !== '#admin') location.hash = '#admin'; else render();
+    }
+  }
+  const save = () => { if (pubView) return; hasDraft = true; if (!lsSet(KEY, C)) toast('This draft is too large to autosave in the browser. Publish, or download a backup.'); };
   const mutate = fn => { undo.push(JSON.stringify(C)); if (undo.length > 60) undo.shift(); redo = []; fn(); save(); render(); };
   const begin = () => { undo.push(JSON.stringify(C)); redo = []; };
   let toastT; const toast = m => { let t = $('.ed-toast'); if (!t) { t = document.createElement('div'); t.className = 'ed-toast'; t.setAttribute('role', 'status'); document.body.append(t); } t.textContent = m; t.hidden = false; clearTimeout(toastT); toastT = setTimeout(() => (t.hidden = true), 4200); };
@@ -214,7 +228,9 @@
       <button class="ed-b" data-act="undo" ${undo.length ? '' : 'disabled'}>Undo</button><button class="ed-b" data-act="redo" ${redo.length ? '' : 'disabled'}>Redo</button>
       <button class="ed-b" data-act="theme">Look and fonts</button><button class="ed-b" data-act="addsec" data-i="${C.sections.length}">Add section</button>
       <button class="ed-b" data-act="backup">Backup</button><button class="ed-b ed-go" data-act="publish">Publish</button><button class="ed-b" data-act="edit-off">Done</button>`;
-    const want = !edit && hasDraft;
+    if (pill) { pill.remove(); pill = null; }
+    if (pubView) { pill = document.createElement('div'); pill.className = 'ed-pill'; pill.innerHTML = `<span>Public view. This is what visitors see right now.</span><button class="ed-b" data-act="pub-off">${FB ? 'Back to admin' : 'Leave public view'}</button>`; document.body.append(pill); return; }
+    const want = !edit && hasDraft && ui.page !== 'admin';
     if (want && !pill) { pill = document.createElement('div'); pill.className = 'ed-pill'; pill.innerHTML = `<span>Viewing your unpublished draft</span><button class="ed-b" data-act="edit-on">Keep editing</button><button class="ed-b" data-act="discard">Discard</button>`; document.body.append(pill); }
     if (!want && pill) pill.remove();
   }
@@ -328,7 +344,7 @@
     menu: () => $('#nav-links').classList.toggle('open'),
     filter: d => { ui.filter = d.v; render(); },
     billing: d => { ui.billing = +d.v; render(); },
-    'edit-on': () => tryEnter(), 'edit-off': () => leave(),
+    'edit-on': () => tryEnter(), 'edit-off': () => leave(), 'pub-on': () => publicView(true), 'pub-off': () => publicView(false),
     undo: () => { if (!undo.length) return; redo.push(JSON.stringify(C)); C = JSON.parse(undo.pop()); save(); render(); },
     redo: () => { if (!redo.length) return; undo.push(JSON.stringify(C)); C = JSON.parse(redo.pop()); save(); render(); },
     theme: themeForm, backup: backupForm, publish: publishForm, 'publish-go': publish, close: closePanel,
@@ -358,6 +374,7 @@
   };
   const focusPath = p => { const el = $(`#app [data-t="${p}"]`); if (el) { el.focus(); getSelection().selectAllChildren(el); getSelection().collapseToEnd(); } };
   async function tryEnter() {
+    if (pubView) { if (work) C = work; work = null; pubView = false; try { sessionStorage.removeItem('wf-pub'); } catch { } }
     if (FB) { try { const A = await loadAdmin(); if (!(await A.user())) { if (location.hash !== '#admin') location.hash = '#admin'; else render(); toast('Sign in to open the editor.'); return; } } catch { toast('The sign-in service could not load. Reload to try again.'); return; } }
     if (location.hash === '#admin') history.replaceState(null, '', '#edit');
     enter();
@@ -407,6 +424,7 @@
     if (d && Array.isArray(d.sections)) { C = d; hasDraft = true; } else C = clone(published);
     let want = location.hash === '#edit'; try { want = want || sessionStorage.getItem('wf-edit') === '1'; } catch { }
     render(); trackView();
-    if (want) tryEnter();
+    let wantPub = false; try { wantPub = sessionStorage.getItem('wf-pub') === '1'; } catch { }
+    if (wantPub && location.hash !== '#admin') publicView(true); else if (want) tryEnter();
   })();
 })();
