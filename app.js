@@ -2,7 +2,22 @@
 (() => {
   const DEFAULT = window.WF_DEFAULT, BLANKS = window.WF_BLANKS;
   const KEY = 'wf-draft', GHKEY = 'wf-github';
-  const BUILD = 7;
+  const BUILD = 8;
+  const FB = window.WF_FIREBASE && window.WF_FIREBASE.projectId ? window.WF_FIREBASE : null;
+  let adminP; const loadAdmin = () => (adminP = adminP || new Promise((res, rej) => { const sc = document.createElement('script'); sc.src = 'admin.js?v=' + BUILD; sc.onload = () => res(window.WF_ADMIN); sc.onerror = rej; document.head.append(sc); }));
+  /* Anonymous visit and click counts for the admin page. No cookies, nothing personal. */
+  const sid = (() => { try { return sessionStorage.getItem('wf-sid') || (sessionStorage.setItem('wf-sid', Math.random().toString(36).slice(2, 12)), sessionStorage.getItem('wf-sid')); } catch { return 'x'; } })();
+  const isOwner = () => { try { return localStorage.getItem('wf-admin') === '1' || !!localStorage.getItem('wf-draft') || !!localStorage.getItem('wf-github'); } catch { return false; } };
+  function track(type, label) {
+    if (!FB || edit || ui.page === 'admin' || isOwner() || navigator.doNotTrack === '1') return;
+    const now = new Date(), f = v => ({ stringValue: String(v ?? '').slice(0, 110) });
+    let ref = ''; try { ref = document.referrer && new URL(document.referrer).host !== location.host ? new URL(document.referrer).host : ''; } catch { }
+    const page = ui.page === 'product' ? 'Product: ' + (C.sections[ui.prod.si].items[ui.prod.i].title || '') : ui.page === 'shop' ? 'All products' : 'Home';
+    fetch(`https://firestore.googleapis.com/v1/projects/${FB.projectId}/databases/(default)/documents/events?key=${FB.apiKey}`, { method: 'POST', keepalive: true, headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ fields: { t: { timestampValue: now.toISOString() }, type: f(type), label: f(label), page: f(page), day: f(now.toISOString().slice(0, 10)), ref: f(ref), dev: f(innerWidth < 700 ? 'Phone' : innerWidth < 1100 ? 'Tablet' : 'Computer'), sid: f(sid) } }) }).catch(() => { });
+  }
+  let lastView = null;
+  const trackView = () => { const k = ui.page + (ui.prod ? ui.prod.si + '.' + ui.prod.i : ''); if (k === lastView) return; lastView = k; if (ui.page === 'product') track('product', C.sections[ui.prod.si].items[ui.prod.i].title); track('view', ''); };
   /* If a newer version has been pushed, refresh this browser's saved copy and reload once. */
   (async () => { try { const v = +(await (await fetch('version.txt', { cache: 'no-store' })).text()); if (v > BUILD && sessionStorage.getItem('wf-upd') !== String(v)) { sessionStorage.setItem('wf-upd', String(v)); await Promise.all(['./', 'index.html'].map(u => fetch(u, { cache: 'reload' }))); location.reload(); } } catch { } })();
   const LABELS = { hero: 'Hero', clients: 'Client logos', services: 'Services', store: 'Media store', process: 'Weekly process', pricing: 'Pricing plans', extras: 'Price list', testimonials: 'Testimonials', about: 'About', contact: 'Contact', text: 'Text block', gallery: 'Gallery' };
@@ -112,20 +127,22 @@
   const gone = s => s.hidden || (!edit && s.type === 'store' && !(s.items || []).some(x => !x.draft));
   function render() {
     const ids = secIds(), prod = findProduct(), shopI = !prod && location.hash === '#shop' ? C.sections.findIndex(x => x.type === 'store') : -1;
-    ui.page = prod ? 'product' : shopI >= 0 ? 'shop' : 'home';
+    const adminOn = FB && location.hash === '#admin';
+    ui.page = adminOn ? 'admin' : prod ? 'product' : shopI >= 0 ? 'shop' : 'home';
     const brand = safeImg(C.brand.logo) ? `<img src="${esc(C.brand.logo)}" alt="${esc(C.brand.name)}">` : `<i class="brand-mark"></i>${T('brand.name')}`;
     const links = C.sections.map((s, i) => (s.nav && !gone(s) ? `<a href="#${ids[i]}">${esc(s.nav)}</a>` : '')).join('');
     $('#app').innerHTML = `
       <header class="nav"><div class="wrap nav-in"><a class="brand" href="#top">${brand}</a>
         <nav class="nav-links" id="nav-links" aria-label="Main">${links}${L('nav.cta', 'btn btn-primary')}</nav>
         ${L('nav.cta', 'btn btn-primary btn-small nav-cta')}<button class="nav-toggle" data-act="menu" aria-controls="nav-links" aria-label="Menu">Menu</button></div></header>
-      <main id="top">${prod ? productPage(prod, ids) : shopI >= 0 ? `<section class="sec store">${R.store(C.sections[shopI], 'sections.' + shopI, true, ids[shopI])}</section>` : C.sections.map((s, i) => (R[s.type] ? `<section class="sec ${s.type} ${s.bg === 'tint' ? 'sec-tint' : ''} ${gone(s) ? 'is-hidden' : ''}" id="${ids[i]}" data-sec="${i}">${R[s.type](s, 'sections.' + i)}</section>` : '')).join('')}</main>
+      <main id="top">${adminOn ? '<section class="sec admin"><div class="wrap" id="admin-root"></div></section>' : prod ? productPage(prod, ids) : shopI >= 0 ? `<section class="sec store">${R.store(C.sections[shopI], 'sections.' + shopI, true, ids[shopI])}</section>` : C.sections.map((s, i) => (R[s.type] ? `<section class="sec ${s.type} ${s.bg === 'tint' ? 'sec-tint' : ''} ${gone(s) ? 'is-hidden' : ''}" id="${ids[i]}" data-sec="${i}">${R[s.type](s, 'sections.' + i)}</section>` : '')).join('')}</main>
       <footer class="foot"><div class="wrap foot-in"><span class="brand"><i class="brand-mark"></i>${esc(C.brand.name)}</span>
         ${list('footer.socials', 'socials', (it, ip, i) => `<span data-item="${i}">${L(ip)}</span>`)}
-        <span>© ${new Date().getFullYear()} ${T('footer.owner')}</span>${T('footer.note')}<a href="#edit" data-act="edit-on">Edit site</a></div></footer>`;
+        <span>© ${new Date().getFullYear()} ${T('footer.owner')}</span>${T('footer.note')}${FB ? '<a href="#admin">Admin</a>' : '<a href="#edit" data-act="edit-on">Edit site</a>'}</div></footer>`;
+    if (adminOn) loadAdmin().then(A => A.mount($('#admin-root'), { edit: tryEnter })).catch(() => ($('#admin-root').textContent = 'The admin tools could not load. Reload to try again.'));
     applyTheme();
     document.body.classList.toggle('editing', edit);
-    if (edit) decorate();
+    if (edit && !adminOn) decorate();
     chrome();
   }
 
@@ -264,6 +281,7 @@
   }
   function publishForm() {
     const g = lsGet(GHKEY) || {};
+    if (FB && !g.token) loadAdmin().then(A => A.getSite()).then(sv => { if (sv && sv.token && $('#ed-g-token') && !$('#ed-g-token').value) { $('#ed-g-owner').value = sv.owner || ''; $('#ed-g-repo').value = sv.repo || ''; $('#ed-g-branch').value = sv.branch || 'main'; $('#ed-g-token').value = sv.token; } }).catch(() => { });
     panel('Publish', `<p>Publishing saves your changes to your GitHub repository. Your host then updates the live site in about a minute.</p>
       <div class="ed-row"><label>GitHub username<input id="ed-g-owner" value="${esc(g.owner)}" autocomplete="off"></label><label>Repository<input id="ed-g-repo" value="${esc(g.repo)}" autocomplete="off"></label></div>
       <div class="ed-row"><label>Branch<input id="ed-g-branch" value="${esc(g.branch || 'main')}"></label><label>Access token<input id="ed-g-token" type="password" value="${esc(g.token)}" autocomplete="off"></label></div>
@@ -295,6 +313,7 @@
       await put('content.json', btoa(unescape(encodeURIComponent(JSON.stringify(out, null, 1)))), 'Update site content');
       published = out; hasDraft = false; lsSet(KEY, null);
       log('Published. The live site updates in about a minute.'); toast('Published.');
+      if (FB) loadAdmin().then(A => A.saveSite(cfg)).then(() => log('Publishing details saved to your admin account, so any device you sign in on can publish.')).catch(() => { });
     } catch (e) {
       log(e instanceof TypeError ? 'Could not reach GitHub from here. Publishing works once the site is on your own hosting, not inside this preview.' : e.message);
     }
@@ -309,7 +328,7 @@
     menu: () => $('#nav-links').classList.toggle('open'),
     filter: d => { ui.filter = d.v; render(); },
     billing: d => { ui.billing = +d.v; render(); },
-    'edit-on': () => enter(), 'edit-off': () => leave(),
+    'edit-on': () => tryEnter(), 'edit-off': () => leave(),
     undo: () => { if (!undo.length) return; redo.push(JSON.stringify(C)); C = JSON.parse(undo.pop()); save(); render(); },
     redo: () => { if (!redo.length) return; undo.push(JSON.stringify(C)); C = JSON.parse(redo.pop()); save(); render(); },
     theme: themeForm, backup: backupForm, publish: publishForm, 'publish-go': publish, close: closePanel,
@@ -338,6 +357,11 @@
     copy: async () => { try { await navigator.clipboard.writeText(backupText()); toast('Backup copied.'); } catch { toast('Copy was blocked by the browser.'); } }
   };
   const focusPath = p => { const el = $(`#app [data-t="${p}"]`); if (el) { el.focus(); getSelection().selectAllChildren(el); getSelection().collapseToEnd(); } };
+  async function tryEnter() {
+    if (FB) { try { const A = await loadAdmin(); if (!(await A.user())) { if (location.hash !== '#admin') location.hash = '#admin'; else render(); toast('Sign in to open the editor.'); return; } } catch { toast('The sign-in service could not load. Reload to try again.'); return; } }
+    if (location.hash === '#admin') history.replaceState(null, '', '#edit');
+    enter();
+  }
   function enter() { edit = true; try { sessionStorage.setItem('wf-edit', '1'); } catch { } closePanel(); render(); if (ui.page === 'home' && location.hash !== '#edit') history.replaceState(null, '', '#edit'); }
   function leave() { edit = false; try { sessionStorage.removeItem('wf-edit'); } catch { } closePanel(); render(); if (location.hash === '#edit') history.replaceState(null, '', location.pathname + location.search); }
 
@@ -351,6 +375,9 @@
       return;
     }
     const sl = e.target.closest('[data-live]'); if (sl) setLive(+sl.dataset.live, true);
+    const tl = e.target.closest('#app a, #app .chip, #app .toggle button');
+    if (tl && !tl.closest('#admin-root')) { const dl = tl.dataset.l || '', pc = tl.closest('.product, .pp-info'), pt = pc ? (pc.querySelector('h3, h1')?.textContent || '').trim() : ''; const txt = tl.textContent.trim();
+      if (dl.endsWith('.buy')) track('buy', pt); else if (dl.endsWith('.preview')) track('preview', 'Preview: ' + pt); else if (txt === 'Details' && pt) track('details', 'Details: ' + pt); else if (txt) track('click', (tl.closest('.nav') ? 'Menu: ' : tl.closest('.foot') ? 'Footer: ' : '') + txt); }
     if (e.target.closest('.nav-links a')) $('#nav-links').classList.remove('open');
   });
   document.addEventListener('keydown', e => {
@@ -367,8 +394,8 @@
   document.addEventListener('focusout', e => { if (edit && pre && e.target.closest?.('#app [data-t]') && pre !== JSON.stringify(C)) { undo.push(pre); redo = []; chrome(); } pre = null; });
   document.addEventListener('paste', e => { if (!edit || !e.target.closest?.('#app [data-t]')) return; e.preventDefault(); document.execCommand('insertText', false, (e.clipboardData || window.clipboardData).getData('text/plain')); });
   addEventListener('hashchange', () => {
-    if (location.hash === '#edit') { if (!edit) enter(); return; }
-    const was = ui.page; render();
+    if (location.hash === '#edit') { if (!edit) tryEnter(); return; }
+    const was = ui.page; render(); trackView();
     if (ui.page !== 'home') scrollTo(0, 0); else if (was !== 'home') { const el = document.getElementById(location.hash.slice(1)); el ? el.scrollIntoView() : scrollTo(0, 0); }
   });
 
@@ -378,7 +405,8 @@
     published = pub && Array.isArray(pub.sections) ? pub : clone(DEFAULT);
     const d = lsGet(KEY);
     if (d && Array.isArray(d.sections)) { C = d; hasDraft = true; } else C = clone(published);
-    edit = location.hash === '#edit'; try { edit = edit || sessionStorage.getItem('wf-edit') === '1'; } catch { }
-    render();
+    let want = location.hash === '#edit'; try { want = want || sessionStorage.getItem('wf-edit') === '1'; } catch { }
+    render(); trackView();
+    if (want) tryEnter();
   })();
 })();
