@@ -2,6 +2,9 @@
 (() => {
   const DEFAULT = window.WF_DEFAULT, BLANKS = window.WF_BLANKS;
   const KEY = 'wf-draft', GHKEY = 'wf-github';
+  const BUILD = 6;
+  /* If a newer version has been pushed, refresh this browser's saved copy and reload once. */
+  (async () => { try { const v = +(await (await fetch('version.txt', { cache: 'no-store' })).text()); if (v > BUILD && sessionStorage.getItem('wf-upd') !== String(v)) { sessionStorage.setItem('wf-upd', String(v)); await Promise.all(['./', 'index.html'].map(u => fetch(u, { cache: 'reload' }))); location.reload(); } } catch { } })();
   const LABELS = { hero: 'Hero', clients: 'Client logos', services: 'Services', store: 'Media store', process: 'Weekly process', pricing: 'Pricing plans', extras: 'Price list', testimonials: 'Testimonials', about: 'About', contact: 'Contact', text: 'Text block', gallery: 'Gallery' };
   const DISPLAY_FONTS = ['Bricolage Grotesque', 'Archivo', 'Sora', 'Unbounded', 'Fraunces', 'DM Serif Display', 'Anton'];
   const BODY_FONTS = ['Instrument Sans', 'Figtree', 'DM Sans', 'IBM Plex Sans', 'Source Serif 4'];
@@ -189,7 +192,7 @@
     if (fresh) { bar = document.createElement('div'); bar.className = 'ed-bar'; document.body.prepend(bar); }
     if (!edit && bar) bar.remove();
     if (edit && !fresh) { $('[data-act=undo]', bar).disabled = !undo.length; $('[data-act=redo]', bar).disabled = !redo.length; $('[data-act=addsec]', bar).dataset.i = C.sections.length; }
-    if (fresh) bar.innerHTML = `<strong>Editing. Click any text, button or image to change it.</strong>
+    if (fresh) bar.innerHTML = `<strong>Editing. Click any text, button or image to change it.</strong><span class="ed-ver">Site version ${BUILD}</span>
       <button class="ed-b" data-act="undo" ${undo.length ? '' : 'disabled'}>Undo</button><button class="ed-b" data-act="redo" ${redo.length ? '' : 'disabled'}>Redo</button>
       <button class="ed-b" data-act="theme">Look and fonts</button><button class="ed-b" data-act="addsec" data-i="${C.sections.length}">Add section</button>
       <button class="ed-b" data-act="backup">Backup</button><button class="ed-b ed-go" data-act="publish">Publish</button><button class="ed-b" data-act="edit-off">Done</button>`;
