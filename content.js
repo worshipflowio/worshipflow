@@ -1,0 +1,161 @@
+/* Starting content for the site. Once you publish from the editor, content.json takes over. */
+window.WF_DEFAULT = {
+  v: 1,
+  meta: {
+    title: "Worship Flow",
+    description: "ProPresenter, video production, creative media and automation for churches. Your team opens a ready-to-run file every Sunday."
+  },
+  theme: { mode: "dark", accent: "#FFB23E", accent2: "#6E8BFF", display: "Bricolage Grotesque", body: "Instrument Sans", radius: 14 },
+  brand: { name: "Worship Flow", logo: "" },
+  nav: { cta: { label: "Schedule a call", href: "https://tidycal.com/worshipflowio" } },
+  sections: [
+    {
+      type: "hero", nav: "",
+      kicker: "ProPresenter, video and creative media for churches",
+      title: "Open the file. Run Sunday.",
+      body: "Worship Flow is your church's ProPresenter and creative partner. Playlists, lyrics, sermon slides, video and graphics are prepared during the week, so your volunteers walk in to a service that is ready to run.",
+      cta1: { label: "See plans and pricing", href: "#pricing" },
+      cta2: { label: "Schedule a call", href: "https://tidycal.com/worshipflowio" },
+      note: "Last-minute changes are welcome until Saturday at 7 PM.",
+      consoleTitle: "Sunday service",
+      consoleHint: "Click any slide to take it live",
+      slides: [
+        { cue: "Pre-service", line: "Welcome. We're glad you're here." },
+        { cue: "Worship", line: "Lyrics styled to your look" },
+        { cue: "Worship", line: "Every line break checked" },
+        { cue: "Sermon", line: "Scripture and points, crafted" },
+        { cue: "Sermon", line: "Lower thirds for the stream" },
+        { cue: "Announcements", line: "Graphics your people notice" },
+        { cue: "Response", line: "One cue fires slides, lights and cameras" },
+        { cue: "Dismissal", line: "See you next Sunday" }
+      ]
+    },
+    {
+      type: "clients", nav: "",
+      title: "Churches and teams we serve",
+      items: [
+        { name: "Community Alliance Church", logo: "" },
+        { name: "Shandon Baptist Church", logo: "" },
+        { name: "Steel City Church", logo: "" },
+        { name: "Streamline", logo: "" },
+        { name: "FCA", logo: "" },
+        { name: "WPA", logo: "" }
+      ]
+    },
+    {
+      type: "services", nav: "Services",
+      title: "Four specialties, one creative partner",
+      body: "More than a decade of church production, from church plants to multi-campus teams.",
+      items: [
+        { title: "ProPresenter", body: "Weekly playlists, styled lyrics, crafted sermon slides and remote management. We keep your library clean and your themes consistent, and your team opens a file that is ready to run.", tags: ["Playlists", "Themes and lyrics", "Sermon slides", "Remote management"] },
+        { title: "Video production and editing", body: "Story videos, announcements, website hero videos and three-camera livestreams.", tags: ["Story videos", "Livestream"] },
+        { title: "Creative media", body: "Series graphics, announcement slides, digital signs and social content that match your church's look.", tags: ["Graphics", "Digital signs"] },
+        { title: "Automation", body: "ProPresenter, ATEM and Lightkey talking to each other through RossTalk and MIDI, so one click fires slides, cameras and lights.", tags: ["RossTalk", "MIDI"] },
+        { title: "Training", body: "Volunteer training, ProPresenter operator coaching and on-site city-wide training events.", tags: ["Teams", "Operators"] },
+        { title: "Live events", body: "A ProPresenter machine with four outputs and an operator who runs the whole event. We built every file for a conference with 6 stages and more than 70 presenters.", tags: ["Conferences", "4 outputs"] }
+      ]
+    },
+    {
+      type: "store", nav: "Media store",
+      title: "Media you can use this Sunday",
+      body: "Templates, motion and graphics built for real services. Buy once, download, and drop them into your playlist.",
+      items: [
+        { title: "Sermon series graphics pack", category: "Graphics", desc: "Title slide, content slide, lower third and social squares in one matched set.", price: "$29", badge: "Sample listing", image: "", buy: { label: "Buy and download", href: "#contact" }, preview: { label: "Preview", href: "" } },
+        { title: "Clean lyric theme set", category: "ProPresenter", desc: "ProPresenter themes for lyrics, scripture and sermon points, sized for main screen and stream.", price: "$19", badge: "Sample listing", image: "", buy: { label: "Buy and download", href: "#contact" }, preview: { label: "Preview", href: "" } },
+        { title: "Slow haze motion backgrounds", category: "Motion", desc: "Ten seamless loops in 4K that sit quietly behind lyrics.", price: "$24", badge: "Sample listing", image: "", buy: { label: "Buy and download", href: "#contact" }, preview: { label: "Preview", href: "" } },
+        { title: "Five-minute countdown", category: "Motion", desc: "A pre-service countdown with matching welcome and announcement slides.", price: "$12", badge: "Sample listing", image: "", buy: { label: "Buy and download", href: "#contact" }, preview: { label: "Preview", href: "" } },
+        { title: "ATEM and Lightkey macro starter", category: "Automation", desc: "RossTalk and MIDI actions you can import, with a setup walkthrough video.", price: "$39", badge: "Sample listing", image: "", buy: { label: "Buy and download", href: "#contact" }, preview: { label: "Preview", href: "" } },
+        { title: "Christmas service bundle", category: "Graphics", desc: "Stills, motion and lower thirds for Advent and Christmas Eve.", price: "$35", badge: "Sample listing", image: "", buy: { label: "Buy and download", href: "#contact" }, preview: { label: "Preview", href: "" } }
+      ]
+    },
+    {
+      type: "process", nav: "How it works",
+      title: "Your week, from plan to Sunday",
+      body: "Onboarding takes one 30 to 45 minute meeting. After that, every week runs the same way.",
+      items: [
+        { when: "Early week", title: "Share your service plan", body: "Planning Center, chord charts, a Word document or a quick call." },
+        { when: "Tue to Wed", title: "Rehearsal file built", body: "Worship, sermon and media organized in ProPresenter." },
+        { when: "Midweek", title: "Rehearse and send changes", body: "Notes, a recording or a simple form. Your operator doesn't have to be there." },
+        { when: "Thu to Fri", title: "Final flow with sermon notes", body: "Scripture, points and graphics added to the service." },
+        { when: "Sat until 7 PM", title: "Final check", body: "Lyrics, scriptures, layouts and cues reviewed. Late changes still accepted." },
+        { when: "Sunday", title: "Open and run", body: "Your team walks in to a ready-to-run file." }
+      ]
+    },
+    {
+      type: "pricing", nav: "Pricing",
+      title: "Weekly ProPresenter plans",
+      body: "Price per week. Commit for longer and the weekly rate drops.",
+      periods: ["Billed weekly", "Billed monthly", "Billed yearly"],
+      unit: "per week",
+      items: [
+        { name: "Worship", blurb: "Your worship set, ready to run.", prices: ["$250", "$225", "$200"], featured: false, features: ["Playlist setup", "Themes and lyrics styled", "Remote management", "Training videos", "Playlist loaded"], cta: { label: "Start with Worship", href: "https://docs.google.com/forms/d/e/1FAIpQLSeJivQWyoOd6TzskClRNuc--LECAiHO0RFvY22cfigVBu75mQ/viewform?usp=header" } },
+        { name: "Service", blurb: "The whole service, built with your graphics.", prices: ["$300", "$275", "$250"], featured: true, features: ["Everything in Worship", "Crafted sermon slides", "Saturday support", "Quarterly training"], cta: { label: "Start with Service", href: "https://docs.google.com/forms/d/e/1FAIpQLSeJivQWyoOd6TzskClRNuc--LECAiHO0RFvY22cfigVBu75mQ/viewform?usp=header" } },
+        { name: "Creative", blurb: "Service prep plus design and video.", prices: ["$375", "$350", "$325"], featured: false, features: ["Everything in Service", "Monthly meetings", "Basic creative design", "Simple video production"], cta: { label: "Start with Creative", href: "https://docs.google.com/forms/d/e/1FAIpQLSeJivQWyoOd6TzskClRNuc--LECAiHO0RFvY22cfigVBu75mQ/viewform?usp=header" } }
+      ]
+    },
+    {
+      type: "extras", nav: "",
+      title: "One-off projects and events",
+      body: "",
+      items: [
+        { name: "Live event operator", detail: "ProPresenter machine with 4 outputs, run for your whole event.", price: "$700 a day, plus travel" },
+        { name: "Livestream", detail: "Three-camera switch to YouTube, Facebook or RTMP, with simple graphics.", price: "$1,500 a day, plus travel" },
+        { name: "Story video", detail: "A 2 to 4 minute video. Two-hour shoot, two cameras, lighting and post-production.", price: "$1,000 per video" },
+        { name: "Consulting call", detail: "Screen-share diagnosis, ideas and upgrade planning.", price: "$150 an hour" },
+        { name: "Video editing", detail: "Website hero videos, ministry videos and announcements.", price: "Ask for a quote" },
+        { name: "Team training", detail: "Operator instruction and on-site city-wide training events.", price: "Ask for a quote" },
+        { name: "Websites and email", detail: "Church websites with update plans, and weekly email updates built from your content.", price: "Ask for a quote" },
+        { name: "Digital church signs", detail: "Content and promotions for your digital signage.", price: "Ask for a quote" }
+      ],
+      cta: { label: "Ask about a project", href: "https://tidycal.com/worshipflowio" }
+    },
+    {
+      type: "testimonials", nav: "",
+      title: "What church leaders say",
+      items: [
+        { quote: "…love, humility, and a commitment to excellence to every project.", name: "Dave Prentice", org: "Community Alliance Church" },
+        { quote: "…built all the ProPresenter files we needed.", name: "Arron Hartt", org: "Church Creative, PACE conference" },
+        { quote: "…helped us execute Sunday at a high level.", name: "Jonathan Hazle", org: "Shandon Baptist Church" },
+        { quote: "I've been doing this for over 20 years…", name: "Jeremy Dickerson", org: "Vidpraxis" },
+        { quote: "…attention to detail…", name: "Chris Richards", org: "Steel City Church" }
+      ]
+    },
+    {
+      type: "about", nav: "About",
+      title: "Led by Steve Dirks",
+      body: "Steve is a production leader with a pastoral heart, based in Pittsburgh. He has run ProPresenter for church plants and multi-campus churches for more than a decade, leads audio, video and lighting teams, and edits video professionally.",
+      body2: "People first. Purpose behind every cue.",
+      image: "",
+      facts: ["ProPresenter across church plants and multi-campus churches", "Audio, video, lighting, Resi and Church Online", "Automation with ATEM, Lightkey, RossTalk and MIDI", "Volunteer leadership and Planning Center"],
+      cta: { label: "More about Steve", href: "https://stevedirks.com/" }
+    },
+    {
+      type: "contact", nav: "Contact",
+      title: "Tell us about your Sunday",
+      body: "A 30 minute call is the fastest way to see whether we're a fit. Bring your questions, your ProPresenter version and whatever is frustrating your team.",
+      cta1: { label: "Schedule a call", href: "https://tidycal.com/worshipflowio" },
+      cta2: { label: "Call or text (803) 606-7435", href: "tel:+18036067435" },
+      phone: "(803) 606-7435"
+    }
+  ],
+  footer: {
+    note: "Made for the mission.",
+    owner: "Worship Flow",
+    socials: [
+      { label: "YouTube", href: "https://www.youtube.com/channel/UCxqVhzTT-yW7k5WHt9e0bLg" },
+      { label: "Instagram", href: "https://www.instagram.com/worshipflow.io" },
+      { label: "Facebook", href: "https://www.facebook.com/profile.php?id=61578954227357" },
+      { label: "TikTok", href: "https://www.tiktok.com/@worshipflow.io" }
+    ]
+  }
+};
+
+/* Templates for sections that are not on the page by default. */
+window.WF_BLANKS = {
+  text: { type: "text", nav: "", title: "A new section", body: "Write anything here. Click the text to change it.", cta: { label: "Button", href: "" } },
+  gallery: { type: "gallery", nav: "", title: "Recent work", body: "", items: [
+    { image: "", caption: "Add a caption", link: { label: "Watch", href: "" } },
+    { image: "", caption: "Add a caption", link: { label: "Watch", href: "" } },
+    { image: "", caption: "Add a caption", link: { label: "Watch", href: "" } }
+  ] }
+};
