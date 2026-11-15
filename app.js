@@ -6,7 +6,7 @@
   const DISPLAY_FONTS = ['Bricolage Grotesque', 'Archivo', 'Sora', 'Unbounded', 'Fraunces', 'DM Serif Display', 'Anton'];
   const BODY_FONTS = ['Instrument Sans', 'Figtree', 'DM Sans', 'IBM Plex Sans', 'Source Serif 4'];
   let C, published, edit = false, hasDraft = false, undo = [], redo = [], pre = null, pausedUntil = 0;
-  const ui = { billing: 0, filter: 'All', live: 0 };
+  const ui = { billing: 0, filter: 'All', live: 0, prod: null };
 
   const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
   const clone = o => JSON.parse(JSON.stringify(o));
@@ -61,7 +61,7 @@
       return `<div class="wrap">${head(p)}<div class="chips" role="group" aria-label="Filter by type">${cats.map(c => `<button class="chip" data-act="filter" data-v="${esc(c)}" aria-pressed="${c === ui.filter}">${esc(c)}</button>`).join('')}</div>
       ${list(p + '.items', 'grid3', (it, ip, i) => `<article class="product" data-item="${i}"${ui.filter !== 'All' && it.category !== ui.filter ? ' hidden' : ''}>${I(ip + '.image', 'img-169', it.title, i % 4)}
         <div class="product-body"><div class="product-meta">${T(ip + '.category')}${T(ip + '.badge', 'span', 'badge')}</div>${T(ip + '.title', 'h3')}${T(ip + '.desc', 'p', 'product-desc', true)}</div>
-        <div class="product-foot">${T(ip + '.price', 'span', 'price')}${L(ip + '.preview', 'textlink')}${L(ip + '.buy', 'btn btn-primary btn-small')}</div></article>`)}</div>`;
+        <div class="product-foot">${T(ip + '.price', 'span', 'price')}<a class="textlink" href="#p-${slug(it.title)}">Details</a>${L(ip + '.buy', 'btn btn-primary btn-small')}</div></article>`)}</div>`;
     },
     process: (s, p) => `<div class="wrap">${head(p)}${list(p + '.items', 'week', (it, ip, i) => `<div class="day" data-item="${i}">${T(ip + '.when', 'span', 'day-when')}${T(ip + '.title', 'h3')}${T(ip + '.body', 'p', '', true)}</div>`)}</div>`,
     pricing: (s, p) => {
@@ -78,17 +78,35 @@
     gallery: (s, p) => `<div class="wrap">${head(p)}${list(p + '.items', 'grid3', (it, ip, i) => `<div class="shot" data-item="${i}">${I(ip + '.image', 'img-169', it.caption, i % 4)}<div class="shot-cap">${T(ip + '.caption')}${L(ip + '.link', 'textlink')}</div></div>`)}</div>`
   };
 
+  const findProduct = () => {
+    const h = location.hash.slice(1); if (!h.startsWith('p-')) { ui.prod = null; return null; }
+    let hit = null;
+    C.sections.forEach((s, si) => s.type === 'store' && (s.items || []).forEach((it, i) => { if (!hit && 'p-' + slug(it.title) === h) hit = { si, i }; }));
+    if (!hit && ui.prod && C.sections[ui.prod.si]?.items?.[ui.prod.i]) { hit = ui.prod; history.replaceState(null, '', '#p-' + slug(C.sections[hit.si].items[hit.i].title)); }
+    return (ui.prod = hit);
+  };
+  const productPage = ({ si, i }, ids) => {
+    const p = `sections.${si}.items.${i}`, it = get(p);
+    if (!Array.isArray(it.includes)) it.includes = []; if (it.details == null) it.details = '';
+    const show = edit || it.details || it.includes.length;
+    return `<section class="sec product-page"><div class="wrap"><a class="textlink back" href="#${ids[si]}">Back to the media store</a>
+      <div class="pp">${I(p + '.image', 'img-169 pp-img', it.title, i % 4)}
+        <div class="pp-info"><div class="product-meta">${T(p + '.category')}${T(p + '.badge', 'span', 'badge')}</div>${T(p + '.title', 'h1', 'pp-title')}${T(p + '.price', 'span', 'price')}${T(p + '.desc', 'p', 'lede', true)}
+        <div class="btns">${L(p + '.buy', 'btn btn-primary')}${L(p + '.preview', 'btn')}</div></div></div>
+      ${show ? `<div class="pp-more"><div class="stack"><h3>About this product</h3>${T(p + '.details', 'p', 'lede', true)}</div><div class="stack"><h3>What's included</h3>${slist(p + '.includes', 'checks')}</div></div>` : ''}
+    </div></section>`;
+  };
   const secIds = () => { const seen = {}; return C.sections.map(s => { let id = slug(s.anchor) || slug(s.nav) || s.type; if (seen[id]) id += '-' + (++seen[id]); else seen[id] = 1; return id; }); };
 
   function render() {
-    const ids = secIds();
+    const ids = secIds(), prod = findProduct();
     const brand = safeImg(C.brand.logo) ? `<img src="${esc(C.brand.logo)}" alt="${esc(C.brand.name)}">` : `<i class="brand-mark"></i>${T('brand.name')}`;
     const links = C.sections.map((s, i) => (s.nav && !s.hidden ? `<a href="#${ids[i]}">${esc(s.nav)}</a>` : '')).join('');
     $('#app').innerHTML = `
       <header class="nav"><div class="wrap nav-in"><a class="brand" href="#top">${brand}</a>
         <nav class="nav-links" id="nav-links" aria-label="Main">${links}${L('nav.cta', 'btn btn-primary')}</nav>
         ${L('nav.cta', 'btn btn-primary btn-small nav-cta')}<button class="nav-toggle" data-act="menu" aria-controls="nav-links" aria-label="Menu">Menu</button></div></header>
-      <main id="top">${C.sections.map((s, i) => (R[s.type] ? `<section class="sec ${s.type} ${s.bg === 'tint' ? 'sec-tint' : ''} ${s.hidden ? 'is-hidden' : ''}" id="${ids[i]}" data-sec="${i}">${R[s.type](s, 'sections.' + i)}</section>` : '')).join('')}</main>
+      <main id="top">${prod ? productPage(prod, ids) : C.sections.map((s, i) => (R[s.type] ? `<section class="sec ${s.type} ${s.bg === 'tint' ? 'sec-tint' : ''} ${s.hidden ? 'is-hidden' : ''}" id="${ids[i]}" data-sec="${i}">${R[s.type](s, 'sections.' + i)}</section>` : '')).join('')}</main>
       <footer class="foot"><div class="wrap foot-in"><span class="brand"><i class="brand-mark"></i>${esc(C.brand.name)}</span>
         ${list('footer.socials', 'socials', (it, ip, i) => `<span data-item="${i}">${L(ip)}</span>`)}
         <span>© ${new Date().getFullYear()} ${T('footer.owner')}</span>${T('footer.note')}<a href="#edit" data-act="edit-on">Edit site</a></div></footer>`;
@@ -302,8 +320,8 @@
     copy: async () => { try { await navigator.clipboard.writeText(backupText()); toast('Backup copied.'); } catch { toast('Copy was blocked by the browser.'); } }
   };
   const focusPath = p => { const el = $(`#app [data-t="${p}"]`); if (el) { el.focus(); getSelection().selectAllChildren(el); getSelection().collapseToEnd(); } };
-  function enter() { edit = true; closePanel(); render(); if (location.hash !== '#edit') history.replaceState(null, '', '#edit'); }
-  function leave() { edit = false; closePanel(); render(); history.replaceState(null, '', location.pathname + location.search); }
+  function enter() { edit = true; try { sessionStorage.setItem('wf-edit', '1'); } catch { } closePanel(); render(); if (!location.hash.startsWith('#p-') && location.hash !== '#edit') history.replaceState(null, '', '#edit'); }
+  function leave() { edit = false; try { sessionStorage.removeItem('wf-edit'); } catch { } closePanel(); render(); if (location.hash === '#edit') history.replaceState(null, '', location.pathname + location.search); }
 
   document.addEventListener('click', e => {
     const a = e.target.closest('[data-act]');
@@ -330,7 +348,11 @@
   document.addEventListener('focusin', e => { if (edit && e.target.closest?.('#app [data-t]')) pre = JSON.stringify(C); });
   document.addEventListener('focusout', e => { if (edit && pre && e.target.closest?.('#app [data-t]') && pre !== JSON.stringify(C)) { undo.push(pre); redo = []; chrome(); } pre = null; });
   document.addEventListener('paste', e => { if (!edit || !e.target.closest?.('#app [data-t]')) return; e.preventDefault(); document.execCommand('insertText', false, (e.clipboardData || window.clipboardData).getData('text/plain')); });
-  addEventListener('hashchange', () => { if (location.hash === '#edit' && !edit) enter(); });
+  addEventListener('hashchange', () => {
+    if (location.hash === '#edit') { if (!edit) enter(); return; }
+    const was = !!ui.prod; render();
+    if (ui.prod) scrollTo(0, 0); else if (was) { const el = document.getElementById(location.hash.slice(1)); el ? el.scrollIntoView() : scrollTo(0, 0); }
+  });
 
   (async () => {
     let pub = null;
@@ -338,7 +360,7 @@
     published = pub && Array.isArray(pub.sections) ? pub : clone(DEFAULT);
     const d = lsGet(KEY);
     if (d && Array.isArray(d.sections)) { C = d; hasDraft = true; } else C = clone(published);
-    edit = location.hash === '#edit';
+    edit = location.hash === '#edit'; try { edit = edit || sessionStorage.getItem('wf-edit') === '1'; } catch { }
     render();
   })();
 })();
