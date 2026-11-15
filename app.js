@@ -2,7 +2,7 @@
 (() => {
   const DEFAULT = window.WF_DEFAULT, BLANKS = window.WF_BLANKS;
   const KEY = 'wf-draft', GHKEY = 'wf-github';
-  const BUILD = 6;
+  const BUILD = 7;
   /* If a newer version has been pushed, refresh this browser's saved copy and reload once. */
   (async () => { try { const v = +(await (await fetch('version.txt', { cache: 'no-store' })).text()); if (v > BUILD && sessionStorage.getItem('wf-upd') !== String(v)) { sessionStorage.setItem('wf-upd', String(v)); await Promise.all(['./', 'index.html'].map(u => fetch(u, { cache: 'reload' }))); location.reload(); } } catch { } })();
   const LABELS = { hero: 'Hero', clients: 'Client logos', services: 'Services', store: 'Media store', process: 'Weekly process', pricing: 'Pricing plans', extras: 'Price list', testimonials: 'Testimonials', about: 'About', contact: 'Contact', text: 'Text block', gallery: 'Gallery' };
@@ -109,16 +109,17 @@
   };
   const secIds = () => { const seen = {}; return C.sections.map(s => { let id = slug(s.anchor) || slug(s.nav) || s.type; if (seen[id]) id += '-' + (++seen[id]); else seen[id] = 1; return id; }); };
 
+  const gone = s => s.hidden || (!edit && s.type === 'store' && !(s.items || []).some(x => !x.draft));
   function render() {
     const ids = secIds(), prod = findProduct(), shopI = !prod && location.hash === '#shop' ? C.sections.findIndex(x => x.type === 'store') : -1;
     ui.page = prod ? 'product' : shopI >= 0 ? 'shop' : 'home';
     const brand = safeImg(C.brand.logo) ? `<img src="${esc(C.brand.logo)}" alt="${esc(C.brand.name)}">` : `<i class="brand-mark"></i>${T('brand.name')}`;
-    const links = C.sections.map((s, i) => (s.nav && !s.hidden ? `<a href="#${ids[i]}">${esc(s.nav)}</a>` : '')).join('');
+    const links = C.sections.map((s, i) => (s.nav && !gone(s) ? `<a href="#${ids[i]}">${esc(s.nav)}</a>` : '')).join('');
     $('#app').innerHTML = `
       <header class="nav"><div class="wrap nav-in"><a class="brand" href="#top">${brand}</a>
         <nav class="nav-links" id="nav-links" aria-label="Main">${links}${L('nav.cta', 'btn btn-primary')}</nav>
         ${L('nav.cta', 'btn btn-primary btn-small nav-cta')}<button class="nav-toggle" data-act="menu" aria-controls="nav-links" aria-label="Menu">Menu</button></div></header>
-      <main id="top">${prod ? productPage(prod, ids) : shopI >= 0 ? `<section class="sec store">${R.store(C.sections[shopI], 'sections.' + shopI, true, ids[shopI])}</section>` : C.sections.map((s, i) => (R[s.type] ? `<section class="sec ${s.type} ${s.bg === 'tint' ? 'sec-tint' : ''} ${s.hidden ? 'is-hidden' : ''}" id="${ids[i]}" data-sec="${i}">${R[s.type](s, 'sections.' + i)}</section>` : '')).join('')}</main>
+      <main id="top">${prod ? productPage(prod, ids) : shopI >= 0 ? `<section class="sec store">${R.store(C.sections[shopI], 'sections.' + shopI, true, ids[shopI])}</section>` : C.sections.map((s, i) => (R[s.type] ? `<section class="sec ${s.type} ${s.bg === 'tint' ? 'sec-tint' : ''} ${gone(s) ? 'is-hidden' : ''}" id="${ids[i]}" data-sec="${i}">${R[s.type](s, 'sections.' + i)}</section>` : '')).join('')}</main>
       <footer class="foot"><div class="wrap foot-in"><span class="brand"><i class="brand-mark"></i>${esc(C.brand.name)}</span>
         ${list('footer.socials', 'socials', (it, ip, i) => `<span data-item="${i}">${L(ip)}</span>`)}
         <span>© ${new Date().getFullYear()} ${T('footer.owner')}</span>${T('footer.note')}<a href="#edit" data-act="edit-on">Edit site</a></div></footer>`;
