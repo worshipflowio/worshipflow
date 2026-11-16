@@ -2,7 +2,7 @@
 (() => {
   const DEFAULT = window.WF_DEFAULT, BLANKS = window.WF_BLANKS;
   const KEY = 'wf-draft', GHKEY = 'wf-github';
-  const BUILD = 13;
+  const BUILD = 14;
   const FB = window.WF_FIREBASE && window.WF_FIREBASE.projectId ? window.WF_FIREBASE : null;
   let adminP; const loadAdmin = () => (adminP = adminP || new Promise((res, rej) => { const sc = document.createElement('script'); sc.src = 'admin.js?v=' + BUILD; sc.onload = () => res(window.WF_ADMIN); sc.onerror = rej; document.head.append(sc); }));
   /* Anonymous visit and click counts for the admin page. No cookies, nothing personal. */
@@ -308,7 +308,16 @@
           if (x1 < 0) return res(url);
           x.putImageData(d, 0, 0);
           const o = document.createElement('canvas'); o.width = x1 - x0 + 1; o.height = y1 - y0 + 1; o.getContext('2d').drawImage(c, x0, y0, o.width, o.height, 0, 0, o.width, o.height);
-          res(o.toDataURL('image/png'));
+          /* Small source files: enlarge smoothly, then tighten the soft edges so the shape reads crisp on sharp screens. */
+          let fin = o; const big = Math.max(o.width, o.height);
+          if (big < 520) {
+            const f = Math.min(4, Math.ceil(520 / big)), u = document.createElement('canvas'); u.width = o.width * f; u.height = o.height * f;
+            const ux = u.getContext('2d'); ux.imageSmoothingEnabled = true; ux.imageSmoothingQuality = 'high'; ux.drawImage(o, 0, 0, u.width, u.height);
+            const ud = ux.getImageData(0, 0, u.width, u.height), up = ud.data;
+            for (let i = 3; i < up.length; i += 4) { let t = (up[i] / 255 - 0.22) / 0.4; t = t < 0 ? 0 : t > 1 ? 1 : t; up[i] = Math.round(t * t * (3 - 2 * t) * 255); up[i - 1] = up[i - 2] = up[i - 3] = 255; }
+            ux.putImageData(ud, 0, 0); fin = u;
+          }
+          res(fin.toDataURL('image/png'));
         } catch { res(url); }
       };
       im.src = url;
