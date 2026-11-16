@@ -353,3 +353,15 @@ body.editing .ed-ic{top:0;right:8px;transform:translateY(-62%);opacity:0;pointer
 .soc:hover{border-color:var(--accent-ink);transform:translateY(-1px)}
 .hero-note-link{text-decoration:underline;text-underline-offset:4px;text-decoration-color:var(--accent-ink)}
 .hero-note-link:hover{color:var(--text)}
+/* Built-in sign-up and request forms */
+.form-grid{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:clamp(28px,5vw,64px);align-items:start}
+@media (max-width:820px){.form-grid{grid-template-columns:1fr}}
+.wf-form{display:grid;gap:16px;background:var(--surface);border:1px solid var(--line);border-radius:calc(var(--radius) * 1.2);padding:clamp(20px,4vw,34px)}
+.wf-form label{display:grid;gap:6px;font-size:.95rem;color:var(--muted)}
+.wf-form input,.wf-form select,.wf-form textarea{font:inherit;color:var(--text);background:var(--bg);border:1.5px solid var(--line);border-radius:10px;padding:12px 14px;min-height:48px;width:100%}
+.wf-form textarea{resize:vertical}
+.wf-form .req{font-size:.8rem}
+.wf-form .hp{position:absolute;left:-9999px;width:1px;height:1px;min-height:0;opacity:0}
+.form-msg{min-height:1.4em;color:var(--muted);font-size:.95rem}
+.form-done{display:grid;gap:14px;justify-items:start}
+.muted-note{color:var(--muted);font-size:.95rem}

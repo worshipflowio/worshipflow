@@ -40,7 +40,7 @@
     }
     return cp(mine);
   }
-  const BUILD = 18;
+  const BUILD = 19;
   const FB = window.WF_FIREBASE && window.WF_FIREBASE.projectId ? window.WF_FIREBASE : null;
   let adminP; const loadAdmin = () => (adminP = adminP || new Promise((res, rej) => { const sc = document.createElement('script'); sc.src = 'admin.js?v=' + BUILD; sc.onload = () => res(window.WF_ADMIN); sc.onerror = rej; document.head.append(sc); }));
   /* Anonymous visit and click counts for the admin page. No cookies, nothing personal. */
@@ -137,9 +137,9 @@
       const per = s.periods || []; if (ui.billing >= per.length) ui.billing = 0;
       return `<div class="wrap">${head(p)}${per.length > 1 ? `<div class="toggle" role="group" aria-label="Billing period">${per.map((x, i) => `<button data-act="billing" data-v="${i}" aria-pressed="${i === ui.billing}">${esc(x)}</button>`).join('')}</div>` : ''}
       ${list(p + '.items', 'plans', (it, ip, i) => `<article class="plan ${it.featured ? 'featured' : ''}" data-item="${i}">${T(ip + '.name', 'h3')}${T(ip + '.blurb', 'p', 'plan-blurb')}
-        <div class="plan-price">${T(`${ip}.prices.${ui.billing}`, 'span', 'price')}${T(p + '.unit', 'span', 'plan-unit')}</div>${slist(ip + '.features', 'checks')}${L(ip + '.cta', 'btn ' + (it.featured ? 'btn-primary' : ''))}</article>`)}</div>`;
+        <div class="plan-price">${T(`${ip}.prices.${ui.billing}`, 'span', 'price')}${T(p + '.unit', 'span', 'plan-unit')}</div>${slist(ip + '.features', 'checks')}${formsOn() && !edit ? `<a class="btn ${it.featured ? 'btn-primary' : ''}" href="#signup-${slug(it.name)}">${esc(it.cta?.label)}</a>` : L(ip + '.cta', 'btn ' + (it.featured ? 'btn-primary' : ''))}</article>`)}${edit ? `<p class="ed-hint">${formsOn() ? 'These buttons open the built-in sign-up form for each plan. The link on each button is only a backup.' : 'Add your form email key under Look and fonts to switch these buttons to the built-in sign-up forms.'}</p>` : ''}</div>`;
     },
-    extras: (s, p) => `<div class="wrap">${head(p)}${list(p + '.items', 'rows', (it, ip, i) => `<div class="row" data-item="${i}">${T(ip + '.name', 'b')}${T(ip + '.detail', 'span', 'row-detail', true)}${T(ip + '.price', 'span', 'row-price')}</div>`)}<div class="after">${L(p + '.cta', 'btn')}</div></div>`,
+    extras: (s, p) => `<div class="wrap">${head(p)}${list(p + '.items', 'rows', (it, ip, i) => `<div class="row" data-item="${i}">${T(ip + '.name', 'b')}${T(ip + '.detail', 'span', 'row-detail', true)}${T(ip + '.price', 'span', 'row-price')}</div>`)}<div class="after">${formsOn() && !edit ? `<a class="btn" href="#request">${esc(s.cta?.label)}</a>` : L(p + '.cta', 'btn')}</div></div>`,
     testimonials: (s, p) => {
       if (edit) return R.testimonialsEdit(s, p);
       const q = (s.items || []).filter(it => it.quote || it.name); if (!q.length) return `<div class="wrap">${head(p)}</div>`;
@@ -179,29 +179,51 @@
       ${edit || it.gallery.length ? `${hd('gallery', empty)}${list(p + '.gallery', 'grid3', (g, gp, k) => `<div class="shot" data-item="${k}">${I(gp + '.image', 'img-169', g.caption, k % 4)}<div class="shot-cap">${T(gp + '.caption')}</div></div>`)}` : ''}
     </div></section>`;
   };
+  const formsOn = () => !!(C.meta && C.meta.formKey);
+  const BILL_NOTES = ['Invoice me weekly', 'One invoice a month', 'Yearly rate, billed monthly'];
+  const field = (name, label, o = {}) => `<label>${label}${o.req ? ' <span class="req">(required)</span>' : ''}${o.type === 'textarea' ? `<textarea name="${name}" id="f-${name}" rows="4"${o.req ? ' required' : ''}></textarea>` : o.options ? `<select name="${name}" id="f-${name}"${o.req ? ' required' : ''}>${o.options.map(x => `<option${x === o.value ? ' selected' : ''}>${esc(x)}</option>`).join('')}</select>` : `<input name="${name}" id="f-${name}" type="${o.type || 'text'}"${o.auto ? ` autocomplete="${o.auto}"` : ''}${o.req ? ' required' : ''}>`}</label>`;
+  const formRoute = () => {
+    const h = location.hash.slice(1);
+    if (h === 'request') return { kind: 'request' };
+    if (h.startsWith('signup-')) for (const sec of C.sections) if (sec.type === 'pricing') { const plan = (sec.items || []).find(it => 'signup-' + slug(it.name) === h); if (plan) return { kind: 'signup', plan, sec }; }
+    return null;
+  };
+  const formPage = (r, ids) => {
+    const back = `<a class="textlink back" href="#${ids[C.sections.findIndex(x => x.type === (r.kind === 'signup' ? 'pricing' : 'extras'))] || 'top'}">Back</a>`;
+    const common = `${field('first_name', 'First name', { req: 1, auto: 'given-name' })}${field('last_name', 'Last name', { req: 1, auto: 'family-name' })}${field('email', 'Email', { req: 1, type: 'email', auto: 'email' })}${field('church', 'Church name', { req: 1, auto: 'organization' })}`;
+    const tail = `<input type="checkbox" name="botcheck" class="hp" tabindex="-1" autocomplete="off"><button class="btn btn-primary" type="submit">${r.kind === 'signup' ? 'Send my sign-up' : 'Send my request'}</button><p class="form-msg" role="status"></p>`;
+    if (r.kind === 'signup') {
+      const per = r.sec.periods || [], opts = per.map((x, i) => `${x}: ${r.plan.prices[i] || ''} ${r.sec.unit || ''} (${BILL_NOTES[i] || x})`);
+      return `<section class="sec form-page"><div class="wrap">${back}<div class="form-grid"><div class="stack"><h1 class="pp-title">${esc(r.plan.name)} plan sign-up</h1><p class="lede">${esc(r.plan.blurb)}</p><ul class="checks">${(r.plan.features || []).map(f => `<li>${esc(f)}</li>`).join('')}</ul><p class="muted-note">No payment is taken here. We'll confirm the details with you and send your first invoice.</p></div>
+        <form class="wf-form" data-form="signup" data-plan="${esc(r.plan.name)}">${common}${field('church_size', 'Church size')}${field('billing', 'Which option do you want for this plan?', { req: 1, options: opts, value: opts[ui.billing] })}${field('notes', 'Anything we should know?', { type: 'textarea' })}${tail}</form></div></div></section>`;
+    }
+    const ex = C.sections.find(x => x.type === 'extras'), names = [...(ex?.items || []).map(x => x.name), 'Something else'];
+    return `<section class="sec form-page"><div class="wrap">${back}<div class="form-grid"><div class="stack"><h1 class="pp-title">Tell us about your project</h1><p class="lede">Events, livestreams, story videos, training and more. Send the details and we'll reply with next steps.</p></div>
+      <form class="wf-form" data-form="request">${common}${field('service', 'What do you need?', { req: 1, options: names })}${field('date', 'Date or deadline, if you have one')}${field('details', 'Details', { req: 1, type: 'textarea' })}${tail}</form></div></div></section>`;
+  };
   const secIds = () => { const seen = {}; return C.sections.map(s => { let id = slug(s.anchor) || slug(s.nav) || s.type; if (seen[id]) id += '-' + (++seen[id]); else seen[id] = 1; return id; }); };
 
   const socialIcon = u => { const m = String(u || '').toLowerCase().match(/(youtube|youtu\.be|instagram|facebook|fb\.com|tiktok|twitter|\/\/x\.com|\/\/www\.x\.com|vimeo|threads|spotify|linkedin)/); if (!m) return ''; const k = m[1]; return k === 'youtu.be' ? 'youtube' : k === 'fb.com' ? 'facebook' : /x\.com|twitter/.test(k) ? 'x' : k; };
   const gone = s => s.hidden || (!edit && s.type === 'store' && !(s.items || []).some(x => !x.draft)) || (!edit && s.type === 'clients' && !(s.items || []).some(x => safeImg(x.logo)));
   function render() {
     const ids = secIds(), prod = findProduct(), shopI = !prod && location.hash === '#shop' ? C.sections.findIndex(x => x.type === 'store') : -1;
-    const adminOn = FB && location.hash === '#admin';
+    const adminOn = FB && location.hash === '#admin', fr = !adminOn && formsOn() ? formRoute() : null;
     if (adminOn && pubView) { if (work) C = work; work = null; pubView = false; try { sessionStorage.removeItem('wf-pub'); } catch { } }
-    ui.page = adminOn ? 'admin' : prod ? 'product' : shopI >= 0 ? 'shop' : 'home';
+    ui.page = adminOn ? 'admin' : fr ? 'form' : prod ? 'product' : shopI >= 0 ? 'shop' : 'home';
     const brand = safeImg(C.brand.logo) ? `<img src="${esc(C.brand.logo)}" alt="${esc(C.brand.name)}">` : `<i class="brand-mark"></i>${T('brand.name')}`;
     const links = C.sections.map((s, i) => (s.nav && !gone(s) ? `<a href="#${ids[i]}">${esc(s.nav)}</a>` : '')).join('');
     $('#app').innerHTML = `
       <header class="nav"><div class="wrap nav-in"><a class="brand" href="#top">${brand}</a>
         <nav class="nav-links" id="nav-links" aria-label="Main">${links}${L('nav.cta', 'btn btn-primary')}</nav>
         ${L('nav.cta', 'btn btn-primary btn-small nav-cta')}<button class="nav-toggle" data-act="menu" aria-controls="nav-links" aria-label="Menu">Menu</button></div></header>
-      <main id="top">${adminOn ? '<section class="sec admin"><div class="wrap" id="admin-root"></div></section>' : prod ? productPage(prod, ids) : shopI >= 0 ? `<section class="sec store">${R.store(C.sections[shopI], 'sections.' + shopI, true, ids[shopI])}</section>` : C.sections.map((s, i) => (R[s.type] ? `<section class="sec ${s.type} ${s.bg === 'tint' ? 'sec-tint' : ''} ${gone(s) ? 'is-hidden' : ''}" id="${ids[i]}" data-sec="${i}">${R[s.type](s, 'sections.' + i)}</section>` : '')).join('')}</main>
+      <main id="top">${adminOn ? '<section class="sec admin"><div class="wrap" id="admin-root"></div></section>' : fr ? formPage(fr, ids) : prod ? productPage(prod, ids) : shopI >= 0 ? `<section class="sec store">${R.store(C.sections[shopI], 'sections.' + shopI, true, ids[shopI])}</section>` : C.sections.map((s, i) => (R[s.type] ? `<section class="sec ${s.type} ${s.bg === 'tint' ? 'sec-tint' : ''} ${gone(s) ? 'is-hidden' : ''}" id="${ids[i]}" data-sec="${i}">${R[s.type](s, 'sections.' + i)}</section>` : '')).join('')}</main>
       <footer class="foot"><div class="wrap foot-in"><span class="brand"><i class="brand-mark"></i>${esc(C.brand.name)}</span>
         ${list('footer.socials', 'socials', (it, ip, i) => { const ic = socialIcon(it.href), h = safeUrl(it.href); return `<span data-item="${i}">${ic ? `<a class="soc" data-l="${ip}" href="${esc(h || '#')}"${h ? '' : ' data-empty'} target="_blank" rel="noopener" aria-label="${esc(it.label)}" title="${esc(it.label)}"><i style="--i:url(icons/${ic}.svg)"></i></a>` : L(ip)}</span>`; })}
         <span>© ${new Date().getFullYear()} ${T('footer.owner')}</span>${T('footer.note')}${FB ? '<a href="#admin">Admin</a>' : '<a href="#edit" data-act="edit-on">Edit site</a>'}</div></footer>`;
     if (adminOn) loadAdmin().then(A => A.mount($('#admin-root'), { edit: tryEnter, publicView: () => publicView(true), hasDraft: () => hasDraft })).catch(() => ($('#admin-root').textContent = 'The admin tools could not load. Reload to try again.'));
     applyTheme(); whitenLogos();
     document.body.classList.toggle('editing', edit);
-    if (edit && !adminOn) decorate();
+    if (edit && !adminOn && !fr) decorate();
     chrome();
   }
 
@@ -408,8 +430,9 @@
       <label>Heading font<select id="ed-t-d">${opt(DISPLAY_FONTS, t.display)}</select></label><label>Text font<select id="ed-t-f">${opt(BODY_FONTS, t.body)}</select></label>
       <label>Corner roundness<input id="ed-t-r" type="range" min="0" max="28" value="${+t.radius}"></label>
       <div class="ed-row"><button class="ed-b" data-act="logo">Upload logo</button></div>
+      <label>Form email key (from web3forms.com)<input id="ed-t-key" value="${esc(C.meta.formKey || '')}" autocomplete="off" placeholder="Paste the access key emailed to you"></label><p>With a key saved, plan sign-ups and project requests use the site's own forms and are emailed to the address you registered. Without one, the buttons use their backup links.</p>
       <label>Site title (browser tab and search results)<input id="ed-t-title" value="${esc(C.meta.title)}"></label><label>Search description<textarea id="ed-t-desc" rows="3">${esc(C.meta.description)}</textarea></label>`);
-    bind(el, () => { t.mode = $('#ed-t-mode').value; t.accent = $('#ed-t-a').value; t.accent2 = $('#ed-t-b').value; t.display = $('#ed-t-d').value; t.body = $('#ed-t-f').value; t.radius = +$('#ed-t-r').value; C.meta.title = $('#ed-t-title').value; C.meta.description = $('#ed-t-desc').value; });
+    bind(el, () => { t.mode = $('#ed-t-mode').value; t.accent = $('#ed-t-a').value; t.accent2 = $('#ed-t-b').value; t.display = $('#ed-t-d').value; t.body = $('#ed-t-f').value; t.radius = +$('#ed-t-r').value; C.meta.formKey = $('#ed-t-key').value.trim(); C.meta.title = $('#ed-t-title').value; C.meta.description = $('#ed-t-desc').value; });
   }
   function addForm(i) {
     panel('Add a section', `<p>The new section appears where you clicked. Every part of it is editable.</p><div class="ed-row">${Object.keys(LABELS).map(t => `<button class="ed-b" data-act="add-type" data-type="${t}" data-i="${i}">${LABELS[t]}</button>`).join('')}</div>`);
@@ -541,6 +564,20 @@
   document.addEventListener('focusin', e => { if (edit && e.target.closest?.('#app [data-t]')) pre = JSON.stringify(C); });
   document.addEventListener('focusout', e => { if (edit && pre && e.target.closest?.('#app [data-t]') && pre !== JSON.stringify(C)) { undo.push(pre); redo = []; chrome(); } pre = null; });
   document.addEventListener('paste', e => { if (!edit || !e.target.closest?.('#app [data-t]')) return; e.preventDefault(); document.execCommand('insertText', false, (e.clipboardData || window.clipboardData).getData('text/plain')); });
+  document.addEventListener('submit', async e => {
+    const f = e.target.closest?.('.wf-form'); if (!f) return; e.preventDefault();
+    const msg = f.querySelector('.form-msg'), btn = f.querySelector('button[type=submit]'), d = Object.fromEntries(new FormData(f).entries());
+    if (d.botcheck) return; delete d.botcheck;
+    const plan = f.dataset.plan, kind = f.dataset.form;
+    const body = Object.assign({ access_key: C.meta.formKey, subject: kind === 'signup' ? `New ${plan} plan sign-up: ${d.church}` : `New project request: ${d.service} (${d.church})`, from_name: 'Worship Flow website', form: kind === 'signup' ? `${plan} plan sign-up` : 'Project request' }, kind === 'signup' ? { plan } : {}, d);
+    btn.disabled = true; msg.textContent = 'Sending…';
+    try {
+      const r = await fetch('https://api.web3forms.com/submit', { method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify(body) }), j = await r.json().catch(() => ({}));
+      if (!r.ok || !j.success) throw new Error(j.message || 'send failed');
+      track('signup', kind === 'signup' ? plan + ' plan' : 'Project request');
+      f.innerHTML = `<div class="form-done"><h3>${kind === 'signup' ? 'Thanks, your sign-up is in.' : 'Thanks, your request is in.'}</h3><p>We'll reply to ${esc(d.email)} soon. If it's urgent, call or text using the number in the contact section.</p><a class="btn" href="#top">Back to the site</a></div>`;
+    } catch { btn.disabled = false; msg.textContent = 'That did not send. Check your connection and try again, or call or text us instead.'; }
+  });
   addEventListener('hashchange', () => {
     if (location.hash === '#edit') { if (!edit) tryEnter(); return; }
     const was = ui.page; render(); trackView();
