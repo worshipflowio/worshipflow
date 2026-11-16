@@ -1,1103 +1,1104 @@
 {
- "v": 1,
- "meta": {
-  "title": "Worship Flow",
-  "description": "ProPresenter, video production, creative media and automation for churches. Your team opens a ready-to-run file every Sunday."
- },
- "theme": {
-  "mode": "dark",
-  "accent": "#FFB23E",
-  "accent2": "#6E8BFF",
-  "display": "Bricolage Grotesque",
-  "body": "Instrument Sans",
-  "radius": 14
- },
- "brand": {
-  "name": "Worship Flow",
-  "logo": ""
- },
- "nav": {
-  "cta": {
-   "label": "Schedule a call",
-   "href": "https://tidycal.com/worshipflowio"
+  "v": 1,
+  "meta": {
+    "title": "Worship Flow",
+    "description": "ProPresenter, video production, creative media and automation for churches. Your team opens a ready-to-run file every Sunday.",
+    "formKey": "940fa274-2e41-479e-b949-fd53ae7f9eb6"
+  },
+  "theme": {
+    "mode": "dark",
+    "accent": "#FFB23E",
+    "accent2": "#6E8BFF",
+    "display": "Bricolage Grotesque",
+    "body": "Instrument Sans",
+    "radius": 14
+  },
+  "brand": {
+    "name": "Worship Flow",
+    "logo": ""
+  },
+  "nav": {
+    "cta": {
+      "label": "Schedule a call",
+      "href": "https://tidycal.com/worshipflowio"
+    }
+  },
+  "sections": [
+    {
+      "type": "hero",
+      "nav": "",
+      "kicker": "ProPresenter, Video and Creative media for churches",
+      "title": "Open the file. Run Sunday.",
+      "body": "Worship Flow is your church's ProPresenter and creative partner. Playlists, lyrics, sermon slides, video and graphics are prepared during the week, so your volunteers walk in to a service that is ready to run.",
+      "cta1": {
+        "label": "See plans and pricing",
+        "href": "#pricing"
+      },
+      "cta2": {
+        "label": "Schedule a call",
+        "href": "https://tidycal.com/worshipflowio"
+      },
+      "note": "Last-minute changes happen; call or text us if you need help.",
+      "consoleTitle": "Sunday service",
+      "consoleHint": "Click any slide to take it live",
+      "slides": [
+        {
+          "cue": "Pre-service",
+          "line": "Welcome. We're glad you're here."
+        },
+        {
+          "cue": "Worship",
+          "line": "Lyrics styled to your look"
+        },
+        {
+          "cue": "Worship",
+          "line": "Every line break checked"
+        },
+        {
+          "cue": "Sermon",
+          "line": "Scripture and points, crafted"
+        },
+        {
+          "cue": "Sermon",
+          "line": "Lower thirds for the stream"
+        },
+        {
+          "cue": "Announcements",
+          "line": "Graphics your people notice"
+        },
+        {
+          "cue": "Response",
+          "line": "One cue fires slides, lights and cameras"
+        },
+        {
+          "cue": "Dismissal",
+          "line": "See you next Sunday"
+        }
+      ]
+    },
+    {
+      "type": "clients",
+      "nav": "",
+      "title": "Churches and teams we serve",
+      "items": [
+        {
+          "name": "Community Alliance Church",
+          "logo": "media/pvzlte4ec.webp"
+        },
+        {
+          "name": "Shandon Baptist Church",
+          "logo": "media/rd7jkm33s.webp"
+        },
+        {
+          "name": "Steel City Church",
+          "logo": "media/1pdbqrz2ug.webp"
+        },
+        {
+          "name": "Streamline",
+          "logo": "media/efuszb3qo.webp"
+        },
+        {
+          "name": "FCA",
+          "logo": "media/1bofwtq4qg.webp"
+        },
+        {
+          "name": "WPA",
+          "logo": "media/md5xv760g.webp"
+        }
+      ]
+    },
+    {
+      "type": "services",
+      "nav": "Services",
+      "title": "Many specialties, one creative partner",
+      "body": "More than a decade of church production, from church plants to multi-campus teams.",
+      "items": [
+        {
+          "title": "ProPresenter",
+          "body": "Weekly playlists, styled lyrics, crafted sermon slides and remote management. We keep your library clean and your themes consistent, and your team opens a file that is ready to run.",
+          "tags": [
+            "Playlists",
+            "Themes and lyrics",
+            "Sermon slides",
+            "Remote management"
+          ]
+        },
+        {
+          "title": "Video production and editing",
+          "body": "Story videos, announcements, website hero videos and three-camera livestreams.",
+          "tags": [
+            "Story videos",
+            "Livestream"
+          ]
+        },
+        {
+          "title": "Creative media",
+          "body": "Series graphics, announcement slides, digital signs and social content that match your church's look.",
+          "tags": [
+            "Graphics",
+            "Digital signs"
+          ]
+        },
+        {
+          "title": "Automation",
+          "body": "ProPresenter, ATEM and Lightkey talking to each other through RossTalk and MIDI, so one click fires slides, cameras and lights.",
+          "tags": [
+            "RossTalk",
+            "MIDI"
+          ]
+        },
+        {
+          "title": "Training",
+          "body": "Volunteer training, ProPresenter operator coaching and on-site city-wide training events.",
+          "tags": [
+            "Teams",
+            "Operators"
+          ]
+        },
+        {
+          "title": "Live events",
+          "body": "A ProPresenter machine with four outputs and an operator who runs the whole event. We built every file for a conference with 6 stages and more than 70 presenters.",
+          "tags": [
+            "Conferences",
+            "4 outputs"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "about",
+      "nav": "",
+      "title": "On site for your event",
+      "body": "Conferences, camps and city-wide nights. We bring a ProPresenter machine with four outputs and an operator who runs the whole event, and we can add a three-camera livestream.",
+      "body2": "",
+      "image": "media/eumw3337ig.webp",
+      "facts": [
+        "Every ProPresenter file built for a conference with 6 stages and 70+ presenters",
+        "Four outputs from one machine",
+        "Three-camera livestream to YouTube, Facebook or RTMP"
+      ],
+      "cta": {
+        "label": "Ask about your event",
+        "href": "https://tidycal.com/worshipflowio"
+      }
+    },
+    {
+      "type": "gallery",
+      "nav": "",
+      "title": "From recent events",
+      "body": "",
+      "items": [
+        {
+          "image": "media/cwn7zq3ooo.webp",
+          "caption": "FCA Winter Blast 2026",
+          "link": {
+            "label": "Watch",
+            "href": ""
+          }
+        },
+        {
+          "image": "media/6gfgnm363k.webp",
+          "caption": "Worship night",
+          "link": {
+            "label": "Watch",
+            "href": ""
+          }
+        },
+        {
+          "image": "media/ijt6le6hso.webp",
+          "caption": "Q&A panel graphics",
+          "link": {
+            "label": "Watch",
+            "href": ""
+          }
+        }
+      ]
+    },
+    {
+      "type": "store",
+      "nav": "Media store",
+      "title": "Sermon series media packs",
+      "body": "Series looks built for real Sundays. Each pack has the title graphic, PSD, socials, blank slide, video and countdown.",
+      "items": [
+        {
+          "title": "Romans 8: Declared series pack",
+          "category": "Sermon series",
+          "desc": "A complete series look: title graphic, layered PSD, social graphics, blank slide, series video and countdown.",
+          "price": "Set price",
+          "badge": "",
+          "image": "https://i.ytimg.com/vi/J5aq4ji39xo/hqdefault.jpg",
+          "buy": {
+            "label": "Buy and download",
+            "href": ""
+          },
+          "preview": {
+            "label": "Preview",
+            "href": ""
+          },
+          "details": "The full look for the Romans 8: Declared series, built for and used on real Sundays. Put the title graphic on your screens and stream, use the blank slide behind scripture and sermon points, post the social graphics to promote the series, and open the service with the video and countdown. Change the text and colors in the included PSD.",
+          "includes": [
+            "Title graphic",
+            "Layered PSD file",
+            "Social graphics",
+            "Blank background slide",
+            "Series video",
+            "Countdown"
+          ],
+          "gallery": [
+            {
+              "image": "https://i.ytimg.com/vi/J5aq4ji39xo/hqdefault.jpg",
+              "caption": "Title graphic"
+            },
+            {
+              "image": "",
+              "caption": "Social graphic"
+            },
+            {
+              "image": "",
+              "caption": "Blank slide"
+            },
+            {
+              "image": "",
+              "caption": "Series video"
+            },
+            {
+              "image": "",
+              "caption": "Countdown"
+            }
+          ],
+          "draft": true
+        },
+        {
+          "title": "Rescue series pack",
+          "category": "Sermon series",
+          "desc": "A complete series look: title graphic, layered PSD, social graphics, blank slide, series video and countdown.",
+          "price": "Set price",
+          "badge": "",
+          "image": "https://i.ytimg.com/vi/CRj1aFITWM8/hqdefault.jpg",
+          "buy": {
+            "label": "Buy and download",
+            "href": ""
+          },
+          "preview": {
+            "label": "Preview",
+            "href": ""
+          },
+          "details": "The full look for the Rescue series, built for and used on real Sundays. Put the title graphic on your screens and stream, use the blank slide behind scripture and sermon points, post the social graphics to promote the series, and open the service with the video and countdown. Change the text and colors in the included PSD.",
+          "includes": [
+            "Title graphic",
+            "Layered PSD file",
+            "Social graphics",
+            "Blank background slide",
+            "Series video",
+            "Countdown"
+          ],
+          "gallery": [
+            {
+              "image": "https://i.ytimg.com/vi/CRj1aFITWM8/hqdefault.jpg",
+              "caption": "Title graphic"
+            },
+            {
+              "image": "",
+              "caption": "Social graphic"
+            },
+            {
+              "image": "",
+              "caption": "Blank slide"
+            },
+            {
+              "image": "",
+              "caption": "Series video"
+            },
+            {
+              "image": "",
+              "caption": "Countdown"
+            }
+          ],
+          "draft": true
+        },
+        {
+          "title": "The Happy Life series pack",
+          "category": "Sermon series",
+          "desc": "A complete series look: title graphic, layered PSD, social graphics, blank slide, series video and countdown.",
+          "price": "Set price",
+          "badge": "",
+          "image": "https://i.ytimg.com/vi/cwK5-n9YvZo/hqdefault.jpg",
+          "buy": {
+            "label": "Buy and download",
+            "href": ""
+          },
+          "preview": {
+            "label": "Preview",
+            "href": ""
+          },
+          "details": "The full look for the The Happy Life series, built for and used on real Sundays. Put the title graphic on your screens and stream, use the blank slide behind scripture and sermon points, post the social graphics to promote the series, and open the service with the video and countdown. Change the text and colors in the included PSD.",
+          "includes": [
+            "Title graphic",
+            "Layered PSD file",
+            "Social graphics",
+            "Blank background slide",
+            "Series video",
+            "Countdown"
+          ],
+          "gallery": [
+            {
+              "image": "https://i.ytimg.com/vi/cwK5-n9YvZo/hqdefault.jpg",
+              "caption": "Title graphic"
+            },
+            {
+              "image": "",
+              "caption": "Social graphic"
+            },
+            {
+              "image": "",
+              "caption": "Blank slide"
+            },
+            {
+              "image": "",
+              "caption": "Series video"
+            },
+            {
+              "image": "",
+              "caption": "Countdown"
+            }
+          ],
+          "draft": true
+        },
+        {
+          "title": "Formed series pack",
+          "category": "Sermon series",
+          "desc": "A complete series look: title graphic, layered PSD, social graphics, blank slide, series video and countdown.",
+          "price": "Set price",
+          "badge": "",
+          "image": "https://i.ytimg.com/vi/mCbsLCS70cs/hqdefault.jpg",
+          "buy": {
+            "label": "Buy and download",
+            "href": ""
+          },
+          "preview": {
+            "label": "Preview",
+            "href": ""
+          },
+          "details": "The full look for the Formed series, built for and used on real Sundays. Put the title graphic on your screens and stream, use the blank slide behind scripture and sermon points, post the social graphics to promote the series, and open the service with the video and countdown. Change the text and colors in the included PSD.",
+          "includes": [
+            "Title graphic",
+            "Layered PSD file",
+            "Social graphics",
+            "Blank background slide",
+            "Series video",
+            "Countdown"
+          ],
+          "gallery": [
+            {
+              "image": "https://i.ytimg.com/vi/mCbsLCS70cs/hqdefault.jpg",
+              "caption": "Title graphic"
+            },
+            {
+              "image": "",
+              "caption": "Social graphic"
+            },
+            {
+              "image": "",
+              "caption": "Blank slide"
+            },
+            {
+              "image": "",
+              "caption": "Series video"
+            },
+            {
+              "image": "",
+              "caption": "Countdown"
+            }
+          ],
+          "draft": true
+        },
+        {
+          "title": "Songs of the Women series pack",
+          "category": "Sermon series",
+          "desc": "A complete series look: title graphic, layered PSD, social graphics, blank slide, series video and countdown.",
+          "price": "Set price",
+          "badge": "",
+          "image": "https://i.ytimg.com/vi/W5EYy8ONJ4s/hqdefault.jpg",
+          "buy": {
+            "label": "Buy and download",
+            "href": ""
+          },
+          "preview": {
+            "label": "Preview",
+            "href": ""
+          },
+          "details": "The full look for the Songs of the Women series, built for and used on real Sundays. Put the title graphic on your screens and stream, use the blank slide behind scripture and sermon points, post the social graphics to promote the series, and open the service with the video and countdown. Change the text and colors in the included PSD.",
+          "includes": [
+            "Title graphic",
+            "Layered PSD file",
+            "Social graphics",
+            "Blank background slide",
+            "Series video",
+            "Countdown"
+          ],
+          "gallery": [
+            {
+              "image": "https://i.ytimg.com/vi/W5EYy8ONJ4s/hqdefault.jpg",
+              "caption": "Title graphic"
+            },
+            {
+              "image": "",
+              "caption": "Social graphic"
+            },
+            {
+              "image": "",
+              "caption": "Blank slide"
+            },
+            {
+              "image": "",
+              "caption": "Series video"
+            },
+            {
+              "image": "",
+              "caption": "Countdown"
+            }
+          ],
+          "draft": true
+        },
+        {
+          "title": "A God of His Word series pack",
+          "category": "Sermon series",
+          "desc": "A complete series look: title graphic, layered PSD, social graphics, blank slide, series video and countdown.",
+          "price": "Set price",
+          "badge": "",
+          "draft": true,
+          "image": "https://i.ytimg.com/vi/LYWaKegcA-U/hqdefault.jpg",
+          "buy": {
+            "label": "Buy and download",
+            "href": ""
+          },
+          "preview": {
+            "label": "Preview",
+            "href": ""
+          },
+          "details": "The full look for the A God of His Word series, built for and used on real Sundays. Put the title graphic on your screens and stream, use the blank slide behind scripture and sermon points, post the social graphics to promote the series, and open the service with the video and countdown. Change the text and colors in the included PSD.",
+          "includes": [
+            "Title graphic",
+            "Layered PSD file",
+            "Social graphics",
+            "Blank background slide",
+            "Series video",
+            "Countdown"
+          ],
+          "gallery": [
+            {
+              "image": "https://i.ytimg.com/vi/LYWaKegcA-U/hqdefault.jpg",
+              "caption": "Title graphic"
+            },
+            {
+              "image": "",
+              "caption": "Social graphic"
+            },
+            {
+              "image": "",
+              "caption": "Blank slide"
+            },
+            {
+              "image": "",
+              "caption": "Series video"
+            },
+            {
+              "image": "",
+              "caption": "Countdown"
+            }
+          ]
+        },
+        {
+          "title": "The Corinthian Complex series pack",
+          "category": "Sermon series",
+          "desc": "A complete series look: title graphic, layered PSD, social graphics, blank slide, series video and countdown.",
+          "price": "Set price",
+          "badge": "",
+          "draft": true,
+          "image": "https://i.ytimg.com/vi/w4Ho8glS6hE/hqdefault.jpg",
+          "buy": {
+            "label": "Buy and download",
+            "href": ""
+          },
+          "preview": {
+            "label": "Preview",
+            "href": ""
+          },
+          "details": "The full look for the The Corinthian Complex series, built for and used on real Sundays. Put the title graphic on your screens and stream, use the blank slide behind scripture and sermon points, post the social graphics to promote the series, and open the service with the video and countdown. Change the text and colors in the included PSD.",
+          "includes": [
+            "Title graphic",
+            "Layered PSD file",
+            "Social graphics",
+            "Blank background slide",
+            "Series video",
+            "Countdown"
+          ],
+          "gallery": [
+            {
+              "image": "https://i.ytimg.com/vi/w4Ho8glS6hE/hqdefault.jpg",
+              "caption": "Title graphic"
+            },
+            {
+              "image": "",
+              "caption": "Social graphic"
+            },
+            {
+              "image": "",
+              "caption": "Blank slide"
+            },
+            {
+              "image": "",
+              "caption": "Series video"
+            },
+            {
+              "image": "",
+              "caption": "Countdown"
+            }
+          ]
+        },
+        {
+          "title": "Solas series pack",
+          "category": "Sermon series",
+          "desc": "A complete series look: title graphic, layered PSD, social graphics, blank slide, series video and countdown.",
+          "price": "Set price",
+          "badge": "",
+          "draft": true,
+          "image": "https://i.ytimg.com/vi/aEHB6vjJtec/hqdefault.jpg",
+          "buy": {
+            "label": "Buy and download",
+            "href": ""
+          },
+          "preview": {
+            "label": "Preview",
+            "href": ""
+          },
+          "details": "The full look for the Solas series, built for and used on real Sundays. Put the title graphic on your screens and stream, use the blank slide behind scripture and sermon points, post the social graphics to promote the series, and open the service with the video and countdown. Change the text and colors in the included PSD.",
+          "includes": [
+            "Title graphic",
+            "Layered PSD file",
+            "Social graphics",
+            "Blank background slide",
+            "Series video",
+            "Countdown"
+          ],
+          "gallery": [
+            {
+              "image": "https://i.ytimg.com/vi/aEHB6vjJtec/hqdefault.jpg",
+              "caption": "Title graphic"
+            },
+            {
+              "image": "",
+              "caption": "Social graphic"
+            },
+            {
+              "image": "",
+              "caption": "Blank slide"
+            },
+            {
+              "image": "",
+              "caption": "Series video"
+            },
+            {
+              "image": "",
+              "caption": "Countdown"
+            }
+          ]
+        },
+        {
+          "title": "The King Is Coming series pack",
+          "category": "Sermon series",
+          "desc": "A complete series look: title graphic, layered PSD, social graphics, blank slide, series video and countdown.",
+          "price": "Set price",
+          "badge": "",
+          "draft": true,
+          "image": "https://i.ytimg.com/vi/MoRTcseMjug/hqdefault.jpg",
+          "buy": {
+            "label": "Buy and download",
+            "href": ""
+          },
+          "preview": {
+            "label": "Preview",
+            "href": ""
+          },
+          "details": "The full look for the The King Is Coming series, built for and used on real Sundays. Put the title graphic on your screens and stream, use the blank slide behind scripture and sermon points, post the social graphics to promote the series, and open the service with the video and countdown. Change the text and colors in the included PSD.",
+          "includes": [
+            "Title graphic",
+            "Layered PSD file",
+            "Social graphics",
+            "Blank background slide",
+            "Series video",
+            "Countdown"
+          ],
+          "gallery": [
+            {
+              "image": "https://i.ytimg.com/vi/MoRTcseMjug/hqdefault.jpg",
+              "caption": "Title graphic"
+            },
+            {
+              "image": "",
+              "caption": "Social graphic"
+            },
+            {
+              "image": "",
+              "caption": "Blank slide"
+            },
+            {
+              "image": "",
+              "caption": "Series video"
+            },
+            {
+              "image": "",
+              "caption": "Countdown"
+            }
+          ]
+        },
+        {
+          "title": "Kingless series pack",
+          "category": "Sermon series",
+          "desc": "A complete series look: title graphic, layered PSD, social graphics, blank slide, series video and countdown.",
+          "price": "Set price",
+          "badge": "",
+          "draft": true,
+          "image": "https://i.ytimg.com/vi/Uc4AcmxocfY/hqdefault.jpg",
+          "buy": {
+            "label": "Buy and download",
+            "href": ""
+          },
+          "preview": {
+            "label": "Preview",
+            "href": ""
+          },
+          "details": "The full look for the Kingless series, built for and used on real Sundays. Put the title graphic on your screens and stream, use the blank slide behind scripture and sermon points, post the social graphics to promote the series, and open the service with the video and countdown. Change the text and colors in the included PSD.",
+          "includes": [
+            "Title graphic",
+            "Layered PSD file",
+            "Social graphics",
+            "Blank background slide",
+            "Series video",
+            "Countdown"
+          ],
+          "gallery": [
+            {
+              "image": "https://i.ytimg.com/vi/Uc4AcmxocfY/hqdefault.jpg",
+              "caption": "Title graphic"
+            },
+            {
+              "image": "",
+              "caption": "Social graphic"
+            },
+            {
+              "image": "",
+              "caption": "Blank slide"
+            },
+            {
+              "image": "",
+              "caption": "Series video"
+            },
+            {
+              "image": "",
+              "caption": "Countdown"
+            }
+          ]
+        },
+        {
+          "title": "Genesis of Faith series pack",
+          "category": "Sermon series",
+          "desc": "A complete series look: title graphic, layered PSD, social graphics, blank slide, series video and countdown.",
+          "price": "Set price",
+          "badge": "",
+          "draft": true,
+          "image": "https://i.ytimg.com/vi/M2e1VQ7OWvU/hqdefault.jpg",
+          "buy": {
+            "label": "Buy and download",
+            "href": ""
+          },
+          "preview": {
+            "label": "Preview",
+            "href": ""
+          },
+          "details": "The full look for the Genesis of Faith series, built for and used on real Sundays. Put the title graphic on your screens and stream, use the blank slide behind scripture and sermon points, post the social graphics to promote the series, and open the service with the video and countdown. Change the text and colors in the included PSD.",
+          "includes": [
+            "Title graphic",
+            "Layered PSD file",
+            "Social graphics",
+            "Blank background slide",
+            "Series video",
+            "Countdown"
+          ],
+          "gallery": [
+            {
+              "image": "https://i.ytimg.com/vi/M2e1VQ7OWvU/hqdefault.jpg",
+              "caption": "Title graphic"
+            },
+            {
+              "image": "",
+              "caption": "Social graphic"
+            },
+            {
+              "image": "",
+              "caption": "Blank slide"
+            },
+            {
+              "image": "",
+              "caption": "Series video"
+            },
+            {
+              "image": "",
+              "caption": "Countdown"
+            }
+          ]
+        }
+      ],
+      "limit": 6
+    },
+    {
+      "type": "process",
+      "nav": "How it works",
+      "title": "Your week, from plan to Sunday",
+      "body": "Onboarding takes one 30 to 45 minute meeting. After that, every week runs the same way.",
+      "items": [
+        {
+          "when": "Early week",
+          "title": "Share your service plan",
+          "body": "Planning Center, chord charts, a Word document or a quick call."
+        },
+        {
+          "when": "Tue to Wed",
+          "title": "Rehearsal file built",
+          "body": "Worship, sermon and media organized in ProPresenter."
+        },
+        {
+          "when": "Midweek",
+          "title": "Rehearse and send changes",
+          "body": "Notes, a recording or a simple form. Your operator doesn't have to be there."
+        },
+        {
+          "when": "Thu to Fri",
+          "title": "Final flow with sermon notes",
+          "body": "Scripture, points and graphics added to the service."
+        },
+        {
+          "when": "Sat until 7 PM",
+          "title": "Final check",
+          "body": "Lyrics, scriptures, layouts and cues reviewed. Late changes still accepted."
+        },
+        {
+          "when": "Sunday",
+          "title": "Open and run",
+          "body": "Your team walks in to a ready-to-run file."
+        }
+      ]
+    },
+    {
+      "type": "plans",
+      "nav": "",
+      "hidden": false,
+      "title": "How a creative project runs",
+      "body": "Graphics, video and training each follow a simple plan, so you always know what happens next.",
+      "tracks": [
+        {
+          "name": "Graphic design",
+          "intro": "For a sermon series or event look.",
+          "items": [
+            {
+              "when": "Step 1",
+              "title": "Brief",
+              "body": "Send the series title, scripture, dates and any references. A short call if it helps."
+            },
+            {
+              "when": "Step 2",
+              "title": "First look",
+              "body": "A first version of the title graphic for your feedback, so the style is settled before the full build."
+            },
+            {
+              "when": "Step 3",
+              "title": "Build the set",
+              "body": "Title graphic, blank slide, social graphics and a layered PSD, matched as one set."
+            },
+            {
+              "when": "Step 4",
+              "title": "Add motion",
+              "body": "A series video and countdown built from the same look."
+            },
+            {
+              "when": "Step 5",
+              "title": "Deliver",
+              "body": "Files organized and loaded into your ProPresenter playlist, ready for Sunday."
+            }
+          ]
+        },
+        {
+          "name": "Video production",
+          "intro": "For a story video, announcement or ministry video.",
+          "items": [
+            {
+              "when": "Step 1",
+              "title": "Plan",
+              "body": "A call to find the story, the people and the place."
+            },
+            {
+              "when": "Step 2",
+              "title": "Shoot",
+              "body": "A two-hour shoot with two cameras and lighting."
+            },
+            {
+              "when": "Step 3",
+              "title": "Edit",
+              "body": "Story cut, color, sound and graphics in post-production."
+            },
+            {
+              "when": "Step 4",
+              "title": "Review",
+              "body": "You watch a draft and send changes."
+            },
+            {
+              "when": "Step 5",
+              "title": "Deliver",
+              "body": "The final video, ready for your screens and stream."
+            }
+          ]
+        },
+        {
+          "name": "Training",
+          "intro": "For volunteer teams and ProPresenter operators.",
+          "items": [
+            {
+              "when": "Step 1",
+              "title": "Assess",
+              "body": "We look at your setup, your team and where Sundays get stuck."
+            },
+            {
+              "when": "Step 2",
+              "title": "Plan",
+              "body": "A training plan sized to your volunteers and your gear."
+            },
+            {
+              "when": "Step 3",
+              "title": "Train",
+              "body": "Hands-on operator training, on site or by screen share."
+            },
+            {
+              "when": "Step 4",
+              "title": "Resources",
+              "body": "Training videos your team can rewatch."
+            },
+            {
+              "when": "Step 5",
+              "title": "Follow up",
+              "body": "Regular refreshers keep new volunteers up to speed."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "pricing",
+      "nav": "Pricing",
+      "title": "Weekly ProPresenter plans",
+      "body": "Rates are per week of service. Commit for longer and the weekly rate drops. The yearly rate is a 12-month commitment, billed monthly.",
+      "periods": [
+        "Week to week",
+        "Monthly",
+        "Yearly commitment"
+      ],
+      "unit": "per week",
+      "items": [
+        {
+          "name": "Worship",
+          "blurb": "Your worship set, ready to run.",
+          "prices": [
+            "$225",
+            "$200",
+            "$175"
+          ],
+          "featured": false,
+          "features": [
+            "Playlist setup",
+            "Themes and lyrics styled",
+            "Remote management",
+            "Training videos",
+            "Playlist loaded"
+          ],
+          "cta": {
+            "label": "Start with Worship",
+            "href": "https://docs.google.com/forms/d/e/1FAIpQLSeJivQWyoOd6TzskClRNuc--LECAiHO0RFvY22cfigVBu75mQ/viewform?usp=header"
+          }
+        },
+        {
+          "name": "Service",
+          "blurb": "The whole service, built with your graphics.",
+          "prices": [
+            "$300",
+            "$250",
+            "$200"
+          ],
+          "featured": true,
+          "features": [
+            "Everything in Worship",
+            "Crafted sermon slides",
+            "Saturday support",
+            "Quarterly training"
+          ],
+          "cta": {
+            "label": "Start with Service",
+            "href": "https://docs.google.com/forms/d/e/1FAIpQLSf8WNJius1Aw2sDPZJ3jRX8KpuWMmtK4ca-6RKApAxW4L6ucA/viewform?usp=dialog"
+          }
+        },
+        {
+          "name": "Creative",
+          "blurb": "Service prep plus design and video.",
+          "prices": [
+            "$400",
+            "$350",
+            "$300"
+          ],
+          "featured": false,
+          "features": [
+            "Everything in Service",
+            "Monthly meetings",
+            "Basic creative design",
+            "Simple video production"
+          ],
+          "cta": {
+            "label": "Start with Creative",
+            "href": "https://docs.google.com/forms/d/e/1FAIpQLScPYrV1m1S8F_ZbTetiUGDxPFa3NSesqgecaGKYykoi3MhN1A/viewform?usp=dialog"
+          }
+        }
+      ]
+    },
+    {
+      "type": "extras",
+      "nav": "",
+      "title": "One-off projects and events",
+      "body": "",
+      "items": [
+        {
+          "name": "Live event operator",
+          "detail": "ProPresenter machine with 4 outputs, run for your whole event.",
+          "price": "$700 a day, plus travel"
+        },
+        {
+          "name": "Livestream",
+          "detail": "Three-camera switch to YouTube, Facebook or RTMP, with simple graphics.",
+          "price": "$1,000 a day, plus travel"
+        },
+        {
+          "name": "Consulting call",
+          "detail": "Screen-share diagnosis, ideas and upgrade planning.",
+          "price": "$75 an hour"
+        },
+        {
+          "name": "Video editing",
+          "detail": "Website hero videos, ministry videos and announcements.",
+          "price": "Ask for a quote"
+        },
+        {
+          "name": "Team training",
+          "detail": "Operator instruction and on-site city-wide training events.",
+          "price": "Ask for a quote"
+        },
+        {
+          "name": "Websites and email",
+          "detail": "Church websites with update plans, and weekly email updates built from your content.",
+          "price": "Ask for a quote"
+        },
+        {
+          "name": "Digital church signs",
+          "detail": "Content and promotions for your digital signage.",
+          "price": "Ask for a quote"
+        }
+      ],
+      "cta": {
+        "label": "Ask about a project",
+        "href": "https://tidycal.com/worshipflowio"
+      }
+    },
+    {
+      "type": "testimonials",
+      "nav": "",
+      "title": "What church leaders say",
+      "items": [
+        {
+          "quote": "Worship Flow is one of the most talented and servant-hearted teams we've had the privilege of working with. They're not only excellent at what they do\n- they bring love, humility, and a commitment to excellence to every project, all while faithfully serving the Kingdom of God.",
+          "name": "Dave Prentice",
+          "org": "Community Alliance Church"
+        },
+        {
+          "quote": "WorshipFlow absolutely crushed it for our PACE conference. We had 6 stages and over 70 presenters, each with different types of media and content. He built all the ProPresenter files we needed, and it made our jobs and lives so much easier. Everything he delivered was spot-on and completely perfect.",
+          "name": "Arron Hartt",
+          "org": "Church Creative, PACE conference"
+        },
+        {
+          "quote": "Worship Flow has helped us execute Sunday at a high level all while helping and serving our team.",
+          "name": "Jonathan Hazle",
+          "org": "Shandon Baptist Church"
+        },
+        {
+          "quote": "I've been doing this for over 20 years. When I need new tech, new processes, new ideas, inspiration, or when I need help, I go to Worship Flow.",
+          "name": "Jeremy Dickerson",
+          "org": "Vidpraxis"
+        },
+        {
+          "quote": "Worship Flow faithfully serves our church each week, managing ProPresenter, lighting, visuals, and our livestream. His attention to detail creates a seamless worship experience that helps our team and congregation keep our eyes on Jesus.",
+          "name": "Chris Richards",
+          "org": "Steel City Church"
+        }
+      ]
+    },
+    {
+      "type": "about",
+      "nav": "About",
+      "title": "Led by Steve Dirks",
+      "body": "Steve is a production leader with a pastoral heart, based in Pittsburgh. He has run ProPresenter for church plants and multi-campus churches for more than a decade, leads audio, video and lighting teams, and edits video professionally.",
+      "body2": "People first. Purpose behind every cue.",
+      "image": "https://stevedirks.com/assets/steve.jpg",
+      "facts": [
+        "ProPresenter across church plants and multi-campus churches",
+        "Audio, video, lighting, Resi and Church Online",
+        "Automation with ATEM, Lightkey, RossTalk and MIDI",
+        "Volunteer leadership and Planning Center"
+      ],
+      "cta": {
+        "label": "More about Steve",
+        "href": "https://stevedirks.com/"
+      }
+    },
+    {
+      "type": "contact",
+      "nav": "Contact",
+      "title": "Tell us about your Sunday",
+      "body": "A 30 minute call is the fastest way to see whether we're a fit. Bring your questions, your ProPresenter version and whatever is frustrating your team.",
+      "cta1": {
+        "label": "Schedule a call",
+        "href": "https://tidycal.com/worshipflowio"
+      },
+      "cta2": {
+        "label": "Call or text (803) 606-7435",
+        "href": "tel:+18036067435"
+      },
+      "phone": "(803) 606-7435"
+    }
+  ],
+  "footer": {
+    "note": "Made for the mission.",
+    "owner": "Worship Flow",
+    "socials": [
+      {
+        "label": "YouTube",
+        "href": "https://www.youtube.com/channel/UCxqVhzTT-yW7k5WHt9e0bLg"
+      },
+      {
+        "label": "Instagram",
+        "href": "https://www.instagram.com/worshipflow.io"
+      },
+      {
+        "label": "Facebook",
+        "href": "https://www.facebook.com/profile.php?id=61578954227357"
+      },
+      {
+        "label": "TikTok",
+        "href": "https://www.tiktok.com/@worshipflow.io"
+      }
+    ]
   }
- },
- "sections": [
-  {
-   "type": "hero",
-   "nav": "",
-   "kicker": "ProPresenter, Video and Creative media for churches",
-   "title": "Open the file. Run Sunday.",
-   "body": "Worship Flow is your church's ProPresenter and creative partner. Playlists, lyrics, sermon slides, video and graphics are prepared during the week, so your volunteers walk in to a service that is ready to run.",
-   "cta1": {
-    "label": "See plans and pricing",
-    "href": "#pricing"
-   },
-   "cta2": {
-    "label": "Schedule a call",
-    "href": "https://tidycal.com/worshipflowio"
-   },
-   "note": "Last-minute changes happen; call or text us if you need help.",
-   "consoleTitle": "Sunday service",
-   "consoleHint": "Click any slide to take it live",
-   "slides": [
-    {
-     "cue": "Pre-service",
-     "line": "Welcome. We're glad you're here."
-    },
-    {
-     "cue": "Worship",
-     "line": "Lyrics styled to your look"
-    },
-    {
-     "cue": "Worship",
-     "line": "Every line break checked"
-    },
-    {
-     "cue": "Sermon",
-     "line": "Scripture and points, crafted"
-    },
-    {
-     "cue": "Sermon",
-     "line": "Lower thirds for the stream"
-    },
-    {
-     "cue": "Announcements",
-     "line": "Graphics your people notice"
-    },
-    {
-     "cue": "Response",
-     "line": "One cue fires slides, lights and cameras"
-    },
-    {
-     "cue": "Dismissal",
-     "line": "See you next Sunday"
-    }
-   ]
-  },
-  {
-   "type": "clients",
-   "nav": "",
-   "title": "Churches and teams we serve",
-   "items": [
-    {
-     "name": "Community Alliance Church",
-     "logo": "media/pvzlte4ec.webp"
-    },
-    {
-     "name": "Shandon Baptist Church",
-     "logo": "media/rd7jkm33s.webp"
-    },
-    {
-     "name": "Steel City Church",
-     "logo": "media/1pdbqrz2ug.webp"
-    },
-    {
-     "name": "Streamline",
-     "logo": "media/efuszb3qo.webp"
-    },
-    {
-     "name": "FCA",
-     "logo": "media/1bofwtq4qg.webp"
-    },
-    {
-     "name": "WPA",
-     "logo": "media/md5xv760g.webp"
-    }
-   ]
-  },
-  {
-   "type": "services",
-   "nav": "Services",
-   "title": "Many specialties, one creative partner",
-   "body": "More than a decade of church production, from church plants to multi-campus teams.",
-   "items": [
-    {
-     "title": "ProPresenter",
-     "body": "Weekly playlists, styled lyrics, crafted sermon slides and remote management. We keep your library clean and your themes consistent, and your team opens a file that is ready to run.",
-     "tags": [
-      "Playlists",
-      "Themes and lyrics",
-      "Sermon slides",
-      "Remote management"
-     ]
-    },
-    {
-     "title": "Video production and editing",
-     "body": "Story videos, announcements, website hero videos and three-camera livestreams.",
-     "tags": [
-      "Story videos",
-      "Livestream"
-     ]
-    },
-    {
-     "title": "Creative media",
-     "body": "Series graphics, announcement slides, digital signs and social content that match your church's look.",
-     "tags": [
-      "Graphics",
-      "Digital signs"
-     ]
-    },
-    {
-     "title": "Automation",
-     "body": "ProPresenter, ATEM and Lightkey talking to each other through RossTalk and MIDI, so one click fires slides, cameras and lights.",
-     "tags": [
-      "RossTalk",
-      "MIDI"
-     ]
-    },
-    {
-     "title": "Training",
-     "body": "Volunteer training, ProPresenter operator coaching and on-site city-wide training events.",
-     "tags": [
-      "Teams",
-      "Operators"
-     ]
-    },
-    {
-     "title": "Live events",
-     "body": "A ProPresenter machine with four outputs and an operator who runs the whole event. We built every file for a conference with 6 stages and more than 70 presenters.",
-     "tags": [
-      "Conferences",
-      "4 outputs"
-     ]
-    }
-   ]
-  },
-  {
-   "type": "about",
-   "nav": "",
-   "title": "On site for your event",
-   "body": "Conferences, camps and city-wide nights. We bring a ProPresenter machine with four outputs and an operator who runs the whole event, and we can add a three-camera livestream.",
-   "body2": "",
-   "image": "media/eumw3337ig.webp",
-   "facts": [
-    "Every ProPresenter file built for a conference with 6 stages and 70+ presenters",
-    "Four outputs from one machine",
-    "Three-camera livestream to YouTube, Facebook or RTMP"
-   ],
-   "cta": {
-    "label": "Ask about your event",
-    "href": "https://tidycal.com/worshipflowio"
-   }
-  },
-  {
-   "type": "gallery",
-   "nav": "",
-   "title": "From recent events",
-   "body": "",
-   "items": [
-    {
-     "image": "media/cwn7zq3ooo.webp",
-     "caption": "FCA Winter Blast 2026",
-     "link": {
-      "label": "Watch",
-      "href": ""
-     }
-    },
-    {
-     "image": "media/6gfgnm363k.webp",
-     "caption": "Worship night",
-     "link": {
-      "label": "Watch",
-      "href": ""
-     }
-    },
-    {
-     "image": "media/ijt6le6hso.webp",
-     "caption": "Q&A panel graphics",
-     "link": {
-      "label": "Watch",
-      "href": ""
-     }
-    }
-   ]
-  },
-  {
-   "type": "store",
-   "nav": "Media store",
-   "title": "Sermon series media packs",
-   "body": "Series looks built for real Sundays. Each pack has the title graphic, PSD, socials, blank slide, video and countdown.",
-   "items": [
-    {
-     "title": "Romans 8: Declared series pack",
-     "category": "Sermon series",
-     "desc": "A complete series look: title graphic, layered PSD, social graphics, blank slide, series video and countdown.",
-     "price": "Set price",
-     "badge": "",
-     "image": "https://i.ytimg.com/vi/J5aq4ji39xo/hqdefault.jpg",
-     "buy": {
-      "label": "Buy and download",
-      "href": ""
-     },
-     "preview": {
-      "label": "Preview",
-      "href": ""
-     },
-     "details": "The full look for the Romans 8: Declared series, built for and used on real Sundays. Put the title graphic on your screens and stream, use the blank slide behind scripture and sermon points, post the social graphics to promote the series, and open the service with the video and countdown. Change the text and colors in the included PSD.",
-     "includes": [
-      "Title graphic",
-      "Layered PSD file",
-      "Social graphics",
-      "Blank background slide",
-      "Series video",
-      "Countdown"
-     ],
-     "gallery": [
-      {
-       "image": "https://i.ytimg.com/vi/J5aq4ji39xo/hqdefault.jpg",
-       "caption": "Title graphic"
-      },
-      {
-       "image": "",
-       "caption": "Social graphic"
-      },
-      {
-       "image": "",
-       "caption": "Blank slide"
-      },
-      {
-       "image": "",
-       "caption": "Series video"
-      },
-      {
-       "image": "",
-       "caption": "Countdown"
-      }
-     ],
-     "draft": true
-    },
-    {
-     "title": "Rescue series pack",
-     "category": "Sermon series",
-     "desc": "A complete series look: title graphic, layered PSD, social graphics, blank slide, series video and countdown.",
-     "price": "Set price",
-     "badge": "",
-     "image": "https://i.ytimg.com/vi/CRj1aFITWM8/hqdefault.jpg",
-     "buy": {
-      "label": "Buy and download",
-      "href": ""
-     },
-     "preview": {
-      "label": "Preview",
-      "href": ""
-     },
-     "details": "The full look for the Rescue series, built for and used on real Sundays. Put the title graphic on your screens and stream, use the blank slide behind scripture and sermon points, post the social graphics to promote the series, and open the service with the video and countdown. Change the text and colors in the included PSD.",
-     "includes": [
-      "Title graphic",
-      "Layered PSD file",
-      "Social graphics",
-      "Blank background slide",
-      "Series video",
-      "Countdown"
-     ],
-     "gallery": [
-      {
-       "image": "https://i.ytimg.com/vi/CRj1aFITWM8/hqdefault.jpg",
-       "caption": "Title graphic"
-      },
-      {
-       "image": "",
-       "caption": "Social graphic"
-      },
-      {
-       "image": "",
-       "caption": "Blank slide"
-      },
-      {
-       "image": "",
-       "caption": "Series video"
-      },
-      {
-       "image": "",
-       "caption": "Countdown"
-      }
-     ],
-     "draft": true
-    },
-    {
-     "title": "The Happy Life series pack",
-     "category": "Sermon series",
-     "desc": "A complete series look: title graphic, layered PSD, social graphics, blank slide, series video and countdown.",
-     "price": "Set price",
-     "badge": "",
-     "image": "https://i.ytimg.com/vi/cwK5-n9YvZo/hqdefault.jpg",
-     "buy": {
-      "label": "Buy and download",
-      "href": ""
-     },
-     "preview": {
-      "label": "Preview",
-      "href": ""
-     },
-     "details": "The full look for the The Happy Life series, built for and used on real Sundays. Put the title graphic on your screens and stream, use the blank slide behind scripture and sermon points, post the social graphics to promote the series, and open the service with the video and countdown. Change the text and colors in the included PSD.",
-     "includes": [
-      "Title graphic",
-      "Layered PSD file",
-      "Social graphics",
-      "Blank background slide",
-      "Series video",
-      "Countdown"
-     ],
-     "gallery": [
-      {
-       "image": "https://i.ytimg.com/vi/cwK5-n9YvZo/hqdefault.jpg",
-       "caption": "Title graphic"
-      },
-      {
-       "image": "",
-       "caption": "Social graphic"
-      },
-      {
-       "image": "",
-       "caption": "Blank slide"
-      },
-      {
-       "image": "",
-       "caption": "Series video"
-      },
-      {
-       "image": "",
-       "caption": "Countdown"
-      }
-     ],
-     "draft": true
-    },
-    {
-     "title": "Formed series pack",
-     "category": "Sermon series",
-     "desc": "A complete series look: title graphic, layered PSD, social graphics, blank slide, series video and countdown.",
-     "price": "Set price",
-     "badge": "",
-     "image": "https://i.ytimg.com/vi/mCbsLCS70cs/hqdefault.jpg",
-     "buy": {
-      "label": "Buy and download",
-      "href": ""
-     },
-     "preview": {
-      "label": "Preview",
-      "href": ""
-     },
-     "details": "The full look for the Formed series, built for and used on real Sundays. Put the title graphic on your screens and stream, use the blank slide behind scripture and sermon points, post the social graphics to promote the series, and open the service with the video and countdown. Change the text and colors in the included PSD.",
-     "includes": [
-      "Title graphic",
-      "Layered PSD file",
-      "Social graphics",
-      "Blank background slide",
-      "Series video",
-      "Countdown"
-     ],
-     "gallery": [
-      {
-       "image": "https://i.ytimg.com/vi/mCbsLCS70cs/hqdefault.jpg",
-       "caption": "Title graphic"
-      },
-      {
-       "image": "",
-       "caption": "Social graphic"
-      },
-      {
-       "image": "",
-       "caption": "Blank slide"
-      },
-      {
-       "image": "",
-       "caption": "Series video"
-      },
-      {
-       "image": "",
-       "caption": "Countdown"
-      }
-     ],
-     "draft": true
-    },
-    {
-     "title": "Songs of the Women series pack",
-     "category": "Sermon series",
-     "desc": "A complete series look: title graphic, layered PSD, social graphics, blank slide, series video and countdown.",
-     "price": "Set price",
-     "badge": "",
-     "image": "https://i.ytimg.com/vi/W5EYy8ONJ4s/hqdefault.jpg",
-     "buy": {
-      "label": "Buy and download",
-      "href": ""
-     },
-     "preview": {
-      "label": "Preview",
-      "href": ""
-     },
-     "details": "The full look for the Songs of the Women series, built for and used on real Sundays. Put the title graphic on your screens and stream, use the blank slide behind scripture and sermon points, post the social graphics to promote the series, and open the service with the video and countdown. Change the text and colors in the included PSD.",
-     "includes": [
-      "Title graphic",
-      "Layered PSD file",
-      "Social graphics",
-      "Blank background slide",
-      "Series video",
-      "Countdown"
-     ],
-     "gallery": [
-      {
-       "image": "https://i.ytimg.com/vi/W5EYy8ONJ4s/hqdefault.jpg",
-       "caption": "Title graphic"
-      },
-      {
-       "image": "",
-       "caption": "Social graphic"
-      },
-      {
-       "image": "",
-       "caption": "Blank slide"
-      },
-      {
-       "image": "",
-       "caption": "Series video"
-      },
-      {
-       "image": "",
-       "caption": "Countdown"
-      }
-     ],
-     "draft": true
-    },
-    {
-     "title": "A God of His Word series pack",
-     "category": "Sermon series",
-     "desc": "A complete series look: title graphic, layered PSD, social graphics, blank slide, series video and countdown.",
-     "price": "Set price",
-     "badge": "",
-     "draft": true,
-     "image": "https://i.ytimg.com/vi/LYWaKegcA-U/hqdefault.jpg",
-     "buy": {
-      "label": "Buy and download",
-      "href": ""
-     },
-     "preview": {
-      "label": "Preview",
-      "href": ""
-     },
-     "details": "The full look for the A God of His Word series, built for and used on real Sundays. Put the title graphic on your screens and stream, use the blank slide behind scripture and sermon points, post the social graphics to promote the series, and open the service with the video and countdown. Change the text and colors in the included PSD.",
-     "includes": [
-      "Title graphic",
-      "Layered PSD file",
-      "Social graphics",
-      "Blank background slide",
-      "Series video",
-      "Countdown"
-     ],
-     "gallery": [
-      {
-       "image": "https://i.ytimg.com/vi/LYWaKegcA-U/hqdefault.jpg",
-       "caption": "Title graphic"
-      },
-      {
-       "image": "",
-       "caption": "Social graphic"
-      },
-      {
-       "image": "",
-       "caption": "Blank slide"
-      },
-      {
-       "image": "",
-       "caption": "Series video"
-      },
-      {
-       "image": "",
-       "caption": "Countdown"
-      }
-     ]
-    },
-    {
-     "title": "The Corinthian Complex series pack",
-     "category": "Sermon series",
-     "desc": "A complete series look: title graphic, layered PSD, social graphics, blank slide, series video and countdown.",
-     "price": "Set price",
-     "badge": "",
-     "draft": true,
-     "image": "https://i.ytimg.com/vi/w4Ho8glS6hE/hqdefault.jpg",
-     "buy": {
-      "label": "Buy and download",
-      "href": ""
-     },
-     "preview": {
-      "label": "Preview",
-      "href": ""
-     },
-     "details": "The full look for the The Corinthian Complex series, built for and used on real Sundays. Put the title graphic on your screens and stream, use the blank slide behind scripture and sermon points, post the social graphics to promote the series, and open the service with the video and countdown. Change the text and colors in the included PSD.",
-     "includes": [
-      "Title graphic",
-      "Layered PSD file",
-      "Social graphics",
-      "Blank background slide",
-      "Series video",
-      "Countdown"
-     ],
-     "gallery": [
-      {
-       "image": "https://i.ytimg.com/vi/w4Ho8glS6hE/hqdefault.jpg",
-       "caption": "Title graphic"
-      },
-      {
-       "image": "",
-       "caption": "Social graphic"
-      },
-      {
-       "image": "",
-       "caption": "Blank slide"
-      },
-      {
-       "image": "",
-       "caption": "Series video"
-      },
-      {
-       "image": "",
-       "caption": "Countdown"
-      }
-     ]
-    },
-    {
-     "title": "Solas series pack",
-     "category": "Sermon series",
-     "desc": "A complete series look: title graphic, layered PSD, social graphics, blank slide, series video and countdown.",
-     "price": "Set price",
-     "badge": "",
-     "draft": true,
-     "image": "https://i.ytimg.com/vi/aEHB6vjJtec/hqdefault.jpg",
-     "buy": {
-      "label": "Buy and download",
-      "href": ""
-     },
-     "preview": {
-      "label": "Preview",
-      "href": ""
-     },
-     "details": "The full look for the Solas series, built for and used on real Sundays. Put the title graphic on your screens and stream, use the blank slide behind scripture and sermon points, post the social graphics to promote the series, and open the service with the video and countdown. Change the text and colors in the included PSD.",
-     "includes": [
-      "Title graphic",
-      "Layered PSD file",
-      "Social graphics",
-      "Blank background slide",
-      "Series video",
-      "Countdown"
-     ],
-     "gallery": [
-      {
-       "image": "https://i.ytimg.com/vi/aEHB6vjJtec/hqdefault.jpg",
-       "caption": "Title graphic"
-      },
-      {
-       "image": "",
-       "caption": "Social graphic"
-      },
-      {
-       "image": "",
-       "caption": "Blank slide"
-      },
-      {
-       "image": "",
-       "caption": "Series video"
-      },
-      {
-       "image": "",
-       "caption": "Countdown"
-      }
-     ]
-    },
-    {
-     "title": "The King Is Coming series pack",
-     "category": "Sermon series",
-     "desc": "A complete series look: title graphic, layered PSD, social graphics, blank slide, series video and countdown.",
-     "price": "Set price",
-     "badge": "",
-     "draft": true,
-     "image": "https://i.ytimg.com/vi/MoRTcseMjug/hqdefault.jpg",
-     "buy": {
-      "label": "Buy and download",
-      "href": ""
-     },
-     "preview": {
-      "label": "Preview",
-      "href": ""
-     },
-     "details": "The full look for the The King Is Coming series, built for and used on real Sundays. Put the title graphic on your screens and stream, use the blank slide behind scripture and sermon points, post the social graphics to promote the series, and open the service with the video and countdown. Change the text and colors in the included PSD.",
-     "includes": [
-      "Title graphic",
-      "Layered PSD file",
-      "Social graphics",
-      "Blank background slide",
-      "Series video",
-      "Countdown"
-     ],
-     "gallery": [
-      {
-       "image": "https://i.ytimg.com/vi/MoRTcseMjug/hqdefault.jpg",
-       "caption": "Title graphic"
-      },
-      {
-       "image": "",
-       "caption": "Social graphic"
-      },
-      {
-       "image": "",
-       "caption": "Blank slide"
-      },
-      {
-       "image": "",
-       "caption": "Series video"
-      },
-      {
-       "image": "",
-       "caption": "Countdown"
-      }
-     ]
-    },
-    {
-     "title": "Kingless series pack",
-     "category": "Sermon series",
-     "desc": "A complete series look: title graphic, layered PSD, social graphics, blank slide, series video and countdown.",
-     "price": "Set price",
-     "badge": "",
-     "draft": true,
-     "image": "https://i.ytimg.com/vi/Uc4AcmxocfY/hqdefault.jpg",
-     "buy": {
-      "label": "Buy and download",
-      "href": ""
-     },
-     "preview": {
-      "label": "Preview",
-      "href": ""
-     },
-     "details": "The full look for the Kingless series, built for and used on real Sundays. Put the title graphic on your screens and stream, use the blank slide behind scripture and sermon points, post the social graphics to promote the series, and open the service with the video and countdown. Change the text and colors in the included PSD.",
-     "includes": [
-      "Title graphic",
-      "Layered PSD file",
-      "Social graphics",
-      "Blank background slide",
-      "Series video",
-      "Countdown"
-     ],
-     "gallery": [
-      {
-       "image": "https://i.ytimg.com/vi/Uc4AcmxocfY/hqdefault.jpg",
-       "caption": "Title graphic"
-      },
-      {
-       "image": "",
-       "caption": "Social graphic"
-      },
-      {
-       "image": "",
-       "caption": "Blank slide"
-      },
-      {
-       "image": "",
-       "caption": "Series video"
-      },
-      {
-       "image": "",
-       "caption": "Countdown"
-      }
-     ]
-    },
-    {
-     "title": "Genesis of Faith series pack",
-     "category": "Sermon series",
-     "desc": "A complete series look: title graphic, layered PSD, social graphics, blank slide, series video and countdown.",
-     "price": "Set price",
-     "badge": "",
-     "draft": true,
-     "image": "https://i.ytimg.com/vi/M2e1VQ7OWvU/hqdefault.jpg",
-     "buy": {
-      "label": "Buy and download",
-      "href": ""
-     },
-     "preview": {
-      "label": "Preview",
-      "href": ""
-     },
-     "details": "The full look for the Genesis of Faith series, built for and used on real Sundays. Put the title graphic on your screens and stream, use the blank slide behind scripture and sermon points, post the social graphics to promote the series, and open the service with the video and countdown. Change the text and colors in the included PSD.",
-     "includes": [
-      "Title graphic",
-      "Layered PSD file",
-      "Social graphics",
-      "Blank background slide",
-      "Series video",
-      "Countdown"
-     ],
-     "gallery": [
-      {
-       "image": "https://i.ytimg.com/vi/M2e1VQ7OWvU/hqdefault.jpg",
-       "caption": "Title graphic"
-      },
-      {
-       "image": "",
-       "caption": "Social graphic"
-      },
-      {
-       "image": "",
-       "caption": "Blank slide"
-      },
-      {
-       "image": "",
-       "caption": "Series video"
-      },
-      {
-       "image": "",
-       "caption": "Countdown"
-      }
-     ]
-    }
-   ],
-   "limit": 6
-  },
-  {
-   "type": "process",
-   "nav": "How it works",
-   "title": "Your week, from plan to Sunday",
-   "body": "Onboarding takes one 30 to 45 minute meeting. After that, every week runs the same way.",
-   "items": [
-    {
-     "when": "Early week",
-     "title": "Share your service plan",
-     "body": "Planning Center, chord charts, a Word document or a quick call."
-    },
-    {
-     "when": "Tue to Wed",
-     "title": "Rehearsal file built",
-     "body": "Worship, sermon and media organized in ProPresenter."
-    },
-    {
-     "when": "Midweek",
-     "title": "Rehearse and send changes",
-     "body": "Notes, a recording or a simple form. Your operator doesn't have to be there."
-    },
-    {
-     "when": "Thu to Fri",
-     "title": "Final flow with sermon notes",
-     "body": "Scripture, points and graphics added to the service."
-    },
-    {
-     "when": "Sat until 7 PM",
-     "title": "Final check",
-     "body": "Lyrics, scriptures, layouts and cues reviewed. Late changes still accepted."
-    },
-    {
-     "when": "Sunday",
-     "title": "Open and run",
-     "body": "Your team walks in to a ready-to-run file."
-    }
-   ]
-  },
-  {
-   "type": "plans",
-   "nav": "",
-   "hidden": false,
-   "title": "How a creative project runs",
-   "body": "Graphics, video and training each follow a simple plan, so you always know what happens next.",
-   "tracks": [
-    {
-     "name": "Graphic design",
-     "intro": "For a sermon series or event look.",
-     "items": [
-      {
-       "when": "Step 1",
-       "title": "Brief",
-       "body": "Send the series title, scripture, dates and any references. A short call if it helps."
-      },
-      {
-       "when": "Step 2",
-       "title": "First look",
-       "body": "A first version of the title graphic for your feedback, so the style is settled before the full build."
-      },
-      {
-       "when": "Step 3",
-       "title": "Build the set",
-       "body": "Title graphic, blank slide, social graphics and a layered PSD, matched as one set."
-      },
-      {
-       "when": "Step 4",
-       "title": "Add motion",
-       "body": "A series video and countdown built from the same look."
-      },
-      {
-       "when": "Step 5",
-       "title": "Deliver",
-       "body": "Files organized and loaded into your ProPresenter playlist, ready for Sunday."
-      }
-     ]
-    },
-    {
-     "name": "Video production",
-     "intro": "For a story video, announcement or ministry video.",
-     "items": [
-      {
-       "when": "Step 1",
-       "title": "Plan",
-       "body": "A call to find the story, the people and the place."
-      },
-      {
-       "when": "Step 2",
-       "title": "Shoot",
-       "body": "A two-hour shoot with two cameras and lighting."
-      },
-      {
-       "when": "Step 3",
-       "title": "Edit",
-       "body": "Story cut, color, sound and graphics in post-production."
-      },
-      {
-       "when": "Step 4",
-       "title": "Review",
-       "body": "You watch a draft and send changes."
-      },
-      {
-       "when": "Step 5",
-       "title": "Deliver",
-       "body": "The final video, ready for your screens and stream."
-      }
-     ]
-    },
-    {
-     "name": "Training",
-     "intro": "For volunteer teams and ProPresenter operators.",
-     "items": [
-      {
-       "when": "Step 1",
-       "title": "Assess",
-       "body": "We look at your setup, your team and where Sundays get stuck."
-      },
-      {
-       "when": "Step 2",
-       "title": "Plan",
-       "body": "A training plan sized to your volunteers and your gear."
-      },
-      {
-       "when": "Step 3",
-       "title": "Train",
-       "body": "Hands-on operator training, on site or by screen share."
-      },
-      {
-       "when": "Step 4",
-       "title": "Resources",
-       "body": "Training videos your team can rewatch."
-      },
-      {
-       "when": "Step 5",
-       "title": "Follow up",
-       "body": "Regular refreshers keep new volunteers up to speed."
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "type": "pricing",
-   "nav": "Pricing",
-   "title": "Weekly ProPresenter plans",
-   "body": "Rates are per week of service. Commit for longer and the weekly rate drops. The yearly rate is a 12-month commitment, billed monthly.",
-   "periods": [
-    "Week to week",
-    "Monthly",
-    "Yearly commitment"
-   ],
-   "unit": "per week",
-   "items": [
-    {
-     "name": "Worship",
-     "blurb": "Your worship set, ready to run.",
-     "prices": [
-      "$225",
-      "$200",
-      "$175"
-     ],
-     "featured": false,
-     "features": [
-      "Playlist setup",
-      "Themes and lyrics styled",
-      "Remote management",
-      "Training videos",
-      "Playlist loaded"
-     ],
-     "cta": {
-      "label": "Start with Worship",
-      "href": "https://docs.google.com/forms/d/e/1FAIpQLSeJivQWyoOd6TzskClRNuc--LECAiHO0RFvY22cfigVBu75mQ/viewform?usp=header"
-     }
-    },
-    {
-     "name": "Service",
-     "blurb": "The whole service, built with your graphics.",
-     "prices": [
-      "$300",
-      "$250",
-      "$200"
-     ],
-     "featured": true,
-     "features": [
-      "Everything in Worship",
-      "Crafted sermon slides",
-      "Saturday support",
-      "Quarterly training"
-     ],
-     "cta": {
-      "label": "Start with Service",
-      "href": "https://docs.google.com/forms/d/e/1FAIpQLSf8WNJius1Aw2sDPZJ3jRX8KpuWMmtK4ca-6RKApAxW4L6ucA/viewform?usp=dialog"
-     }
-    },
-    {
-     "name": "Creative",
-     "blurb": "Service prep plus design and video.",
-     "prices": [
-      "$400",
-      "$350",
-      "$300"
-     ],
-     "featured": false,
-     "features": [
-      "Everything in Service",
-      "Monthly meetings",
-      "Basic creative design",
-      "Simple video production"
-     ],
-     "cta": {
-      "label": "Start with Creative",
-      "href": "https://docs.google.com/forms/d/e/1FAIpQLScPYrV1m1S8F_ZbTetiUGDxPFa3NSesqgecaGKYykoi3MhN1A/viewform?usp=dialog"
-     }
-    }
-   ]
-  },
-  {
-   "type": "extras",
-   "nav": "",
-   "title": "One-off projects and events",
-   "body": "",
-   "items": [
-    {
-     "name": "Live event operator",
-     "detail": "ProPresenter machine with 4 outputs, run for your whole event.",
-     "price": "$700 a day, plus travel"
-    },
-    {
-     "name": "Livestream",
-     "detail": "Three-camera switch to YouTube, Facebook or RTMP, with simple graphics.",
-     "price": "$1,000 a day, plus travel"
-    },
-    {
-     "name": "Consulting call",
-     "detail": "Screen-share diagnosis, ideas and upgrade planning.",
-     "price": "$75 an hour"
-    },
-    {
-     "name": "Video editing",
-     "detail": "Website hero videos, ministry videos and announcements.",
-     "price": "Ask for a quote"
-    },
-    {
-     "name": "Team training",
-     "detail": "Operator instruction and on-site city-wide training events.",
-     "price": "Ask for a quote"
-    },
-    {
-     "name": "Websites and email",
-     "detail": "Church websites with update plans, and weekly email updates built from your content.",
-     "price": "Ask for a quote"
-    },
-    {
-     "name": "Digital church signs",
-     "detail": "Content and promotions for your digital signage.",
-     "price": "Ask for a quote"
-    }
-   ],
-   "cta": {
-    "label": "Ask about a project",
-    "href": "https://tidycal.com/worshipflowio"
-   }
-  },
-  {
-   "type": "testimonials",
-   "nav": "",
-   "title": "What church leaders say",
-   "items": [
-    {
-     "quote": "Worship Flow is one of the most talented and servant-hearted teams we've had the privilege of working with. They're not only excellent at what they do\n- they bring love, humility, and a commitment to excellence to every project, all while faithfully serving the Kingdom of God.",
-     "name": "Dave Prentice",
-     "org": "Community Alliance Church"
-    },
-    {
-     "quote": "WorshipFlow absolutely crushed it for our PACE conference. We had 6 stages and over 70 presenters, each with different types of media and content. He built all the ProPresenter files we needed, and it made our jobs and lives so much easier. Everything he delivered was spot-on and completely perfect.",
-     "name": "Arron Hartt",
-     "org": "Church Creative, PACE conference"
-    },
-    {
-     "quote": "Worship Flow has helped us execute Sunday at a high level all while helping and serving our team.",
-     "name": "Jonathan Hazle",
-     "org": "Shandon Baptist Church"
-    },
-    {
-     "quote": "I've been doing this for over 20 years. When I need new tech, new processes, new ideas, inspiration, or when I need help, I go to Worship Flow.",
-     "name": "Jeremy Dickerson",
-     "org": "Vidpraxis"
-    },
-    {
-     "quote": "Worship Flow faithfully serves our church each week, managing ProPresenter, lighting, visuals, and our livestream. His attention to detail creates a seamless worship experience that helps our team and congregation keep our eyes on Jesus.",
-     "name": "Chris Richards",
-     "org": "Steel City Church"
-    }
-   ]
-  },
-  {
-   "type": "about",
-   "nav": "About",
-   "title": "Led by Steve Dirks",
-   "body": "Steve is a production leader with a pastoral heart, based in Pittsburgh. He has run ProPresenter for church plants and multi-campus churches for more than a decade, leads audio, video and lighting teams, and edits video professionally.",
-   "body2": "People first. Purpose behind every cue.",
-   "image": "https://stevedirks.com/assets/steve.jpg",
-   "facts": [
-    "ProPresenter across church plants and multi-campus churches",
-    "Audio, video, lighting, Resi and Church Online",
-    "Automation with ATEM, Lightkey, RossTalk and MIDI",
-    "Volunteer leadership and Planning Center"
-   ],
-   "cta": {
-    "label": "More about Steve",
-    "href": "https://stevedirks.com/"
-   }
-  },
-  {
-   "type": "contact",
-   "nav": "Contact",
-   "title": "Tell us about your Sunday",
-   "body": "A 30 minute call is the fastest way to see whether we're a fit. Bring your questions, your ProPresenter version and whatever is frustrating your team.",
-   "cta1": {
-    "label": "Schedule a call",
-    "href": "https://tidycal.com/worshipflowio"
-   },
-   "cta2": {
-    "label": "Call or text (803) 606-7435",
-    "href": "tel:+18036067435"
-   },
-   "phone": "(803) 606-7435"
-  }
- ],
- "footer": {
-  "note": "Made for the mission.",
-  "owner": "Worship Flow",
-  "socials": [
-   {
-    "label": "YouTube",
-    "href": "https://www.youtube.com/channel/UCxqVhzTT-yW7k5WHt9e0bLg"
-   },
-   {
-    "label": "Instagram",
-    "href": "https://www.instagram.com/worshipflow.io"
-   },
-   {
-    "label": "Facebook",
-    "href": "https://www.facebook.com/profile.php?id=61578954227357"
-   },
-   {
-    "label": "TikTok",
-    "href": "https://www.tiktok.com/@worshipflow.io"
-   }
-  ]
- }
 }
