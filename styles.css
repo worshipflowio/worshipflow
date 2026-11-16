@@ -321,7 +321,7 @@ body.editing .ed-ic{top:0;right:8px;transform:translateY(-62%);opacity:0;pointer
 /* Client logos v2: white logos in a scrolling row; static grid with placeholders while editing */
 :root{--logo-filter:brightness(0) invert(1)}
 :root[data-mode="light"]{--logo-filter:brightness(0)}
-.client img{max-height:clamp(64px,7vw,112px);opacity:0;transition:opacity .2s}
+.client img{width:100%;height:clamp(64px,7vw,112px);max-height:none;object-fit:contain;opacity:0;transition:opacity .2s}
 .client img.logo-ready{opacity:.95}
 .client img.logo-raw{filter:var(--logo-filter)}
 :root[data-mode="light"] .client img{filter:brightness(0)}

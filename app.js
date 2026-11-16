@@ -2,7 +2,7 @@
 (() => {
   const DEFAULT = window.WF_DEFAULT, BLANKS = window.WF_BLANKS;
   const KEY = 'wf-draft', GHKEY = 'wf-github';
-  const BUILD = 11;
+  const BUILD = 12;
   const FB = window.WF_FIREBASE && window.WF_FIREBASE.projectId ? window.WF_FIREBASE : null;
   let adminP; const loadAdmin = () => (adminP = adminP || new Promise((res, rej) => { const sc = document.createElement('script'); sc.src = 'admin.js?v=' + BUILD; sc.onload = () => res(window.WF_ADMIN); sc.onerror = rej; document.head.append(sc); }));
   /* Anonymous visit and click counts for the admin page. No cookies, nothing personal. */
@@ -286,10 +286,16 @@
           if (!cnt) return res(url);
           /* Keep the logo's own light/dark detail: its main tone becomes white, the opposite tone is cut out. */
           const range = hi - lo, light = sum / cnt > 0.55;
+          const V = new Float32Array(n).fill(1);
+          if (range > 0.18) for (let k = 0; k < n; k++) { let v = (L[k] - lo) / range; if (!light) v = 1 - v; V[k] = Math.max(0, Math.min(1, (v - 0.25) / 0.5)); }
+          /* Opposite-tone parts that stand on their own (not enclosed by the main shape) stay visible, e.g. a line of text under a seal. */
+          const out = new Uint8Array(n), stack = [];
+          const push = k => { if (!out[k] && !(A[k] > 0.3 && V[k] > 0.5)) { out[k] = 1; stack.push(k); } };
+          for (let X = 0; X < w; X++) { push(X); push((h - 1) * w + X); } for (let Y = 0; Y < h; Y++) { push(Y * w); push(Y * w + w - 1); }
+          while (stack.length) { const k = stack.pop(), X = k % w; if (X > 0) push(k - 1); if (X < w - 1) push(k + 1); if (k >= w) push(k - w); if (k < n - w) push(k + w); }
           let x0 = w, y0 = h, x1 = -1, y1 = -1;
           for (let k = 0; k < n; k++) {
-            let v = 1; if (range > 0.18) { v = (L[k] - lo) / range; if (!light) v = 1 - v; v = Math.max(0, Math.min(1, (v - 0.25) / 0.5)); }
-            const al = A[k] * v, i = k * 4; px[i] = px[i + 1] = px[i + 2] = 255; px[i + 3] = Math.round(al * 255);
+            const al = out[k] ? A[k] : A[k] * V[k], i = k * 4; px[i] = px[i + 1] = px[i + 2] = 255; px[i + 3] = Math.round(al * 255);
             if (al > 0.1) { const X = k % w, Y = (k - X) / w; if (X < x0) x0 = X; if (X > x1) x1 = X; if (Y < y0) y0 = Y; if (Y > y1) y1 = Y; }
           }
           if (x1 < 0) return res(url);
