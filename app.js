@@ -2,7 +2,7 @@
 (() => {
   const DEFAULT = window.WF_DEFAULT, BLANKS = window.WF_BLANKS;
   const KEY = 'wf-draft', GHKEY = 'wf-github';
-  const BUILD = 10;
+  const BUILD = 11;
   const FB = window.WF_FIREBASE && window.WF_FIREBASE.projectId ? window.WF_FIREBASE : null;
   let adminP; const loadAdmin = () => (adminP = adminP || new Promise((res, rej) => { const sc = document.createElement('script'); sc.src = 'admin.js?v=' + BUILD; sc.onload = () => res(window.WF_ADMIN); sc.onerror = rej; document.head.append(sc); }));
   /* Anonymous visit and click counts for the admin page. No cookies, nothing personal. */
@@ -68,10 +68,17 @@
           ${list(p + '.slides', 'slides', (it, ip, i) => `<div class="slide ${i === ui.live ? 'live' : ''}" data-item="${i}" data-live="${i}" tabindex="0" role="button">${T(ip + '.cue', 'span', 'slide-cue')}${T(ip + '.line')}</div>`, ' data-compact')}
           ${T(p + '.consoleHint', 'p', 'console-hint')}</div></div>`;
     },
-    clients: (s, p) => `<div class="wrap">${list(p + '.items', 'clients-in', (it, ip, i) => {
-      const src = safeImg(it.logo);
-      return `<span class="client" data-item="${i}">${src ? `<img src="${esc(src)}" alt="${esc(it.name)}">` : ''}${!src || edit ? T(ip + '.name') : ''}${edit ? `<button class="ed-s" data-img="${ip}.logo">Logo</button>` : ''}</span>`;
-    }).replace('>', '>' + T(p + '.title', 'span', 'clients-title'))}</div>`,
+    clients: (s, p) => {
+      if (edit) return `<div class="wrap">${list(p + '.items', 'clients-in', (it, ip, i) => {
+        const src = safeImg(it.logo);
+        return `<span class="client" data-item="${i}"><span class="client-logo" data-img="${ip}.logo">${src ? `<img src="${esc(src)}" alt="${esc(it.name)}">` : '<span class="logo-ph">Add logo</span>'}</span>${T(ip + '.name', 'span', 'client-name')}</span>`;
+      }).replace('>', '>' + T(p + '.title', 'span', 'clients-title'))}</div>`;
+      const logos = (s.items || []).filter(it => safeImg(it.logo));
+      const set = hide => logos.map(it => `<span class="client"${hide ? ' aria-hidden="true"' : ''}><img src="${esc(it.logo)}" alt="${hide ? '' : esc(it.name)}"></span>`).join('');
+      const reps = Math.max(1, Math.ceil(8 / Math.max(1, logos.length)));
+      const half = hide => Array.from({ length: reps }, (_, k) => set(hide || k > 0)).join('');
+      return `<div class="wrap">${T(p + '.title', 'p', 'clients-title')}</div><div class="marquee"><div class="marquee-track" style="--dur:${logos.length * reps * 4}s">${half(false)}${half(true)}</div></div>`;
+    },
     services: (s, p) => `<div class="wrap">${head(p)}${list(p + '.items', 'bento', (it, ip, i) => `<article class="card" data-item="${i}">${T(ip + '.title', 'h3')}${T(ip + '.body', 'p', '', true)}${slist(ip + '.tags', 'tags')}</article>`)}</div>`,
     store: (s, p, full, homeId) => {
       const lim = full ? Infinity : (+s.limit || 6), live = (s.items || []).filter(x => edit || !x.draft), total = live.length; let shown = 0;
@@ -124,7 +131,7 @@
   };
   const secIds = () => { const seen = {}; return C.sections.map(s => { let id = slug(s.anchor) || slug(s.nav) || s.type; if (seen[id]) id += '-' + (++seen[id]); else seen[id] = 1; return id; }); };
 
-  const gone = s => s.hidden || (!edit && s.type === 'store' && !(s.items || []).some(x => !x.draft));
+  const gone = s => s.hidden || (!edit && s.type === 'store' && !(s.items || []).some(x => !x.draft)) || (!edit && s.type === 'clients' && !(s.items || []).some(x => safeImg(x.logo)));
   function render() {
     const ids = secIds(), prod = findProduct(), shopI = !prod && location.hash === '#shop' ? C.sections.findIndex(x => x.type === 'store') : -1;
     const adminOn = FB && location.hash === '#admin';
@@ -141,7 +148,7 @@
         ${list('footer.socials', 'socials', (it, ip, i) => `<span data-item="${i}">${L(ip)}</span>`)}
         <span>© ${new Date().getFullYear()} ${T('footer.owner')}</span>${T('footer.note')}${FB ? '<a href="#admin">Admin</a>' : '<a href="#edit" data-act="edit-on">Edit site</a>'}</div></footer>`;
     if (adminOn) loadAdmin().then(A => A.mount($('#admin-root'), { edit: tryEnter, publicView: () => publicView(true), hasDraft: () => hasDraft })).catch(() => ($('#admin-root').textContent = 'The admin tools could not load. Reload to try again.'));
-    applyTheme();
+    applyTheme(); whitenLogos();
     document.body.classList.toggle('editing', edit);
     if (edit && !adminOn) decorate();
     chrome();
@@ -253,8 +260,56 @@
   function imageForm(p) {
     const el = panel('Image', `<label>Upload from this device<input id="ed-i-file" type="file" accept="image/*"></label><label>Or paste an image address<input id="ed-i-url" value="${esc(/^data:/.test(get(p) || '') ? '' : get(p))}" placeholder="https://…"></label>
       <div class="ed-row"><button class="ed-b" data-act="img-clear" data-p="${p}">Remove image</button></div><p>Large photos are resized to 1600px automatically.</p>`);
-    $('#ed-i-file').addEventListener('change', async e => { const f = e.target.files[0]; if (!f) return; try { const u = await readImage(f); mutate(() => set(p, u)); closePanel(); } catch { toast('That file could not be read as an image. Try a JPG, PNG or WebP.'); } });
+    $('#ed-i-file').addEventListener('change', async e => { const f = e.target.files[0]; if (!f) return; try { let u = await readImage(f); if (/^sections\.\d+\.items\.\d+\.logo$/.test(p)) u = await whiteLogo(u); mutate(() => set(p, u)); closePanel(); } catch { toast('That file could not be read as an image. Try a JPG, PNG or WebP.'); } });
     $('#ed-i-url').addEventListener('change', e => mutate(() => set(p, e.target.value.trim())));
+  }
+  /* Client logos: cut out a solid background, trim empty margins, and turn the artwork white. */
+  function whiteLogo(url) {
+    if (/^data:image\/svg/.test(url) || /\.svg(\?|$)/i.test(url)) return Promise.resolve(url);
+    return new Promise(res => {
+      const im = new Image(); im.onerror = () => res(url);
+      im.onload = () => {
+        try {
+          const sc = Math.min(1, 900 / Math.max(im.width, im.height)), w = Math.max(1, Math.round(im.width * sc)), h = Math.max(1, Math.round(im.height * sc));
+          const c = document.createElement('canvas'); c.width = w; c.height = h; const x = c.getContext('2d'); x.drawImage(im, 0, 0, w, h);
+          const d = x.getImageData(0, 0, w, h), px = d.data, n = w * h, at = (X, Y) => (Y * w + X) * 4;
+          const corners = [at(0, 0), at(w - 1, 0), at(0, h - 1), at(w - 1, h - 1)];
+          const opaque = corners.every(i => px[i + 3] > 240);
+          const bg = [0, 1, 2].map(k => corners.reduce((t, i) => t + px[i + k], 0) / 4);
+          const A = new Float32Array(n), L = new Float32Array(n); let lo = 1, hi = 0, sum = 0, cnt = 0;
+          for (let k = 0; k < n; k++) {
+            const i = k * 4; let al = px[i + 3] / 255;
+            if (opaque) al = Math.max(0, Math.min(1, (Math.hypot(px[i] - bg[0], px[i + 1] - bg[1], px[i + 2] - bg[2]) - 24) / 80));
+            const lum = (0.299 * px[i] + 0.587 * px[i + 1] + 0.114 * px[i + 2]) / 255; A[k] = al; L[k] = lum;
+            if (al > 0.5) { if (lum < lo) lo = lum; if (lum > hi) hi = lum; sum += lum; cnt++; }
+          }
+          if (!cnt) return res(url);
+          /* Keep the logo's own light/dark detail: its main tone becomes white, the opposite tone is cut out. */
+          const range = hi - lo, light = sum / cnt > 0.55;
+          let x0 = w, y0 = h, x1 = -1, y1 = -1;
+          for (let k = 0; k < n; k++) {
+            let v = 1; if (range > 0.18) { v = (L[k] - lo) / range; if (!light) v = 1 - v; v = Math.max(0, Math.min(1, (v - 0.25) / 0.5)); }
+            const al = A[k] * v, i = k * 4; px[i] = px[i + 1] = px[i + 2] = 255; px[i + 3] = Math.round(al * 255);
+            if (al > 0.1) { const X = k % w, Y = (k - X) / w; if (X < x0) x0 = X; if (X > x1) x1 = X; if (Y < y0) y0 = Y; if (Y > y1) y1 = Y; }
+          }
+          if (x1 < 0) return res(url);
+          x.putImageData(d, 0, 0);
+          const o = document.createElement('canvas'); o.width = x1 - x0 + 1; o.height = y1 - y0 + 1; o.getContext('2d').drawImage(c, x0, y0, o.width, o.height, 0, 0, o.width, o.height);
+          res(o.toDataURL('image/png'));
+        } catch { res(url); }
+      };
+      im.src = url;
+    });
+  }
+  /* Convert every client logo on the page, including ones uploaded before this feature existed. */
+  const logoCache = new Map();
+  function whitenLogos() {
+    $$('#app .client img').forEach(async img => {
+      const key = img.getAttribute('src'); if (!logoCache.has(key)) logoCache.set(key, whiteLogo(key));
+      const out = await logoCache.get(key);
+      if (out !== key) img.src = out; else img.classList.add('logo-raw');
+      img.classList.add('logo-ready');
+    });
   }
   function readImage(file) {
     return new Promise((res, rej) => {
