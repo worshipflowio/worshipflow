@@ -503,7 +503,7 @@
   {
    "type": "plans",
    "nav": "",
-   "hidden": true,
+   "hidden": false,
    "title": "How a creative project runs",
    "body": "Graphics, video and training each follow a simple plan, so you always know what happens next.",
    "tracks": [
