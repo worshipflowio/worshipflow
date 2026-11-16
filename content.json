@@ -501,6 +501,108 @@
    ]
   },
   {
+   "type": "plans",
+   "nav": "",
+   "hidden": true,
+   "title": "How a creative project runs",
+   "body": "Graphics, video and training each follow a simple plan, so you always know what happens next.",
+   "tracks": [
+    {
+     "name": "Graphic design",
+     "intro": "For a sermon series or event look.",
+     "items": [
+      {
+       "when": "Step 1",
+       "title": "Brief",
+       "body": "Send the series title, scripture, dates and any references. A short call if it helps."
+      },
+      {
+       "when": "Step 2",
+       "title": "First look",
+       "body": "A first version of the title graphic for your feedback, so the style is settled before the full build."
+      },
+      {
+       "when": "Step 3",
+       "title": "Build the set",
+       "body": "Title graphic, blank slide, social graphics and a layered PSD, matched as one set."
+      },
+      {
+       "when": "Step 4",
+       "title": "Add motion",
+       "body": "A series video and countdown built from the same look."
+      },
+      {
+       "when": "Step 5",
+       "title": "Deliver",
+       "body": "Files organized and loaded into your ProPresenter playlist, ready for Sunday."
+      }
+     ]
+    },
+    {
+     "name": "Video production",
+     "intro": "For a story video, announcement or ministry video.",
+     "items": [
+      {
+       "when": "Step 1",
+       "title": "Plan",
+       "body": "A call to find the story, the people and the place."
+      },
+      {
+       "when": "Step 2",
+       "title": "Shoot",
+       "body": "A two-hour shoot with two cameras and lighting."
+      },
+      {
+       "when": "Step 3",
+       "title": "Edit",
+       "body": "Story cut, color, sound and graphics in post-production."
+      },
+      {
+       "when": "Step 4",
+       "title": "Review",
+       "body": "You watch a draft and send changes."
+      },
+      {
+       "when": "Step 5",
+       "title": "Deliver",
+       "body": "The final video, ready for your screens and stream."
+      }
+     ]
+    },
+    {
+     "name": "Training",
+     "intro": "For volunteer teams and ProPresenter operators.",
+     "items": [
+      {
+       "when": "Step 1",
+       "title": "Assess",
+       "body": "We look at your setup, your team and where Sundays get stuck."
+      },
+      {
+       "when": "Step 2",
+       "title": "Plan",
+       "body": "A training plan sized to your volunteers and your gear."
+      },
+      {
+       "when": "Step 3",
+       "title": "Train",
+       "body": "Hands-on operator training, on site or by screen share."
+      },
+      {
+       "when": "Step 4",
+       "title": "Resources",
+       "body": "Training videos your team can rewatch."
+      },
+      {
+       "when": "Step 5",
+       "title": "Follow up",
+       "body": "Regular refreshers keep new volunteers up to speed."
+      }
+     ]
+    }
+   ]
+  },
+  {
    "type": "pricing",
    "nav": "Pricing",
    "title": "Weekly ProPresenter plans",

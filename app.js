@@ -2,7 +2,7 @@
 (() => {
   const DEFAULT = window.WF_DEFAULT, BLANKS = window.WF_BLANKS;
   const KEY = 'wf-draft', GHKEY = 'wf-github';
-  const BUILD = 14;
+  const BUILD = 15;
   const FB = window.WF_FIREBASE && window.WF_FIREBASE.projectId ? window.WF_FIREBASE : null;
   let adminP; const loadAdmin = () => (adminP = adminP || new Promise((res, rej) => { const sc = document.createElement('script'); sc.src = 'admin.js?v=' + BUILD; sc.onload = () => res(window.WF_ADMIN); sc.onerror = rej; document.head.append(sc); }));
   /* Anonymous visit and click counts for the admin page. No cookies, nothing personal. */
@@ -20,11 +20,11 @@
   const trackView = () => { const k = ui.page + (ui.prod ? ui.prod.si + '.' + ui.prod.i : ''); if (k === lastView) return; lastView = k; if (ui.page === 'product') track('product', C.sections[ui.prod.si].items[ui.prod.i].title); track('view', ''); };
   /* If a newer version has been pushed, refresh this browser's saved copy and reload once. */
   (async () => { try { const v = +(await (await fetch('version.txt', { cache: 'no-store' })).text()); if (v > BUILD && sessionStorage.getItem('wf-upd') !== String(v)) { sessionStorage.setItem('wf-upd', String(v)); await Promise.all(['./', 'index.html'].map(u => fetch(u, { cache: 'reload' }))); location.reload(); } } catch { } })();
-  const LABELS = { hero: 'Hero', clients: 'Client logos', services: 'Services', store: 'Media store', process: 'Weekly process', pricing: 'Pricing plans', extras: 'Price list', testimonials: 'Testimonials', about: 'About', contact: 'Contact', text: 'Text block', gallery: 'Gallery' };
+  const LABELS = { hero: 'Hero', clients: 'Client logos', services: 'Services', store: 'Media store', process: 'Weekly process', plans: 'Creative process', pricing: 'Pricing plans', extras: 'Price list', testimonials: 'Testimonials', about: 'About', contact: 'Contact', text: 'Text block', gallery: 'Gallery' };
   const DISPLAY_FONTS = ['Bricolage Grotesque', 'Archivo', 'Sora', 'Unbounded', 'Fraunces', 'DM Serif Display', 'Anton'];
   const BODY_FONTS = ['Instrument Sans', 'Figtree', 'DM Sans', 'IBM Plex Sans', 'Source Serif 4'];
   let C, published, edit = false, hasDraft = false, undo = [], redo = [], pre = null, pausedUntil = 0;
-  const ui = { billing: 0, filter: 'All', live: 0, prod: null, page: 'home' };
+  const ui = { billing: 0, filter: 'All', live: 0, prod: null, page: 'home', plan: 0 };
 
   const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
   const clone = o => JSON.parse(JSON.stringify(o));
@@ -90,6 +90,11 @@
         <div class="product-foot">${T(ip + '.price', 'span', 'price')}<a class="textlink" href="#p-${slug(it.title)}">Details</a>${L(ip + '.buy', 'btn btn-primary btn-small')}</div></article>`)}${!full && total > lim ? `<div class="after"><a class="btn" href="#shop">See all ${total} products</a></div>` : ''}</div>`;
     },
     process: (s, p) => `<div class="wrap">${head(p)}${list(p + '.items', 'week', (it, ip, i) => `<div class="day" data-item="${i}">${T(ip + '.when', 'span', 'day-when')}${T(ip + '.title', 'h3')}${T(ip + '.body', 'p', '', true)}</div>`)}</div>`,
+    plans: (s, p) => {
+      const tr = s.tracks || []; if (ui.plan >= tr.length) ui.plan = 0; const k = ui.plan;
+      return `<div class="wrap">${head(p)}<div class="toggle" role="group" aria-label="Type of work">${tr.map((t, i) => `<button data-act="plan" data-v="${i}" aria-pressed="${i === k}">${esc(t.name)}</button>`).join('')}</div>
+        ${tr[k] ? `${T(`${p}.tracks.${k}.intro`, 'p', 'lede plan-intro', true)}${list(`${p}.tracks.${k}.items`, 'week', (it, ip, i) => `<div class="day" data-item="${i}">${T(ip + '.when', 'span', 'day-when')}${T(ip + '.title', 'h3')}${T(ip + '.body', 'p', '', true)}</div>`)}` : ''}</div>`;
+    },
     pricing: (s, p) => {
       const per = s.periods || []; if (ui.billing >= per.length) ui.billing = 0;
       return `<div class="wrap">${head(p)}${per.length > 1 ? `<div class="toggle" role="group" aria-label="Billing period">${per.map((x, i) => `<button data-act="billing" data-v="${i}" aria-pressed="${i === ui.billing}">${esc(x)}</button>`).join('')}</div>` : ''}
@@ -350,8 +355,10 @@
     const el = panel(LABELS[s.type] + ' settings', `<label>Name in the top menu (empty keeps it out of the menu)<input id="ed-s-nav" value="${esc(s.nav)}"></label>
       <label>Background<select id="ed-s-bg"><option value="">Page background</option><option value="tint" ${s.bg === 'tint' ? 'selected' : ''}>Raised panel</option></select></label>
       ${s.type === 'store' ? `<label>Products shown on the home page (newest first)<input id="ed-s-lim" type="number" min="1" max="60" value="${+s.limit || 6}"></label><p>The rest appear on the full store page, behind the "See all products" button. Drag order is newest first: new products are added at the front.</p>` : ''}
+      ${s.tracks ? `<label>Tabs, separated by commas<input id="ed-s-tr" value="${esc(s.tracks.map(t => t.name).join(', '))}"></label><p>Rename a tab here, add a new one at the end, or remove one. Each tab has its own steps.</p>` : ''}
       ${s.periods ? `<label>Billing options, separated by commas<input id="ed-s-per" value="${esc(s.periods.join(', '))}"></label><p>Each plan keeps one price per option. Switch the toggle on the page, then click the price to change it.</p>` : ''}`);
-    bind(el, () => { s.nav = $('#ed-s-nav').value; s.bg = $('#ed-s-bg').value; if (s.type === 'store') s.limit = Math.max(1, +$('#ed-s-lim').value || 6); if (s.periods) { s.periods = $('#ed-s-per').value.split(',').map(x => x.trim()).filter(Boolean); s.items.forEach(it => { while (it.prices.length < s.periods.length) it.prices.push(it.prices.at(-1) || '$0'); }); } });
+    bind(el, () => { s.nav = $('#ed-s-nav').value; s.bg = $('#ed-s-bg').value; if (s.type === 'store') s.limit = Math.max(1, +$('#ed-s-lim').value || 6);
+      if (s.tracks) { const names = $('#ed-s-tr').value.split(',').map(x => x.trim()).filter(Boolean); if (names.length) s.tracks = names.map((nm, i) => Object.assign(s.tracks[i] || { intro: '', items: [{ when: 'Step 1', title: 'First step', body: 'Describe what happens here.' }] }, { name: nm })); } if (s.periods) { s.periods = $('#ed-s-per').value.split(',').map(x => x.trim()).filter(Boolean); s.items.forEach(it => { while (it.prices.length < s.periods.length) it.prices.push(it.prices.at(-1) || '$0'); }); } });
   }
   function themeForm() {
     const t = C.theme; begin();
@@ -421,6 +428,7 @@
     menu: () => $('#nav-links').classList.toggle('open'),
     filter: d => { ui.filter = d.v; render(); },
     billing: d => { ui.billing = +d.v; render(); },
+    plan: d => { ui.plan = +d.v; render(); },
     'edit-on': () => tryEnter(), 'edit-off': () => leave(), 'pub-on': () => publicView(true), 'pub-off': () => publicView(false),
     undo: () => { if (!undo.length) return; redo.push(JSON.stringify(C)); C = JSON.parse(undo.pop()); save(); render(); },
     redo: () => { if (!redo.length) return; undo.push(JSON.stringify(C)); C = JSON.parse(redo.pop()); save(); render(); },
