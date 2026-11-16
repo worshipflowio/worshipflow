@@ -346,3 +346,8 @@ body.editing .ed-ic{top:0;right:8px;transform:translateY(-62%);opacity:0;pointer
 @media (min-width:901px){.week{grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr)}}
 .plan-intro{margin:-6px 0 26px}
 .plans .toggle{margin-bottom:22px}
+/* Footer social icons in the accent color */
+.socials{gap:8px 14px;align-items:center}
+.soc{display:grid;place-items:center;width:44px;height:44px;border-radius:50%;border:1.5px solid var(--line);text-decoration:none;transition:border-color .15s,transform .15s}
+.soc i{display:block;width:20px;height:20px;background:var(--accent-ink);-webkit-mask:var(--i) center/contain no-repeat;mask:var(--i) center/contain no-repeat}
+.soc:hover{border-color:var(--accent-ink);transform:translateY(-1px)}

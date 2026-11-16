@@ -2,7 +2,7 @@
 (() => {
   const DEFAULT = window.WF_DEFAULT, BLANKS = window.WF_BLANKS;
   const KEY = 'wf-draft', GHKEY = 'wf-github';
-  const BUILD = 15;
+  const BUILD = 16;
   const FB = window.WF_FIREBASE && window.WF_FIREBASE.projectId ? window.WF_FIREBASE : null;
   let adminP; const loadAdmin = () => (adminP = adminP || new Promise((res, rej) => { const sc = document.createElement('script'); sc.src = 'admin.js?v=' + BUILD; sc.onload = () => res(window.WF_ADMIN); sc.onerror = rej; document.head.append(sc); }));
   /* Anonymous visit and click counts for the admin page. No cookies, nothing personal. */
@@ -143,6 +143,7 @@
   };
   const secIds = () => { const seen = {}; return C.sections.map(s => { let id = slug(s.anchor) || slug(s.nav) || s.type; if (seen[id]) id += '-' + (++seen[id]); else seen[id] = 1; return id; }); };
 
+  const socialIcon = u => { const m = String(u || '').toLowerCase().match(/(youtube|youtu\.be|instagram|facebook|fb\.com|tiktok|twitter|\/\/x\.com|\/\/www\.x\.com|vimeo|threads|spotify|linkedin)/); if (!m) return ''; const k = m[1]; return k === 'youtu.be' ? 'youtube' : k === 'fb.com' ? 'facebook' : /x\.com|twitter/.test(k) ? 'x' : k; };
   const gone = s => s.hidden || (!edit && s.type === 'store' && !(s.items || []).some(x => !x.draft)) || (!edit && s.type === 'clients' && !(s.items || []).some(x => safeImg(x.logo)));
   function render() {
     const ids = secIds(), prod = findProduct(), shopI = !prod && location.hash === '#shop' ? C.sections.findIndex(x => x.type === 'store') : -1;
@@ -157,7 +158,7 @@
         ${L('nav.cta', 'btn btn-primary btn-small nav-cta')}<button class="nav-toggle" data-act="menu" aria-controls="nav-links" aria-label="Menu">Menu</button></div></header>
       <main id="top">${adminOn ? '<section class="sec admin"><div class="wrap" id="admin-root"></div></section>' : prod ? productPage(prod, ids) : shopI >= 0 ? `<section class="sec store">${R.store(C.sections[shopI], 'sections.' + shopI, true, ids[shopI])}</section>` : C.sections.map((s, i) => (R[s.type] ? `<section class="sec ${s.type} ${s.bg === 'tint' ? 'sec-tint' : ''} ${gone(s) ? 'is-hidden' : ''}" id="${ids[i]}" data-sec="${i}">${R[s.type](s, 'sections.' + i)}</section>` : '')).join('')}</main>
       <footer class="foot"><div class="wrap foot-in"><span class="brand"><i class="brand-mark"></i>${esc(C.brand.name)}</span>
-        ${list('footer.socials', 'socials', (it, ip, i) => `<span data-item="${i}">${L(ip)}</span>`)}
+        ${list('footer.socials', 'socials', (it, ip, i) => { const ic = socialIcon(it.href), h = safeUrl(it.href); return `<span data-item="${i}">${ic ? `<a class="soc" data-l="${ip}" href="${esc(h || '#')}"${h ? '' : ' data-empty'} target="_blank" rel="noopener" aria-label="${esc(it.label)}" title="${esc(it.label)}"><i style="--i:url(icons/${ic}.svg)"></i></a>` : L(ip)}</span>`; })}
         <span>© ${new Date().getFullYear()} ${T('footer.owner')}</span>${T('footer.note')}${FB ? '<a href="#admin">Admin</a>' : '<a href="#edit" data-act="edit-on">Edit site</a>'}</div></footer>`;
     if (adminOn) loadAdmin().then(A => A.mount($('#admin-root'), { edit: tryEnter, publicView: () => publicView(true), hasDraft: () => hasDraft })).catch(() => ($('#admin-root').textContent = 'The admin tools could not load. Reload to try again.'));
     applyTheme(); whitenLogos();
