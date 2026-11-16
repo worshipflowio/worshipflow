@@ -82,27 +82,27 @@
    "items": [
     {
      "name": "Community Alliance Church",
-     "logo": ""
+     "logo": "media/pvzlte4ec.webp"
     },
     {
      "name": "Shandon Baptist Church",
-     "logo": ""
+     "logo": "media/rd7jkm33s.webp"
     },
     {
      "name": "Steel City Church",
-     "logo": ""
+     "logo": "media/1pdbqrz2ug.webp"
     },
     {
      "name": "Streamline",
-     "logo": ""
+     "logo": "media/efuszb3qo.webp"
     },
     {
      "name": "FCA",
-     "logo": ""
+     "logo": "media/1bofwtq4qg.webp"
     },
     {
      "name": "WPA",
-     "logo": ""
+     "logo": "media/md5xv760g.webp"
     }
    ]
   },
@@ -216,106 +216,251 @@
   {
    "type": "store",
    "nav": "Media store",
-   "title": "Media you can use this Sunday",
-   "body": "Templates, motion and graphics built for real services. Buy once, download, and drop them into your playlist.",
+   "title": "Sermon series media packs",
+   "body": "Series looks built for real Sundays. Each pack has the title graphic, PSD, socials, blank slide, video and countdown.",
    "items": [
     {
-     "title": "Sermon series graphics pack",
-     "category": "Graphics",
-     "desc": "Title slide, content slide, lower third and social squares in one matched set.",
-     "price": "$29",
-     "badge": "Sample listing",
-     "image": "",
+     "title": "Romans 8: Declared series pack",
+     "category": "Sermon series",
+     "desc": "A complete series look: title graphic, layered PSD, social graphics, blank slide, series video and countdown.",
+     "price": "Set price",
+     "badge": "",
+     "image": "https://i.ytimg.com/vi/J5aq4ji39xo/hqdefault.jpg",
      "buy": {
       "label": "Buy and download",
-      "href": "#contact"
+      "href": ""
      },
      "preview": {
       "label": "Preview",
       "href": ""
-     }
+     },
+     "details": "The full look for the Romans 8: Declared series, built for and used on real Sundays. Put the title graphic on your screens and stream, use the blank slide behind scripture and sermon points, post the social graphics to promote the series, and open the service with the video and countdown. Change the text and colors in the included PSD.",
+     "includes": [
+      "Title graphic",
+      "Layered PSD file",
+      "Social graphics",
+      "Blank background slide",
+      "Series video",
+      "Countdown"
+     ],
+     "gallery": [
+      {
+       "image": "https://i.ytimg.com/vi/J5aq4ji39xo/hqdefault.jpg",
+       "caption": "Title graphic"
+      },
+      {
+       "image": "",
+       "caption": "Social graphic"
+      },
+      {
+       "image": "",
+       "caption": "Blank slide"
+      },
+      {
+       "image": "",
+       "caption": "Series video"
+      },
+      {
+       "image": "",
+       "caption": "Countdown"
+      }
+     ],
+     "draft": true
     },
     {
-     "title": "Clean lyric theme set",
-     "category": "ProPresenter",
-     "desc": "ProPresenter themes for lyrics, scripture and sermon points, sized for main screen and stream.",
-     "price": "$19",
-     "badge": "Sample listing",
-     "image": "",
+     "title": "Rescue series pack",
+     "category": "Sermon series",
+     "desc": "A complete series look: title graphic, layered PSD, social graphics, blank slide, series video and countdown.",
+     "price": "Set price",
+     "badge": "",
+     "image": "https://i.ytimg.com/vi/CRj1aFITWM8/hqdefault.jpg",
      "buy": {
       "label": "Buy and download",
-      "href": "#contact"
+      "href": ""
      },
      "preview": {
       "label": "Preview",
       "href": ""
-     }
+     },
+     "details": "The full look for the Rescue series, built for and used on real Sundays. Put the title graphic on your screens and stream, use the blank slide behind scripture and sermon points, post the social graphics to promote the series, and open the service with the video and countdown. Change the text and colors in the included PSD.",
+     "includes": [
+      "Title graphic",
+      "Layered PSD file",
+      "Social graphics",
+      "Blank background slide",
+      "Series video",
+      "Countdown"
+     ],
+     "gallery": [
+      {
+       "image": "https://i.ytimg.com/vi/CRj1aFITWM8/hqdefault.jpg",
+       "caption": "Title graphic"
+      },
+      {
+       "image": "",
+       "caption": "Social graphic"
+      },
+      {
+       "image": "",
+       "caption": "Blank slide"
+      },
+      {
+       "image": "",
+       "caption": "Series video"
+      },
+      {
+       "image": "",
+       "caption": "Countdown"
+      }
+     ],
+     "draft": true
     },
     {
-     "title": "Slow haze motion backgrounds",
-     "category": "Motion",
-     "desc": "Ten seamless loops in 4K that sit quietly behind lyrics.",
-     "price": "$24",
-     "badge": "Sample listing",
-     "image": "",
+     "title": "The Happy Life series pack",
+     "category": "Sermon series",
+     "desc": "A complete series look: title graphic, layered PSD, social graphics, blank slide, series video and countdown.",
+     "price": "Set price",
+     "badge": "",
+     "image": "https://i.ytimg.com/vi/cwK5-n9YvZo/hqdefault.jpg",
      "buy": {
       "label": "Buy and download",
-      "href": "#contact"
+      "href": ""
      },
      "preview": {
       "label": "Preview",
       "href": ""
-     }
+     },
+     "details": "The full look for the The Happy Life series, built for and used on real Sundays. Put the title graphic on your screens and stream, use the blank slide behind scripture and sermon points, post the social graphics to promote the series, and open the service with the video and countdown. Change the text and colors in the included PSD.",
+     "includes": [
+      "Title graphic",
+      "Layered PSD file",
+      "Social graphics",
+      "Blank background slide",
+      "Series video",
+      "Countdown"
+     ],
+     "gallery": [
+      {
+       "image": "https://i.ytimg.com/vi/cwK5-n9YvZo/hqdefault.jpg",
+       "caption": "Title graphic"
+      },
+      {
+       "image": "",
+       "caption": "Social graphic"
+      },
+      {
+       "image": "",
+       "caption": "Blank slide"
+      },
+      {
+       "image": "",
+       "caption": "Series video"
+      },
+      {
+       "image": "",
+       "caption": "Countdown"
+      }
+     ],
+     "draft": true
     },
     {
-     "title": "Five-minute countdown",
-     "category": "Motion",
-     "desc": "A pre-service countdown with matching welcome and announcement slides.",
-     "price": "$12",
-     "badge": "Sample listing",
-     "image": "",
+     "title": "Formed series pack",
+     "category": "Sermon series",
+     "desc": "A complete series look: title graphic, layered PSD, social graphics, blank slide, series video and countdown.",
+     "price": "Set price",
+     "badge": "",
+     "image": "https://i.ytimg.com/vi/mCbsLCS70cs/hqdefault.jpg",
      "buy": {
       "label": "Buy and download",
-      "href": "#contact"
+      "href": ""
      },
      "preview": {
       "label": "Preview",
       "href": ""
-     }
+     },
+     "details": "The full look for the Formed series, built for and used on real Sundays. Put the title graphic on your screens and stream, use the blank slide behind scripture and sermon points, post the social graphics to promote the series, and open the service with the video and countdown. Change the text and colors in the included PSD.",
+     "includes": [
+      "Title graphic",
+      "Layered PSD file",
+      "Social graphics",
+      "Blank background slide",
+      "Series video",
+      "Countdown"
+     ],
+     "gallery": [
+      {
+       "image": "https://i.ytimg.com/vi/mCbsLCS70cs/hqdefault.jpg",
+       "caption": "Title graphic"
+      },
+      {
+       "image": "",
+       "caption": "Social graphic"
+      },
+      {
+       "image": "",
+       "caption": "Blank slide"
+      },
+      {
+       "image": "",
+       "caption": "Series video"
+      },
+      {
+       "image": "",
+       "caption": "Countdown"
+      }
+     ],
+     "draft": true
     },
     {
-     "title": "ATEM and Lightkey macro starter",
-     "category": "Automation",
-     "desc": "RossTalk and MIDI actions you can import, with a setup walkthrough video.",
-     "price": "$39",
-     "badge": "Sample listing",
-     "image": "",
+     "title": "Songs of the Women series pack",
+     "category": "Sermon series",
+     "desc": "A complete series look: title graphic, layered PSD, social graphics, blank slide, series video and countdown.",
+     "price": "Set price",
+     "badge": "",
+     "image": "https://i.ytimg.com/vi/W5EYy8ONJ4s/hqdefault.jpg",
      "buy": {
       "label": "Buy and download",
-      "href": "#contact"
+      "href": ""
      },
      "preview": {
       "label": "Preview",
       "href": ""
-     }
-    },
-    {
-     "title": "Christmas service bundle",
-     "category": "Graphics",
-     "desc": "Stills, motion and lower thirds for Advent and Christmas Eve.",
-     "price": "$35",
-     "badge": "Sample listing",
-     "image": "",
-     "buy": {
-      "label": "Buy and download",
-      "href": "#contact"
      },
-     "preview": {
-      "label": "Preview",
-      "href": ""
-     }
+     "details": "The full look for the Songs of the Women series, built for and used on real Sundays. Put the title graphic on your screens and stream, use the blank slide behind scripture and sermon points, post the social graphics to promote the series, and open the service with the video and countdown. Change the text and colors in the included PSD.",
+     "includes": [
+      "Title graphic",
+      "Layered PSD file",
+      "Social graphics",
+      "Blank background slide",
+      "Series video",
+      "Countdown"
+     ],
+     "gallery": [
+      {
+       "image": "https://i.ytimg.com/vi/W5EYy8ONJ4s/hqdefault.jpg",
+       "caption": "Title graphic"
+      },
+      {
+       "image": "",
+       "caption": "Social graphic"
+      },
+      {
+       "image": "",
+       "caption": "Blank slide"
+      },
+      {
+       "image": "",
+       "caption": "Series video"
+      },
+      {
+       "image": "",
+       "caption": "Countdown"
+      }
+     ],
+     "draft": true
     }
-   ]
+   ],
+   "limit": 6
   },
   {
    "type": "process",
