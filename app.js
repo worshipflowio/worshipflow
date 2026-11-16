@@ -40,7 +40,7 @@
     }
     return cp(mine);
   }
-  const BUILD = 17;
+  const BUILD = 18;
   const FB = window.WF_FIREBASE && window.WF_FIREBASE.projectId ? window.WF_FIREBASE : null;
   let adminP; const loadAdmin = () => (adminP = adminP || new Promise((res, rej) => { const sc = document.createElement('script'); sc.src = 'admin.js?v=' + BUILD; sc.onload = () => res(window.WF_ADMIN); sc.onerror = rej; document.head.append(sc); }));
   /* Anonymous visit and click counts for the admin page. No cookies, nothing personal. */
@@ -100,7 +100,7 @@
       const sl = s.slides || []; if (ui.live >= sl.length) ui.live = 0;
       return `<div class="wrap hero-grid">
         <div class="hero-copy">${T(p + '.kicker', 'p', 'kicker')}${T(p + '.title', 'h1')}${T(p + '.body', 'p', 'lede', true)}
-          <div class="btns">${L(p + '.cta1', 'btn btn-primary')}${L(p + '.cta2', 'btn')}</div>${T(p + '.note', 'p', 'hero-note')}</div>
+          <div class="btns">${L(p + '.cta1', 'btn btn-primary')}${L(p + '.cta2', 'btn')}</div>${(() => { const ci = C.sections.findIndex(x => x.type === 'contact' && !x.hidden), h = safeUrl(s.noteHref !== undefined ? s.noteHref : (ci >= 0 ? '#' + secIds()[ci] : '')); return edit || !h || !s.note ? T(p + '.note', 'p', 'hero-note') : `<a class="hero-note hero-note-link" href="${esc(h)}">${esc(s.note)}</a>`; })()}</div>
         <div class="console"><div class="console-top"><i class="tally"></i>${T(p + '.consoleTitle', 'b')}<span>Live output</span></div>
           <div class="output"><div class="out-line" aria-live="off">${esc(sl[ui.live]?.line)}</div></div>
           ${list(p + '.slides', 'slides', (it, ip, i) => `<div class="slide ${i === ui.live ? 'live' : ''}" data-item="${i}" data-live="${i}" tabindex="0" role="button">${T(ip + '.cue', 'span', 'slide-cue')}${T(ip + '.line')}</div>`, ' data-compact')}
@@ -394,9 +394,10 @@
     const el = panel(LABELS[s.type] + ' settings', `<label>Name in the top menu (empty keeps it out of the menu)<input id="ed-s-nav" value="${esc(s.nav)}"></label>
       <label>Background<select id="ed-s-bg"><option value="">Page background</option><option value="tint" ${s.bg === 'tint' ? 'selected' : ''}>Raised panel</option></select></label>
       ${s.type === 'store' ? `<label>Products shown on the home page (newest first)<input id="ed-s-lim" type="number" min="1" max="60" value="${+s.limit || 6}"></label><p>The rest appear on the full store page, behind the "See all products" button. Drag order is newest first: new products are added at the front.</p>` : ''}
+      ${s.type === 'hero' ? `<label>Where the small line under the buttons links to<input id="ed-s-note" value="${esc(s.noteHref !== undefined ? s.noteHref : '#contact')}" placeholder="#contact"></label><p>Use #contact to jump to your contact section, or tel:+18036067435 to start a call. Leave empty for plain text.</p>` : ''}
       ${s.tracks ? `<label>Tabs, separated by commas<input id="ed-s-tr" value="${esc(s.tracks.map(t => t.name).join(', '))}"></label><p>Rename a tab here, add a new one at the end, or remove one. Each tab has its own steps.</p>` : ''}
       ${s.periods ? `<label>Billing options, separated by commas<input id="ed-s-per" value="${esc(s.periods.join(', '))}"></label><p>Each plan keeps one price per option. Switch the toggle on the page, then click the price to change it.</p>` : ''}`);
-    bind(el, () => { s.nav = $('#ed-s-nav').value; s.bg = $('#ed-s-bg').value; if (s.type === 'store') s.limit = Math.max(1, +$('#ed-s-lim').value || 6);
+    bind(el, () => { s.nav = $('#ed-s-nav').value; s.bg = $('#ed-s-bg').value; if (s.type === 'hero') s.noteHref = $('#ed-s-note').value.trim(); if (s.type === 'store') s.limit = Math.max(1, +$('#ed-s-lim').value || 6);
       if (s.tracks) { const names = $('#ed-s-tr').value.split(',').map(x => x.trim()).filter(Boolean); if (names.length) s.tracks = names.map((nm, i) => Object.assign(s.tracks[i] || { intro: '', items: [{ when: 'Step 1', title: 'First step', body: 'Describe what happens here.' }] }, { name: nm })); } if (s.periods) { s.periods = $('#ed-s-per').value.split(',').map(x => x.trim()).filter(Boolean); s.items.forEach(it => { while (it.prices.length < s.periods.length) it.prices.push(it.prices.at(-1) || '$0'); }); } });
   }
   function themeForm() {

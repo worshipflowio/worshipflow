@@ -351,3 +351,5 @@ body.editing .ed-ic{top:0;right:8px;transform:translateY(-62%);opacity:0;pointer
 .soc{display:grid;place-items:center;width:44px;height:44px;border-radius:50%;border:1.5px solid var(--line);text-decoration:none;transition:border-color .15s,transform .15s}
 .soc i{display:block;width:20px;height:20px;background:var(--accent-ink);-webkit-mask:var(--i) center/contain no-repeat;mask:var(--i) center/contain no-repeat}
 .soc:hover{border-color:var(--accent-ink);transform:translateY(-1px)}
+.hero-note-link{text-decoration:underline;text-underline-offset:4px;text-decoration-color:var(--accent-ink)}
+.hero-note-link:hover{color:var(--text)}
