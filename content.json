@@ -894,11 +894,11 @@
    "type": "pricing",
    "nav": "Pricing",
    "title": "Weekly ProPresenter plans",
-   "body": "Price per week. Commit for longer and the weekly rate drops.",
+   "body": "Rates are per week of service. Commit for longer and the weekly rate drops. The yearly rate is a 12-month commitment, billed monthly.",
    "periods": [
-    "Billed weekly",
-    "Billed monthly",
-    "Billed yearly"
+    "Week to week",
+    "Monthly",
+    "Yearly commitment"
    ],
    "unit": "per week",
    "items": [
@@ -940,7 +940,7 @@
      ],
      "cta": {
       "label": "Start with Service",
-      "href": "https://docs.google.com/forms/d/e/1FAIpQLSeJivQWyoOd6TzskClRNuc--LECAiHO0RFvY22cfigVBu75mQ/viewform?usp=header"
+      "href": "https://docs.google.com/forms/d/e/1FAIpQLSf8WNJius1Aw2sDPZJ3jRX8KpuWMmtK4ca-6RKApAxW4L6ucA/viewform?usp=dialog"
      }
     },
     {
@@ -960,7 +960,7 @@
      ],
      "cta": {
       "label": "Start with Creative",
-      "href": "https://docs.google.com/forms/d/e/1FAIpQLSeJivQWyoOd6TzskClRNuc--LECAiHO0RFvY22cfigVBu75mQ/viewform?usp=header"
+      "href": "https://docs.google.com/forms/d/e/1FAIpQLScPYrV1m1S8F_ZbTetiUGDxPFa3NSesqgecaGKYykoi3MhN1A/viewform?usp=dialog"
      }
     }
    ]
