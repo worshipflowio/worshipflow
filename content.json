@@ -26,7 +26,7 @@
   {
    "type": "hero",
    "nav": "",
-   "kicker": "ProPresenter, video and creative media for churches",
+   "kicker": "ProPresenter, Video and Creative media for churches",
    "title": "Open the file. Run Sunday.",
    "body": "Worship Flow is your church's ProPresenter and creative partner. Playlists, lyrics, sermon slides, video and graphics are prepared during the week, so your volunteers walk in to a service that is ready to run.",
    "cta1": {
@@ -37,7 +37,7 @@
     "label": "Schedule a call",
     "href": "https://tidycal.com/worshipflowio"
    },
-   "note": "Last-minute changes are welcome until Saturday at 7 PM.",
+   "note": "Last-minute changes happen; call or text us if you need help.",
    "consoleTitle": "Sunday service",
    "consoleHint": "Click any slide to take it live",
    "slides": [
