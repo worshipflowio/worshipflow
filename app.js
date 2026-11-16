@@ -1,8 +1,46 @@
 /* Worship Flow site: renders the page from content, and includes the built-in editor (open with #edit). */
 (() => {
   const DEFAULT = window.WF_DEFAULT, BLANKS = window.WF_BLANKS;
-  const KEY = 'wf-draft', GHKEY = 'wf-github';
-  const BUILD = 16;
+  const KEY = 'wf-draft', GHKEY = 'wf-github', BASEKEY = 'wf-base';
+  /* Three-way merge, so edits made in this browser combine with changes made elsewhere instead of overwriting them. */
+  const eq = (a, b) => JSON.stringify(a) === JSON.stringify(b);
+  const isObj = x => x && typeof x === 'object' && !Array.isArray(x);
+  const cp = x => (x === undefined ? x : JSON.parse(JSON.stringify(x)));
+  const sameItem = (a, b) => eq(a, b) || (isObj(a) && isObj(b) && (a.type !== undefined || b.type !== undefined ? a.type === b.type : ['title', 'name', 'label', 'caption', 'quote', 'when', 'cue'].some(k => a[k] !== undefined && a[k] === b[k])));
+  function alignArr(base, other) { const map = []; let b = 0; for (const el of other) { let j = -1; for (let k = b; k < base.length; k++) if (sameItem(el, base[k])) { j = k; break; } map.push(j); if (j >= 0) b = j + 1; } return map; }
+  function mergeList(base, mine, theirs) {
+    const mM = alignArr(base, mine), mT = alignArr(base, theirs), tBy = new Map(), ins = new Map(); let last = -1;
+    theirs.forEach((t, i) => { if (mT[i] >= 0) { last = mT[i]; tBy.set(last, t); } else { if (!ins.has(last)) ins.set(last, []); ins.get(last).push(t); } });
+    const out = [], emit = j => { if (ins.has(j)) { ins.get(j).forEach(t => out.push(cp(t))); ins.delete(j); } }; let started = false;
+    mine.forEach((m, k) => {
+      const j = mM[k]; if (j < 0) { out.push(cp(m)); return; }
+      if (!started) { emit(-1); started = true; }
+      if (tBy.has(j)) out.push(merge3(base[j], m, tBy.get(j))); else if (!eq(m, base[j])) out.push(cp(m));
+      emit(j);
+    });
+    [...ins.keys()].sort((x, y) => x - y).forEach(emit);
+    return out;
+  }
+  function merge3(base, mine, theirs) {
+    if (eq(mine, base)) return cp(theirs);
+    if (eq(theirs, base) || eq(mine, theirs)) return cp(mine);
+    if (isObj(base) && isObj(mine) && isObj(theirs)) {
+      const out = {};
+      for (const k of new Set([...Object.keys(mine), ...Object.keys(theirs)])) {
+        const inB = k in base, inM = k in mine, inT = k in theirs;
+        if (inM && inT) out[k] = merge3(inB ? base[k] : undefined, mine[k], theirs[k]);
+        else if (inM) { if (!inB || !eq(mine[k], base[k])) out[k] = cp(mine[k]); }
+        else if (!inB || !eq(theirs[k], base[k])) out[k] = cp(theirs[k]);
+      }
+      return out;
+    }
+    if (Array.isArray(base) && Array.isArray(mine) && Array.isArray(theirs)) {
+      if (mine.length === base.length && theirs.length === base.length) return mine.map((m, i) => merge3(base[i], m, theirs[i]));
+      return mergeList(base, mine, theirs);
+    }
+    return cp(mine);
+  }
+  const BUILD = 17;
   const FB = window.WF_FIREBASE && window.WF_FIREBASE.projectId ? window.WF_FIREBASE : null;
   let adminP; const loadAdmin = () => (adminP = adminP || new Promise((res, rej) => { const sc = document.createElement('script'); sc.src = 'admin.js?v=' + BUILD; sc.onload = () => res(window.WF_ADMIN); sc.onerror = rej; document.head.append(sc); }));
   /* Anonymous visit and click counts for the admin page. No cookies, nothing personal. */
@@ -212,7 +250,7 @@
       if (FB && location.hash !== '#admin') location.hash = '#admin'; else render();
     }
   }
-  const save = () => { if (pubView) return; hasDraft = true; if (!lsSet(KEY, C)) toast('This draft is too large to autosave in the browser. Publish, or download a backup.'); };
+  const save = () => { if (pubView) return; if (!hasDraft) lsSet(BASEKEY, published); hasDraft = true; if (!lsSet(KEY, C)) toast('This draft is too large to autosave in the browser. Publish, or download a backup.'); };
   const mutate = fn => { undo.push(JSON.stringify(C)); if (undo.length > 60) undo.shift(); redo = []; fn(); save(); render(); };
   const begin = () => { undo.push(JSON.stringify(C)); redo = []; };
   let toastT; const toast = m => { let t = $('.ed-toast'); if (!t) { t = document.createElement('div'); t.className = 'ed-toast'; t.setAttribute('role', 'status'); document.body.append(t); } t.textContent = m; t.hidden = false; clearTimeout(toastT); toastT = setTimeout(() => (t.hidden = true), 4200); };
@@ -411,9 +449,15 @@
       const walk = async o => { for (const k of Object.keys(o)) { const v = o[k]; if (typeof v === 'string' && v.startsWith('data:image/')) { const m = v.match(/^data:image\/([a-z0-9]+)[^;]*;base64,(.+)$/i); if (!m) continue; const name = `media/${hash(m[2])}.${m[1].replace('jpeg', 'jpg')}`; log('Uploading image ' + (++n)); await put(name, m[2], 'Add image', true); o[k] = name; } else if (v && typeof v === 'object') await walk(v); } };
       await walk(out);
       log('Saving content');
-      await put('content.json', btoa(unescape(encodeURIComponent(JSON.stringify(out, null, 1)))), 'Update site content');
-      published = out; hasDraft = false; lsSet(KEY, null);
-      log('Published. The live site updates in about a minute.'); toast('Published.');
+      let final = out, sha;
+      const cur = await fetch(`${api}content.json?ref=${encodeURIComponent(cfg.branch)}`, { headers: H, cache: 'no-store' });
+      if (cur.ok) { const j = await cur.json(); sha = j.sha; try { const remote = JSON.parse(decodeURIComponent(escape(atob(String(j.content || '').replace(/\s/g, ''))))); if (Array.isArray(remote.sections) && !eq(remote, published)) { final = merge3(published, out, remote); log('Combined your edits with changes made elsewhere since you opened the editor.'); } } catch { } }
+      else if (cur.status !== 404) throw new Error(`GitHub answered ${cur.status}. Check the username, repository name and token.`);
+      const pr = await fetch(api + 'content.json', { method: 'PUT', headers: H, body: JSON.stringify({ message: 'Update site content', content: btoa(unescape(encodeURIComponent(JSON.stringify(final, null, 1)))), branch: cfg.branch, sha }) });
+      if (!pr.ok) throw new Error(pr.status === 409 ? 'The site changed while you were publishing. Press Publish again.' : `Could not save the content (${pr.status}). ${(await pr.json().catch(() => ({}))).message || ''}`);
+      published = cp(final); C = cp(final); hasDraft = false; lsSet(KEY, null); lsSet(BASEKEY, null); render();
+      log('Saved. Going live now, usually within a minute or two…'); toast('Saved. Going live…');
+      (async () => { for (let i = 0; i < 60; i++) { await new Promise(r => setTimeout(r, 5000)); try { const r = await fetch('content.json?t=' + Date.now(), { cache: 'no-store' }); if (r.ok && eq(await r.json(), final)) { if ($('#ed-g-log')) log('Live now. Visitors see your changes.'); toast('Your changes are live.'); return; } } catch { } } if ($('#ed-g-log')) log('Still not showing after 5 minutes. The save went through; the host is slow. Check again shortly.'); })();
       if (FB) loadAdmin().then(A => A.saveSite(cfg)).then(() => log('Publishing details saved to your admin account, so any device you sign in on can publish.')).catch(() => { });
     } catch (e) {
       log(e instanceof TypeError ? 'Could not reach GitHub from here. Publishing works once the site is on your own hosting, not inside this preview.' : e.message);
@@ -454,7 +498,7 @@
     'item-add': d => { const m = d.p.match(/^sections\.(\d+)\.items$/); if (m && C.sections[m[1]].type === 'store') { mutate(() => arr(d).unshift(clone(NEWPRODUCT))); toast('New product added at the front. Click Details to build its page.'); } else mutate(() => arr(d).push(blankItem(d.p))); },
     's-add': d => { mutate(() => arr(d).push('')); focusPath(`${d.p}.${arr(d).length - 1}`); },
     'img-clear': d => { mutate(() => set(d.p, '')); closePanel(); },
-    discard: () => { lsSet(KEY, null); hasDraft = false; C = clone(published); undo = []; redo = []; closePanel(); render(); toast('Draft discarded.'); },
+    discard: () => { lsSet(KEY, null); lsSet(BASEKEY, null); hasDraft = false; C = clone(published); undo = []; redo = []; closePanel(); render(); toast('Draft discarded.'); },
     dl: () => { try { const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([backupText()], { type: 'application/json' })); a.download = 'worshipflow-backup.json'; a.click(); } catch { toast('Download is blocked here. Use Copy backup instead.'); } },
     copy: async () => { try { await navigator.clipboard.writeText(backupText()); toast('Backup copied.'); } catch { toast('Copy was blocked by the browser.'); } }
   };
@@ -507,7 +551,11 @@
     try { const r = await Promise.race([fetch('content.json', { cache: 'no-store' }), new Promise((_, no) => setTimeout(no, 2500))]); if (r.ok) pub = await r.json(); } catch { }
     published = pub && Array.isArray(pub.sections) ? pub : clone(DEFAULT);
     const d = lsGet(KEY);
-    if (d && Array.isArray(d.sections)) { C = d; hasDraft = true; } else C = clone(published);
+    if (d && Array.isArray(d.sections)) {
+      const base = lsGet(BASEKEY); C = d; hasDraft = true;
+      if (base && Array.isArray(base.sections) && !eq(base, published)) { C = merge3(base, d, published); lsSet(BASEKEY, published); lsSet(KEY, C); }
+      else if (!base) lsSet(BASEKEY, published);
+    } else C = clone(published);
     let want = location.hash === '#edit'; try { want = want || sessionStorage.getItem('wf-edit') === '1'; } catch { }
     render(); trackView();
     let wantPub = false; try { wantPub = sessionStorage.getItem('wf-pub') === '1'; } catch { }
