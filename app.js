@@ -2,7 +2,7 @@
 (() => {
   const DEFAULT = window.WF_DEFAULT, BLANKS = window.WF_BLANKS;
   const KEY = 'wf-draft', GHKEY = 'wf-github';
-  const BUILD = 12;
+  const BUILD = 13;
   const FB = window.WF_FIREBASE && window.WF_FIREBASE.projectId ? window.WF_FIREBASE : null;
   let adminP; const loadAdmin = () => (adminP = adminP || new Promise((res, rej) => { const sc = document.createElement('script'); sc.src = 'admin.js?v=' + BUILD; sc.onload = () => res(window.WF_ADMIN); sc.onerror = rej; document.head.append(sc); }));
   /* Anonymous visit and click counts for the admin page. No cookies, nothing personal. */
@@ -97,7 +97,14 @@
         <div class="plan-price">${T(`${ip}.prices.${ui.billing}`, 'span', 'price')}${T(p + '.unit', 'span', 'plan-unit')}</div>${slist(ip + '.features', 'checks')}${L(ip + '.cta', 'btn ' + (it.featured ? 'btn-primary' : ''))}</article>`)}</div>`;
     },
     extras: (s, p) => `<div class="wrap">${head(p)}${list(p + '.items', 'rows', (it, ip, i) => `<div class="row" data-item="${i}">${T(ip + '.name', 'b')}${T(ip + '.detail', 'span', 'row-detail', true)}${T(ip + '.price', 'span', 'row-price')}</div>`)}<div class="after">${L(p + '.cta', 'btn')}</div></div>`,
-    testimonials: (s, p) => `<div class="wrap">${head(p)}${list(p + '.items', 'quotes', (it, ip, i) => `<figure class="quote" data-item="${i}">${T(ip + '.quote', 'blockquote', '', true)}<figcaption>${T(ip + '.name', 'b')}${T(ip + '.org')}</figcaption></figure>`)}</div>`,
+    testimonials: (s, p) => {
+      if (edit) return R.testimonialsEdit(s, p);
+      const q = (s.items || []).filter(it => it.quote || it.name); if (!q.length) return `<div class="wrap">${head(p)}</div>`;
+      const set = hide => q.map(it => `<figure class="quote"${hide ? ' aria-hidden="true"' : ''}><blockquote>${esc(it.quote)}</blockquote><figcaption><b>${esc(it.name)}</b><span>${esc(it.org)}</span></figcaption></figure>`).join('');
+      const reps = Math.max(1, Math.ceil(6 / q.length)), half = hide => Array.from({ length: reps }, (_, k) => set(hide || k > 0)).join('');
+      return `<div class="wrap">${head(p)}</div><div class="marquee quotes-marquee" tabindex="0" aria-label="Testimonials, scrolling. Hover or focus to pause."><div class="marquee-track quotes-track" style="--dur:${q.length * reps * 9}s">${half(false)}${half(true)}</div></div>`;
+    },
+    testimonialsEdit: (s, p) => `<div class="wrap">${head(p)}${list(p + '.items', 'quotes', (it, ip, i) => `<figure class="quote" data-item="${i}">${T(ip + '.quote', 'blockquote', '', true)}<figcaption>${T(ip + '.name', 'b')}${T(ip + '.org')}</figcaption></figure>`)}</div>`,
     about: (s, p) => `<div class="wrap split">${I(p + '.image', 'img-45', '')}<div class="split-copy">${T(p + '.title', 'h2')}${T(p + '.body', 'p', 'lede', true)}${T(p + '.body2', 'p', 'motto')}${slist(p + '.facts', 'checks')}${L(p + '.cta', 'btn')}</div></div>`,
     contact: (s, p) => `<div class="wrap"><div class="contact-card">${T(p + '.title', 'h2')}${T(p + '.body', 'p', 'lede', true)}<div class="btns">${L(p + '.cta1', 'btn btn-primary')}${L(p + '.cta2', 'btn')}</div></div></div>`,
     text: (s, p) => `<div class="wrap"><div class="stack">${T(p + '.title', 'h2')}${T(p + '.body', 'p', 'lede', true)}${L(p + '.cta', 'btn btn-primary')}</div></div>`,
